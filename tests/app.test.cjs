@@ -20,15 +20,31 @@ const copy = value => JSON.parse(JSON.stringify(value));
 test('PDF import: 30 days, 2376 unique IDs; source counts and sequence match', () => {
   const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, 'data/words.js'), 'utf8'), ctx);
   const data = ctx.window.VOCABULARY, report = JSON.parse(fs.readFileSync(path.join(root, 'data/import-report.json'), 'utf8'));
-  assert.equal(data.words.length, 2376); assert.equal(new Set(data.words.map(w => w.id)).size, 2376);
+  assert.equal(data.words.filter(w => w.book === 'check').length, 2376);
+  assert.equal(new Set(data.words.map(w => w.id)).size, data.words.length);
   for (const book of data.books) assert.equal(book.units.length, 30);
-  assert.equal(data.words.filter(w => w.book === 'main').length, 0);
+  assert.equal(data.words.filter(w => w.book === 'main').length, 167);
   for (const day of report.days) {
-    const words = data.words.filter(w => w.unit === `day-${String(day.day).padStart(2, '0')}`);
+    const words = data.words.filter(w => w.book === 'check' && w.unit === `day-${String(day.day).padStart(2, '0')}`);
     assert.equal(words.length, day.expected); assert.equal(words[0].japanese, day.first); assert.equal(words.at(-1).japanese, day.last);
     assert.deepEqual(Array.from(words, w => w.order), Array.from({ length: day.expected }, (_, i) => i + 1));
     for (const w of words) { assert.ok(w.japanese && w.reading && w.meaning); assert.equal(w.sourcePage, day.day); assert.ok(!w.japanese.includes('★')); }
   }
+});
+
+test('mainbook photos: day assignment, printed entries and source counts', () => {
+  const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, 'data/words.js'), 'utf8'), ctx);
+  const words = ctx.window.VOCABULARY.words.filter(w => w.book === 'main');
+  for (const [unit, count] of [['day-01', 87], ['day-02', 80]]) {
+    const entries = words.filter(w => w.unit === unit);
+    assert.equal(entries.length, count);
+    assert.deepEqual(Array.from(entries, w => w.order), Array.from({ length: count }, (_, i) => i + 1));
+    for (const w of entries) assert.ok(w.japanese && w.reading && w.meaning && w.sourceImage && w.sourceYear);
+  }
+  assert.deepEqual(Array.from(new Set(words.map(w => w.sourceImage)), file => words.filter(w => w.sourceImage === file).length), [32, 31, 24, 38, 42]);
+  assert.equal(words[0].japanese, '移す'); assert.equal(words[86].japanese, '調査');
+  assert.equal(words[87].japanese, '印象'); assert.equal(words.at(-1).japanese, '湖');
+  assert.equal(words.filter(w => w.japanese === '疑う').length, 3);
 });
 
 test('one pass per round, remaining-only next round, known exclusion', () => {
