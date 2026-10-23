@@ -1,0 +1,216 @@
+{
+  "source": "유하다요_N3_30일_통합단어장.pdf",
+  "total": 2376,
+  "days": [
+    {
+      "day": 1,
+      "expected": 79,
+      "extracted": 79,
+      "first": "愛",
+      "last": "表れる"
+    },
+    {
+      "day": 2,
+      "expected": 80,
+      "extracted": 80,
+      "first": "有り難い",
+      "last": "イメージ"
+    },
+    {
+      "day": 3,
+      "expected": 80,
+      "extracted": 80,
+      "first": "いも",
+      "last": "遠足"
+    },
+    {
+      "day": 4,
+      "expected": 80,
+      "extracted": 80,
+      "first": "遠慮",
+      "last": "思い"
+    },
+    {
+      "day": 5,
+      "expected": 79,
+      "extracted": 79,
+      "first": "思い込む",
+      "last": "掛け算"
+    },
+    {
+      "day": 6,
+      "expected": 80,
+      "extracted": 80,
+      "first": "掛ける",
+      "last": "考え"
+    },
+    {
+      "day": 7,
+      "expected": 80,
+      "extracted": 80,
+      "first": "観客",
+      "last": "記入"
+    },
+    {
+      "day": 8,
+      "expected": 80,
+      "extracted": 80,
+      "first": "記念",
+      "last": "悔しい"
+    },
+    {
+      "day": 9,
+      "expected": 80,
+      "extracted": 80,
+      "first": "暮らし",
+      "last": "下旬"
+    },
+    {
+      "day": 10,
+      "expected": 80,
+      "extracted": 80,
+      "first": "月末",
+      "last": "小麦粉"
+    },
+    {
+      "day": 11,
+      "expected": 79,
+      "extracted": 79,
+      "first": "小指",
+      "last": "去る"
+    },
+    {
+      "day": 12,
+      "expected": 80,
+      "extracted": 80,
+      "first": "騒ぎ",
+      "last": "集中"
+    },
+    {
+      "day": 13,
+      "expected": 80,
+      "extracted": 80,
+      "first": "終電",
+      "last": "身長"
+    },
+    {
+      "day": 14,
+      "expected": 80,
+      "extracted": 80,
+      "first": "心配だ",
+      "last": "スーツケース"
+    },
+    {
+      "day": 15,
+      "expected": 80,
+      "extracted": 80,
+      "first": "スープ",
+      "last": "整理する"
+    },
+    {
+      "day": 16,
+      "expected": 80,
+      "extracted": 80,
+      "first": "セール",
+      "last": "ぞうきん"
+    },
+    {
+      "day": 17,
+      "expected": 79,
+      "extracted": 79,
+      "first": "増減",
+      "last": "誕生"
+    },
+    {
+      "day": 18,
+      "expected": 80,
+      "extracted": 80,
+      "first": "誕生日",
+      "last": "挑戦"
+    },
+    {
+      "day": 19,
+      "expected": 80,
+      "extracted": 80,
+      "first": "ちょうど",
+      "last": "鉄道"
+    },
+    {
+      "day": 20,
+      "expected": 80,
+      "extracted": 80,
+      "first": "徹夜",
+      "last": "取り消す"
+    },
+    {
+      "day": 21,
+      "expected": 79,
+      "extracted": 79,
+      "first": "取り込む",
+      "last": "憎らしい"
+    },
+    {
+      "day": 22,
+      "expected": 79,
+      "extracted": 79,
+      "first": "逃げる",
+      "last": "博物館"
+    },
+    {
+      "day": 23,
+      "expected": 80,
+      "extracted": 80,
+      "first": "激しい",
+      "last": "引き落とす"
+    },
+    {
+      "day": 24,
+      "expected": 80,
+      "extracted": 80,
+      "first": "引き出す",
+      "last": "蓋"
+    },
+    {
+      "day": 25,
+      "expected": 80,
+      "extracted": 80,
+      "first": "双子",
+      "last": "報告"
+    },
+    {
+      "day": 26,
+      "expected": 79,
+      "extracted": 79,
+      "first": "宝石",
+      "last": "真っ黒"
+    },
+    {
+      "day": 27,
+      "expected": 80,
+      "extracted": 80,
+      "first": "真っ青",
+      "last": "夢中だ"
+    },
+    {
+      "day": 28,
+      "expected": 79,
+      "extracted": 79,
+      "first": "胸",
+      "last": "友情"
+    },
+    {
+      "day": 29,
+      "expected": 79,
+      "extracted": 79,
+      "first": "友人",
+      "last": "量"
+    },
+    {
+      "day": 30,
+      "expected": 65,
+      "extracted": 65,
+      "first": "両替",
+      "last": "ワンピース"
+    }
+  ]
+}

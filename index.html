@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#244f46"><title>하루 단어 · 일본어 단어장</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="data/words.js"></script><script defer src="learning.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<div class="app">
+  <header><a class="brand" href="./">하루 단어 <span>日本語の小さな習慣</span></a>
+    <nav aria-label="주요 메뉴"><button id="tab-study" class="active" aria-current="page">학습하기</button><button id="tab-list">단어장 목록</button><button id="tab-history">학습 기록</button></nav>
+    <span class="local-badge">개인 학습 · 브라우저에 저장</span>
+  </header>
+  <main>
+    <div class="page-heading"><div><p class="eyebrow">하루 한 걸음, 차곡차곡</p><h1 id="page-title">오늘도, 단어 하나.</h1></div><p id="source-label">체크북 · 유하다요 N3 · 30일</p></div>
+    <section class="toolbar" aria-label="학습 범위">
+      <label>01 단어장<select id="book"><option value="check">체크북</option><option value="main">메인북</option></select></label>
+      <label id="mode-label">02 학습 형태<select id="mode"><option value="chapter">챕터별</option><option value="ordered">순서대로</option><option value="random">무작위</option></select></label>
+      <label id="unit-label">03 학습 단원<select id="unit"></select></label>
+      <label id="order-label">04 출제 순서<select id="question-order"><option value="ordered">순서대로</option><option value="random">랜덤</option></select></label>
+      <p id="scope-description" class="scope-description"></p>
+    </section>
+    <p id="storage-error" class="error" role="alert" hidden></p>
+    <section class="stats" aria-label="선택 범위 통계">
+      <div><span>전체 단어</span><strong id="total">0</strong></div><div><span>암기 완료</span><strong id="known">0</strong></div><div><span>남은 단어</span><strong id="remaining">0</strong></div><div class="lifetime"><span>누적 판단 · 알고 있음 / 다시 학습</span><strong><span id="known-count">0</span><i>/</i><span id="review-count">0</span></strong></div>
+    </section>
+
+    <section id="view-study" class="view">
+      <details id="study-tools" class="study-tools"><summary>학습 관리 · 리셋 / 백업</summary><div class="study-tools-menu"><button id="reset-scope">선택 범위 다시 학습</button><button id="reset-all">전체 리셋 · 모든 단어 다시 학습</button><button id="export">백업 내보내기</button><button id="import">백업 불러오기</button></div></details>
+      <input id="file" type="file" accept=".json,application/json" hidden>
+      <div class="study-layout">
+        <section class="study" aria-label="단어 학습">
+          <div class="study-top"><span id="round-label"></span><button id="undo" class="text-button" disabled>↶ 직전 판단 취소 <kbd>B</kbd></button></div>
+          <progress id="progress" value="0" max="1" aria-label="이번 회독 진행률"></progress>
+          <div id="card" class="card" aria-live="polite"></div>
+          <div id="actions" class="actions">
+            <button id="meaning">뜻 보기 <kbd>Z</kbd></button><button id="reading">읽는 법 보기 <kbd>X</kbd></button>
+            <button id="again" class="secondary">↻ 다시 학습 <kbd>C / Space</kbd></button><button id="memorize" class="primary">✓ 알고 있어요 <kbd>V</kbd></button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="view-list" class="view" hidden>
+      <div class="list-tools"><label class="search-label">단어 검색<input id="search" type="search" placeholder="일본어, 읽는 법, 한국어 뜻 검색"></label><label>표시 상태<select id="status-filter"><option value="all">전체 단어</option><option value="known">암기 완료</option><option value="remaining">학습 대상</option></select></label><p id="list-count"></p></div>
+      <div id="word-list"></div><p id="list-empty" class="empty" hidden>조건에 맞는 단어가 없습니다.</p>
+    </section>
+
+    <section id="view-history" class="view" hidden>
+      <p class="history-intro">현재 선택 범위의 누적 기록입니다. 리셋해도 판단 횟수는 유지됩니다. 취소한 판단은 누적 횟수에서 제외하고 이력에 남깁니다.</p>
+      <p id="legacy-note" class="hint" hidden>이전 버전의 기록은 마지막 판단 1회부터 집계합니다. 이전 버전에 없던 과거 판단 횟수는 복원할 수 없습니다. 현재 단어장에 없는 샘플 ID도 백업에는 보존됩니다.</p>
+      <div class="history-grid"><section class="panel"><h2>단원별 기록</h2><div class="table-wrap"><table><thead><tr><th>단원</th><th>암기 / 전체</th><th>알고 있음</th><th>다시 학습</th><th>리셋</th></tr></thead><tbody id="unit-history"></tbody></table></div></section><section class="panel"><h2>최근 학습 이력</h2><p class="hint">최근 100건 표시 · 전체 이력은 백업에 포함</p><ol id="event-history"></ol></section></div>
+    </section>
+    <p id="notice" class="notice" role="status" aria-live="polite"></p>
+  </main>
+  <footer><span>매일 조금씩, 나의 속도로.</span><span>원문 단어·품사·기출 표시 수록 · 개인 학습용</span></footer>
+</div>
+<dialog id="import-dialog"><form method="dialog"><h2>백업을 불러올까요?</h2><p id="import-description"></p><p>현재 기록을 백업 시점의 기록으로 교체합니다. 필요하면 먼저 현재 기록을 내보내세요.</p><div class="dialog-actions"><button value="cancel">취소</button><button value="confirm" class="primary">기록 교체</button></div></form></dialog>
+<dialog id="reset-dialog"><form method="dialog"><h2>암기 상태를 해제할까요?</h2><p id="reset-description"></p><p>단어별 누적 판단 횟수는 유지하고, 단원별 리셋 횟수와 이번 리셋 이력을 추가합니다. 이 작업 후에는 직전 판단을 취소할 수 없습니다.</p><div class="dialog-actions"><button value="cancel">취소</button><button value="confirm" class="primary">다시 학습 시작</button></div></form></dialog>
+</body>
+</html>
