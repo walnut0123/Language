@@ -7,6 +7,15 @@
   try { const raw = localStorage.getItem(KEY); if (raw) initial = Learning.parse(JSON.parse(raw), data); }
   catch { loadFailed = true; $('storage-error').textContent = '저장된 기록을 읽지 못했습니다. 기존 저장값은 아직 덮어쓰지 않았습니다. 백업을 불러오거나 새 학습을 시작하세요. 이후 조작은 새 기록으로 저장됩니다.'; $('storage-error').hidden = false; }
   const engine = Learning.create(data, initial);
+  for (const method of ['judge', 'undo', 'restore', 'reset', 'select', 'start', 'replace']) {
+    const original = engine[method];
+    engine[method] = (...args) => {
+      const before = JSON.parse(JSON.stringify(engine.state));
+      const result = original(...args);
+      if (result !== false) window.CloudSession?.record(method, args, before, engine.state);
+      return result;
+    };
+  }
   let view = 'study', meaning = false, reading = false, pending = null, pendingReset = null;
   const state = () => engine.state;
   const notice = text => { $('notice').textContent = text; };
@@ -16,7 +25,7 @@
   const formatDate = at => new Date(at).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   function el(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify(state())); $('storage-error').hidden = true; return true; }
+    try { localStorage.setItem(window.CloudSession?.key || KEY, JSON.stringify(state())); $('storage-error').hidden = true; return true; }
     catch { $('storage-error').textContent = '브라우저 저장에 실패했습니다. 새로고침하거나 닫기 전에 백업을 내보내세요. 현재 화면에서는 학습을 계속할 수 있습니다.'; $('storage-error').hidden = false; return false; }
   }
   function selectors() {
@@ -44,7 +53,7 @@
     const list = selectedWords(), t = engine.totals(list);
     $('total').textContent = t.total.toLocaleString(); $('known').textContent = t.known.toLocaleString(); $('remaining').textContent = (t.total - t.known).toLocaleString();
     $('known-count').textContent = t.knownCount.toLocaleString(); $('review-count').textContent = t.reviewCount.toLocaleString();
-    $('source-label').textContent = $('book').value === 'check' ? '유하다요 N3 · 체크북 2,376개' : '메인북 · 단어 제공 대기';
+    $('source-label').textContent = $('book').value === 'check' ? '유하다요 N3 · 체크북 2,376개' : '메인북 · DAY 01–02 · 167개';
     $('scope-description').textContent = view !== 'study' ? '단원과 상태로 살펴보고, 단어별 누적 학습 횟수를 확인하세요.' : {
       chapter: `선택한 DAY의 남은 단어를 ${state().selection.questionOrder === 'random' ? '랜덤으로' : '순서대로'} 학습합니다.`,
       ordered: 'DAY 구분 없이 01부터 30까지 이어서 학습합니다.',
@@ -202,4 +211,9 @@
   document.body.dataset.view = view; selectors(); engine.current(); render();
   if (!loadFailed) save();
   if (state().migratedFromV1) notice('이전 버전 기록을 보존했습니다. 샘플 기록은 실제 단어와 분리되며 백업에 함께 포함됩니다.');
+  window.VocabularyApp = {
+    data, snapshot: () => JSON.parse(JSON.stringify(state())),
+    apply(value) { engine.replace(Learning.parse(value, data)); hideAnswers(); selectors(); render(); },
+    persist: save
+  };
 })();

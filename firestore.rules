@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(uid) {
+      return request.auth != null && request.auth.uid == uid
+        && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+    match /users/{uid}/learning/state {
+      allow read: if owner(uid);
+      allow create, update: if owner(uid)
+        && request.resource.data.keys().hasOnly(['chunkCount', 'revision', 'updatedAt'])
+        && request.resource.data.chunkCount is int
+        && request.resource.data.chunkCount > 0 && request.resource.data.chunkCount <= 450
+        && request.resource.data.revision is int
+        && request.resource.data.updatedAt == request.time
+        && ((!exists(/databases/$(database)/documents/users/$(uid)/learning/state)
+             && request.resource.data.revision == 1)
+            || (resource != null && request.resource.data.revision == resource.data.revision + 1));
+    }
+    match /users/{uid}/chunks/{chunkId} {
+      allow read: if owner(uid);
+      allow create, update: if owner(uid)
+        && request.resource.data.keys().hasOnly(['json', 'updatedAt'])
+        && request.resource.data.json is string && request.resource.data.json.size() <= 500000
+        && request.resource.data.updatedAt == request.time;
+    }
+    match /users/{uid}/operations/{operationId} {
+      allow read: if owner(uid);
+      allow create: if owner(uid)
+        && request.resource.data.keys().hasOnly(['createdAt'])
+        && request.resource.data.createdAt == request.time;
+    }
+    // All other paths, deletes, and edits to operation receipts are denied.
+  }
+}

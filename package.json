@@ -5,6 +5,6 @@
   "description": "Personal Japanese vocabulary trainer, buildless and GitHub Pages ready",
   "scripts": {
     "start": "node scripts/serve.cjs",
-    "test": "node --test tests/app.test.cjs"
+    "test": "node --test tests/*.test.cjs"
   }
 }

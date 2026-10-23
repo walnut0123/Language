@@ -45,3 +45,7 @@ body[data-view="study"] .japanese.long{font-size:clamp(30px,3.2vw,56px)}
   .study-tools{top:14px;right:16px}
   .study-tools-menu{max-width:calc(100vw - 64px)}
 }
+/* Account controls stay visible on mobile and expose actual sync status. */
+.cloud-bar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 18px; padding:12px; border:1px solid #cbd9d2; border-radius:12px; }
+.cloud-bar span { flex:1 1 240px; font-size:14px; }
+.cloud-bar button { padding:8px 12px; font-size:13px; }
