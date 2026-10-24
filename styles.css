@@ -49,3 +49,70 @@ body[data-view="study"] .japanese.long{font-size:clamp(30px,3.2vw,56px)}
 .cloud-bar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:0 0 18px; padding:12px; border:1px solid #cbd9d2; border-radius:12px; }
 .cloud-bar span { flex:1 1 240px; font-size:14px; }
 .cloud-bar button { padding:8px 12px; font-size:13px; }
+.settings-panel{display:contents}.settings-toggle,.mobile-sync{display:none}
+@media(max-width:760px){
+  .app{padding:0 12px;padding-bottom:env(safe-area-inset-bottom)}
+  header{height:58px;min-height:58px;padding:8px 0;gap:8px;flex-wrap:nowrap;flex-shrink:0}
+  .brand{font-size:19px}.brand span{display:none}nav{gap:0}nav button{padding:10px 7px;font-size:11px;min-height:40px}
+  main{position:relative}
+  .settings-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:44px;margin:8px 0;padding:9px 12px;text-align:left;font-size:11px;background:#e9eee3;flex-shrink:0}
+  .settings-toggle span:last-child{white-space:nowrap;color:var(--green)}
+  .settings-panel{display:none}
+  .settings-panel.expanded{display:block;position:absolute;top:60px;left:0;right:0;z-index:20;max-height:calc(100dvh - 150px);overflow:auto;overscroll-behavior:contain;padding:14px;background:#f5f6f0;border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 32px #18332b30}
+  .settings-panel .page-heading{display:none}
+  .cloud-bar{margin:0 0 12px;padding:10px;gap:7px}.cloud-bar span{flex-basis:100%;font-size:11px;overflow-wrap:anywhere}.cloud-bar button{font-size:11px;min-height:40px;padding:8px 10px}
+  .toolbar{display:grid!important;grid-template-columns:1fr 1fr;gap:12px!important;padding:12px!important}
+  .toolbar label{width:auto!important;min-width:0}.scope-description{grid-column:1/-1}
+  .mobile-sync{display:block;font-size:10px;color:var(--muted);line-height:1.5;margin:5px 0;text-align:center;flex-shrink:0}
+  body[data-view="study"] .app{height:100dvh;min-height:480px;display:flex;flex-direction:column}
+  body[data-view="study"] main{display:flex;flex:1;min-height:0;flex-direction:column}
+  body[data-view="study"] #view-study{flex:1;min-height:0}
+  body[data-view="study"] .study-layout{height:100%}
+  body[data-view="study"] .study{height:100%;min-height:0;padding:42px 14px 14px;border-radius:16px}
+  body[data-view="study"] .study-top{flex-shrink:0;min-height:28px;padding:0;font-size:10px}
+  body[data-view="study"] .study-top .text-button{min-height:36px;padding:5px}
+  body[data-view="study"] progress{flex-shrink:0;margin-top:6px}
+  body[data-view="study"] .card{min-height:0;overflow:auto;overscroll-behavior:contain;padding:12px 4px;gap:6px}
+  body[data-view="study"] .japanese{font-size:clamp(38px,12vw,58px);margin:6px 0;line-height:1.3}
+  body[data-view="study"] .japanese.long{font-size:clamp(27px,8vw,38px)}
+  .unit-tag{font-size:10px;letter-spacing:.3px}.word-history{font-size:9px;margin-top:4px}
+  body[data-view="study"] .actions{grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0}
+  body[data-view="study"] .actions button{min-height:48px;font-size:13px;padding:9px 4px}
+  kbd{display:none}body[data-view="study"] footer{display:none}
+  .study-tools{top:12px;right:14px;font-size:11px}.study-tools summary{padding:5px}
+  .study-tools-menu{max-height:calc(100dvh - 190px);overflow:auto;width:260px}
+  body[data-view="study"] .notice{margin:0;min-height:0;max-height:36px;overflow:auto;font-size:10px;line-height:1.6;flex-shrink:0}
+  .notice:empty{display:none}.error{flex-shrink:0;max-height:90px;overflow:auto}
+  .end-title{font-size:21px}.end-copy{font-size:12px}
+}
+@media(max-width:760px) and (max-height:600px){
+  body[data-view="study"] .app{min-height:380px}
+  body[data-view="study"] .study{padding-top:32px}
+  body[data-view="study"] .card{padding:4px;gap:2px}
+  body[data-view="study"] .japanese{font-size:34px;margin:2px}
+  body[data-view="study"] .japanese.long{font-size:26px}
+  body[data-view="study"] .actions button{min-height:42px}
+  .word-history{display:none}.answer{font-size:13px}.answer.concealed{font-size:10px}
+}
+/* Character-anchored notes. The layer never paints or intercepts the background. */
+.actions button[aria-pressed="true"]{background:#e0ead8;border-color:#879c78;color:#244f46;box-shadow:inset 0 0 0 1px #879c78}
+body[data-view="study"] .japanese{margin-bottom:3px}
+body[data-view="study"] .card>.answer{margin-top:0}
+.japanese ruby{ruby-align:center;ruby-position:over}.japanese rt{font-size:clamp(11px,.28em,23px);font-weight:400;color:#728467;line-height:1.5;letter-spacing:.02em}
+.japanese .ruby-hidden{visibility:hidden}.japanese .kanji-character{border-radius:4px;transition:background .15s}.japanese .explained{background:#e4ecdc;text-decoration:underline;text-decoration-color:#a5b997;text-underline-offset:7px;text-decoration-thickness:2px}
+.kanji-layer{position:fixed;inset:auto;margin:0;padding:0;border:0;max-width:none;max-height:none;background:transparent;color:var(--ink);overflow:visible;pointer-events:none;z-index:50}
+.kanji-layer::backdrop{background:transparent;pointer-events:none}
+.kanji-float{position:absolute;box-sizing:border-box;display:flex;flex-direction:column;border:1px solid #bdcbb4;border-radius:13px;padding:13px 15px;background:#fcfcf7;color:#253b36;box-shadow:0 7px 22px #18332b18;pointer-events:auto;animation:kanji-pop .16s ease-out}
+.kanji-heading{display:flex;align-items:center;gap:9px;flex-shrink:0;border-bottom:1px solid #e1e7dc;padding-bottom:7px;margin-bottom:9px;position:relative;z-index:1;background:#fcfcf7}
+.kanji-heading h2{font-family:'Noto Sans JP',sans-serif;font-size:27px;line-height:1.2;margin:0;color:var(--green)}.kanji-heading>span{font-size:11px;color:var(--muted);line-height:1.4}
+.kanji-heading .kanji-close{margin-left:auto;padding:0;flex-shrink:0;width:28px;height:28px;min-height:0;font-size:20px;border:0;background:transparent}
+.kanji-copy{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;position:relative;z-index:1;background:#fcfcf7;text-align:left}.kanji-copy h3{font-size:9px;letter-spacing:.3px;margin:0 0 3px;color:var(--muted)}.kanji-copy p{font-size:12px;line-height:1.7;margin:0 0 9px;word-break:keep-all;overflow-wrap:anywhere}
+.kanji-rail{display:flex;flex-direction:column;gap:10px;overflow:auto;pointer-events:auto}
+.kanji-rail .kanji-float{position:relative;flex:0 0 210px;width:100%;min-width:0}
+@media(max-width:760px){
+  body.kanji-side-open .japanese{align-self:flex-start;max-width:calc(100vw - 212px);font-size:30px!important;text-align:center;overflow-wrap:anywhere}
+  body.kanji-side-open .japanese rt{font-size:11px}
+  .kanji-float{padding:10px}.kanji-heading{gap:5px}.kanji-heading h2{font-size:24px}.kanji-heading>span{font-size:10px}
+}
+@keyframes kanji-pop{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.kanji-float{animation:none}.japanese .kanji-character{transition:none}}

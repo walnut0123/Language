@@ -159,52 +159,143 @@ test('empty unit has no questions and does not count a reset', () => {
 });
 
 // Small DOM/storage adapter for real app.js event wiring (not a layout/browser test).
-function ui(storage = {}, failSave = false) {
+function ui(storage = {}, failSave = false, vocabulary = fixture()) {
   const nodes = {}, documentEvents = {};
   class Element {
-    constructor(tag = 'DIV') { this.tagName = tag.toUpperCase(); this.children = []; this.events = {}; this.dataset = {}; this.value = ''; this.textContent = ''; this.hidden = false; this.firstChild = { textContent: '' }; this.classList = { toggle() {} }; }
+    constructor(tag = 'DIV') { this.tagName = tag.toUpperCase(); this.children = []; this.events = {}; this.dataset = {}; this.style = { setProperty() {} }; this.value = ''; this._text = ''; this.hidden = false; this.firstChild = { textContent: '' }; this.classList = { toggle() {}, contains() { return false; } }; }
+    get textContent() { return this._text + this.children.map(n => n.textContent).join(''); }
+    set textContent(value) { this._text = value; this.children = []; }
     append(...items) { for (const item of items) { item.parent = this; this.children.push(item); } }
     replaceChildren(...items) { this.children = []; this.append(...items); }
     addEventListener(name, handler) { this.events[name] = handler; }
-    setAttribute() {} removeAttribute() {} remove() {}
+    setAttribute(name, value) { (this.attributes ||= {})[name] = value; }
+    getAttribute(name) { return this.attributes?.[name]; }
+    removeAttribute(name) { if (this.attributes) delete this.attributes[name]; }
+    remove() {}
     closest() { for (let n = this; n; n = n.parent) if (n.hidden) return n; return null; }
     showModal() { this.open = true; }
+    close() { this.open = false; this.fire('close'); }
+    showPopover() { this.open = true; } hidePopover() { this.open = false; }
+    focus() {}
+    getBoundingClientRect() { return { left: 450, top: 300, width: 60, height: 80 }; }
     click() { if (!this.disabled) return this.events.click?.({ target: this }); }
     fire(name) { return this.events[name]?.({ target: this }); }
   }
   const document = { getElementById: id => nodes[id] ||= new Element(), createElement: tag => new Element(tag), createDocumentFragment: () => new Element(), createTextNode: text => ({ textContent: text }), body: new Element('body'), addEventListener: (type, fn) => documentEvents[type] = fn };
-  const context = vm.createContext({ window: { VOCABULARY: fixture(), scrollTo() {} }, document, Learning, console, Blob, URL, setTimeout: fn => fn(), localStorage: {
+  const context = vm.createContext({ window: { VOCABULARY: vocabulary, scrollTo() {}, addEventListener() {}, innerWidth: 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
     getItem: key => storage[key] || null, setItem: (key, value) => { if (failSave) throw Error('quota'); storage[key] = value; }
   } });
   nodes['actions'] = new Element();
   for (const id of ['meaning', 'reading', 'again', 'memorize']) { nodes[id] = new Element('button'); nodes.actions.append(nodes[id]); }
+  vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-notes.js'), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-details.js'), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-all.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(root, 'app.js'), 'utf8'), context);
   return { nodes, storage, click: id => nodes[id].click(), state: () => JSON.parse(storage['haru-vocabulary-v1']),
-    card: () => nodes.card.children.map(n => n.textContent).join(' '),
+    card: () => {
+      const visible = n => n.hidden || n.className === 'ruby-hidden' ? '' : (n._text || '') + (n.children || []).map(visible).join('');
+      return nodes.card.children.map(visible).join(' ');
+    },
     key(code, extra = {}) { const e = { code, target: new Element('body'), preventDefault() {}, ...extra }; documentEvents.keydown(e); },
     async file(text) { nodes.file.files = [{ size: text.length, text: async () => text }]; await nodes.file.fire('change'); },
     close(id, result) { nodes[id].returnValue = result; nodes[id].open = false; nodes[id].fire('close'); }
   };
 }
 
-test('UI shortcuts reveal answers and advance, ignore repeat/editable/modal/list contexts', () => {
-  const app = ui(); app.key('KeyZ'); app.key('KeyX'); assert.match(app.card(), /사랑/); assert.match(app.card(), /あい/);
-  for (const extra of [{ repeat: true }, { ctrlKey: true }, { isComposing: true }, { target: { tagName: 'INPUT' } }, { target: { tagName: 'SELECT' } }]) app.key('KeyV', extra);
-  assert.equal(app.state().round.index, 0);
-  app.click('reset-all'); app.key('KeyV'); assert.equal(app.state().round.index, 0); app.close('reset-dialog', 'cancel');
-  app.key('KeyC'); assert.doesNotMatch(app.card(), /사랑|あい/); app.key('KeyV'); app.key('Enter'); assert.match(app.card(), /愛/);
-  app.key('KeyB'); assert.match(app.card(), /合図/); assert.equal(app.state().records.b, undefined);
-  app.click('tab-list'); const before = JSON.stringify(app.state()); app.key('KeyV'); assert.equal(JSON.stringify(app.state()), before);
+test('all vocabulary characters have notes; DAY 01 keeps exact per-character ruby readings', () => {
+  const context = { window: {} };
+  for (const file of ['data/words.js', 'data/kanji-notes.js', 'data/kanji-details.js', 'data/kanji-all.js']) vm.runInNewContext(fs.readFileSync(path.join(root, file), 'utf8'), context);
+  const words = context.window.VOCABULARY.words.filter(w => w.book === 'main' && w.unit === 'day-01');
+  assert.equal(words.length, 87);
+  for (const word of words) {
+    const note = context.window.KANJI_NOTES[word.japanese];
+    assert.ok(note?.origin && note?.connection, word.japanese);
+    for (const character of word.japanese.match(/\p{Script=Han}/gu) || []) {
+      const detail = context.window.KANJI_DETAILS[character];
+      assert.ok(detail?.label && detail.origin && detail.meaning && detail.usage, character);
+    }
+    const parts = require('../kanji-ui.js').segments(word, context.window.KANJI_READINGS);
+    assert.equal(parts.map(p => p.reading || p.text).join(''), word.reading, word.japanese);
+    assert.ok(parts.filter(p => p.kanji).every(p => [...p.text].length === 1), word.japanese);
+  }
+  const allWords = context.window.VOCABULARY.words;
+  assert.equal(allWords.length, 2543);
+  const characters = new Set(allWords.flatMap(w => w.japanese.match(/\p{Script=Han}/gu) || []));
+  assert.equal(characters.size, 1070);
+  for (const character of characters) {
+    const detail = context.window.KANJI_DETAILS[character];
+    assert.ok(detail?.label && detail.origin && detail.meaning && detail.usage, character);
+    assert.doesNotMatch([detail.label, detail.origin, detail.meaning, detail.usage].join(''), /undefined|\[object Object\]/);
+  }
+  const app = ui({}, false, context.window.VOCABULARY);
+  app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].hidden, false);
+  assert.match(app.nodes['kanji-layer'].textContent, /愛/);
+  app.nodes.book.value = 'main'; app.nodes.book.fire('change');
+  app.key('KeyX', { repeat: true }); assert.ok(app.nodes['kanji-layer'].hidden);
+  app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].hidden, false);
+  assert.equal(app.nodes['kanji-layer'].children.length, 1);
+  assert.match(app.nodes['kanji-layer'].textContent, /移/);
+  app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].hidden, true);
+  app.key('KeyX'); app.key('Escape'); assert.equal(app.nodes['kanji-layer'].hidden, true);
+  app.key('KeyX'); app.key('Space'); assert.equal(app.nodes['kanji-layer'].hidden, true);
+  app.key('Space'); app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].children.length, 2);
+  app.nodes.unit.value = 'day-02'; app.nodes.unit.fire('change');
+  assert.equal(app.nodes['kanji-layer'].hidden, true);
+  app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].hidden, false);
 });
 
-test('Space maps to review once, prevents scrolling/native click, ignores old keys and open management', () => {
+test('meaning and reading toggle independently without changing learning records; no reading placeholder row', () => {
+  const app = ui(), before = JSON.stringify(app.state());
+  assert.doesNotMatch(app.card(), /읽는 법을 떠올려/);
+  assert.equal(app.nodes.card.children[1].className, 'japanese');
+  assert.match(app.nodes.card.children[2].className, /^answer/);
+  app.key('KeyZ'); assert.match(app.card(), /사랑/);
+  assert.equal(app.nodes.meaning.getAttribute('aria-pressed'), 'true');
+  assert.equal(app.nodes.meaning.disabled, false);
+  app.key('KeyX'); assert.match(app.card(), /あい/);
+  assert.equal(app.nodes.reading.getAttribute('aria-pressed'), 'true');
+  assert.equal(app.nodes['kanji-layer'].hidden, false);
+  app.key('KeyZ'); assert.doesNotMatch(app.card(), /사랑/); assert.match(app.card(), /あい/);
+  assert.equal(app.nodes.meaning.getAttribute('aria-pressed'), 'false');
+  app.click('reading'); assert.doesNotMatch(app.card(), /あい/);
+  assert.equal(app.nodes.reading.getAttribute('aria-pressed'), 'false');
+  assert.equal(app.nodes['kanji-layer'].hidden, true);
+  app.click('reading'); app.click('meaning');
+  assert.match(app.card(), /あい/); assert.match(app.card(), /사랑/);
+  assert.equal(JSON.stringify(app.state()), before);
+  app.nodes['kanji-layer'].children[0].children[0].children[2].click();
+  assert.equal(app.nodes.reading.getAttribute('aria-pressed'), 'false');
+  assert.equal(app.nodes['kanji-layer'].hidden, true);
+  app.key('KeyV'); assert.equal(app.nodes['kanji-layer'].hidden, true);
+});
+
+test('UI shortcuts reveal answers and advance, ignore repeat/editable/modal/list contexts', () => {
+  const app = ui(); app.key('KeyZ'); app.key('KeyX'); assert.match(app.card(), /사랑/); assert.match(app.card(), /あい/);
+  for (const extra of [{ repeat: true }, { ctrlKey: true }, { isComposing: true }, { target: { tagName: 'INPUT' } }, { target: { tagName: 'SELECT' } }]) app.key('Space', extra);
+  assert.equal(app.state().round.index, 0);
+  app.click('reset-all'); app.key('Space'); assert.equal(app.state().round.index, 0); app.close('reset-dialog', 'cancel');
+  app.key('KeyC'); assert.doesNotMatch(app.card(), /사랑|あい/); app.key('Space'); app.key('Enter'); assert.match(app.card(), /愛/);
+  app.key('KeyB'); assert.match(app.card(), /合図/); assert.equal(app.state().records.b, undefined);
+  app.click('tab-list'); const before = JSON.stringify(app.state()); app.key('Space'); assert.equal(JSON.stringify(app.state()), before);
+});
+
+test('settings drawer blocks study shortcuts and Escape restores study without changing progress', () => {
+  const app = ui(); app.click('settings-toggle'); app.key('Space');
+  assert.equal(app.state().round.index, 0);
+  app.key('Escape'); app.key('Space');
+  assert.equal(app.state().records.a.knownCount, 1);
+  app.click('settings-toggle'); app.click('tab-list'); app.click('tab-study');
+  app.key('KeyC'); assert.equal(app.state().records.b.reviewCount, 1);
+});
+
+test('Space maps to known once, prevents scrolling/native click, ignores old keys and open management', () => {
   const app = ui(); let prevented = 0;
-  for (const code of ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Numpad3']) app.key(code);
+  for (const code of ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Numpad3', 'KeyV']) app.key(code);
   assert.equal(app.state().round.index, 0);
   app.nodes['study-tools'].open = true; app.key('Space'); assert.equal(app.state().round.index, 0);
   app.nodes['study-tools'].open = false;
   app.key('Space', { target: { tagName: 'BUTTON' }, preventDefault() { prevented++; } });
-  assert.equal(prevented, 1); assert.equal(app.state().records.a.reviewCount, 1);
+  assert.equal(prevented, 1); assert.equal(app.state().records.a.knownCount, 1); assert.equal(app.state().records.a.reviewCount, 0);
   app.key('Space', { repeat: true }); assert.equal(app.state().round.index, 1);
   app.key('KeyB'); assert.equal(app.state().records.a, undefined);
 });

@@ -1,7 +1,11 @@
 // SDKs load only after configuration. No OAuth access tokens are stored by this app.
 const $ = id => document.getElementById(id);
 const app = window.VocabularyApp;
-const status = text => { $('cloud-status').textContent = text; };
+const status = text => {
+  $('cloud-status').textContent = text;
+  const compact = document.getElementById('mobile-sync');
+  if (compact) compact.textContent = text.includes('저장 완료') ? '✓ 클라우드 저장 완료' : text.includes('미완료') || text.includes('실패') || text.includes('못했') ? '저장 상태 확인 · 설정을 열어주세요' : text.includes('대기') || text.includes('동기화 중') ? '클라우드 전송 중…' : text.includes('불러오는') ? '계정 기록 불러오는 중…' : '계정 · 저장 상태는 설정에서 확인';
+};
 const config = window.FIREBASE_CONFIG;
 if (!config?.apiKey || !config?.projectId || !config?.authDomain || !config?.appId) {
   status('브라우저에 저장 중 · 클라우드 연결 설정 전입니다.');
@@ -120,7 +124,8 @@ async function boot() {
     const token = ++generation;
     ready = false; clearTimeout(timer); unsubscribe?.();
     user = next; queue = []; revision = 0; setUI();
-    for (const child of document.querySelector('main').children) if (!child.classList.contains('cloud-bar')) child.inert = !!user;
+    for (const child of document.querySelector('main').children) if (!child.classList.contains('cloud-bar') && child.id !== 'settings-panel' && child.id !== 'settings-toggle') child.inert = !!user;
+    for (const id of ['book', 'mode', 'unit', 'question-order']) { const input = document.getElementById(id); if (input) input.inert = !!user; }
     if (!user) {
       const raw = localStorage.getItem(guestKey);
       try { apply(raw ? Learning.parse(JSON.parse(raw), app.data) : Learning.fresh()); }
@@ -137,6 +142,7 @@ async function boot() {
       if (token !== generation) return;
       ready = true;
       for (const child of document.querySelector('main').children) child.inert = false;
+      for (const id of ['book', 'mode', 'unit', 'question-order']) document.getElementById(id).inert = false;
       await sync();
       if (token !== generation) return;
       unsubscribe = dbApi.onSnapshot(dbApi.doc(db, 'users', user.uid, 'learning', 'state'), snapshot => {

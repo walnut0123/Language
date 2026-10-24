@@ -1,0 +1,14 @@
+{
+  "words": 2543,
+  "characters": 1070,
+  "existing": 129,
+  "added": 941,
+  "phonetic": 494,
+  "structure": 395,
+  "pictographic": 35,
+  "sourceHashes": {
+    "hanja.txt": "b1004034589f1357daaea3534a6136f6b5ef825afa8779886b20f0b7908bbe3b",
+    "dictionary.txt": "744bb05d5b0742e9ee35c37791f94d56a173349b3367569e7ca11e510364d203",
+    "jp-old-style.txt": "712a953f28bd11e142ea3b0e8cc686097b46971fb0ce26149ba2109fe4919206"
+  }
+}

@@ -1,2 +1,14 @@
 tmp/
 node_modules/
+FIREBASE_SETUP.md
+*-PRIVATE.md
+.env
+.env.*
+!.env.example
+*service-account*.json
+*serviceAccount*.json
+*firebase-adminsdk*.json
+*.pem
+*.key
+haru-vocabulary-*.json
+haru-conflict-backup-*.json

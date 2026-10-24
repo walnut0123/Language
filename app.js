@@ -17,6 +17,7 @@
     };
   }
   let view = 'study', meaning = false, reading = false, pending = null, pendingReset = null;
+  let kanjiOpen = false, kanjiAnchors = [], kanjiCards = [], japaneseNode = null;
   const state = () => engine.state;
   const notice = text => { $('notice').textContent = text; };
   const hideAnswers = () => { meaning = false; reading = false; };
@@ -52,6 +53,7 @@
   function renderStats() {
     const list = selectedWords(), t = engine.totals(list);
     $('total').textContent = t.total.toLocaleString(); $('known').textContent = t.known.toLocaleString(); $('remaining').textContent = (t.total - t.known).toLocaleString();
+    $('compact-scope').textContent = `${bookName($('book').value)} · ${$('unit').value === 'all' ? '전체' : unitName($('book').value, $('unit').value)} · 남은 ${t.total - t.known}`;
     $('known-count').textContent = t.knownCount.toLocaleString(); $('review-count').textContent = t.reviewCount.toLocaleString();
     $('source-label').textContent = $('book').value === 'check' ? '유하다요 N3 · 체크북 2,376개' : '메인북 · DAY 01–02 · 167개';
     $('scope-description').textContent = view !== 'study' ? '단원과 상태로 살펴보고, 단어별 누적 학습 횟수를 확인하세요.' : {
@@ -62,19 +64,36 @@
   }
   function renderStudy() {
     const word = engine.current(), r = state().round, t = engine.totals();
+    closeKanji();
+    kanjiAnchors = [];
+    $('meaning').setAttribute('aria-pressed', String(meaning));
+    $('reading').setAttribute('aria-pressed', String(reading));
     $('undo').disabled = !state().undo;
     $('round-label').textContent = `이번 회독 · ${r.index.toLocaleString()} / ${r.ids.length.toLocaleString()}`;
     $('progress').max = r.ids.length || 1; $('progress').value = r.index;
     $('actions').hidden = !word; $('card').replaceChildren();
     $('reset-scope').disabled = !t.total; $('reset-all').disabled = !data.words.length;
     if (word) {
-      const jp = el('div', `japanese${word.japanese.length > 8 ? ' long' : ''}`, word.japanese); jp.lang = 'ja';
-      const kana = el('p', `answer reading${reading ? '' : ' concealed'}`, reading ? word.reading : '읽는 법을 떠올려 보세요'); if (reading) kana.lang = 'ja';
+      const jp = el('div', `japanese${word.japanese.length > 8 ? ' long' : ''}`); jp.lang = 'ja';
+      japaneseNode = jp;
+      for (const part of KanjiUI.segments(word, window.KANJI_READINGS)) {
+        if (!part.kanji) { jp.append(el('span', 'okurigana', part.text)); continue; }
+        const ruby = el('ruby'), base = el('span', 'ruby-base');
+        for (const character of part.text) {
+          const characterNode = el('span', 'kanji-character', character);
+          base.append(characterNode);
+          if (/\p{Script=Han}/u.test(character) && window.KANJI_DETAILS[character]) kanjiAnchors.push({ character, node: characterNode });
+        }
+        const rt = el('rt', reading ? '' : 'ruby-hidden', part.reading);
+        rt.setAttribute('aria-hidden', String(!reading));
+        ruby.append(base, rt); jp.append(ruby);
+      }
       const answer = el('p', `answer${meaning ? '' : ' concealed'}`, meaning ? `${word.partOfSpeech ? `[${word.partOfSpeech}] ` : ''}${word.meaning}` : '이 단어의 뜻은 무엇일까요?');
       const record = state().records[word.id];
-      $('card').append(el('span', 'unit-tag', `${bookName(word.book)} / ${unitName(word.book, word.unit)} / ${String(word.order).padStart(2, '0')}${word.starred ? ' · ★ 기출' : ''}`), jp, kana, answer,
+      $('card').append(el('span', 'unit-tag', `${bookName(word.book)} / ${unitName(word.book, word.unit)} / ${String(word.order).padStart(2, '0')}${word.starred ? ' · ★ 기출' : ''}`), jp, answer,
         el('p', 'word-history', `누적 알고 있음 ${record?.knownCount || 0} · 다시 학습 ${record?.reviewCount || 0} · 리셋 ${record?.resetCount || 0}`));
-      $('meaning').disabled = meaning; $('reading').disabled = reading;
+      $('meaning').disabled = false; $('reading').disabled = false;
+      if (reading) openKanji();
     } else {
       $('card').append(el('span', 'unit-tag', t.total ? '오늘의 작은 성취' : '단어 준비 중'), el('h2', 'end-title', !t.total ? '아직 단어가 없어요' : t.total > t.known ? '한 회독을 마쳤어요' : '모두 기억했어요!'),
         el('p', 'end-copy', !t.total ? '메인북도 DAY 01~30으로 준비했습니다. 실제 단어를 받으면 추가할게요.' : t.total > t.known ? `남은 ${(t.total - t.known).toLocaleString()}개 단어를 다시 만나볼까요?` : '다른 단원을 고르거나, 기록을 남긴 채 다시 시작해 보세요.'));
@@ -134,6 +153,8 @@
   }
   function render() { renderStats(); if (view === 'study') renderStudy(); else if (view === 'list') renderList(); else renderHistory(); }
   function switchView(next) {
+    closeKanji();
+    closeSettings();
     $('study-tools').open = false;
     view = next; document.body.dataset.view = view;
     for (const name of ['study', 'list', 'history']) {
@@ -148,12 +169,77 @@
     render(); notice('');
   }
   $('book').addEventListener('change', () => { fillUnits(view === 'study' ? 'day-01' : 'all'); selectScope(); });
+  function closeSettings() { settingsExpanded = false; $('settings-panel').classList.toggle('expanded', false); $('settings-toggle').setAttribute('aria-expanded', 'false'); }
+  let settingsExpanded = false;
+  $('settings-toggle').addEventListener('click', () => {
+    settingsExpanded = !settingsExpanded;
+    $('settings-panel').classList.toggle('expanded', settingsExpanded); $('settings-toggle').setAttribute('aria-expanded', String(settingsExpanded));
+    $('study-tools').open = false;
+  });
   $('mode').addEventListener('change', () => { fillUnits(state().selection.unit); selectScope(); });
   $('unit').addEventListener('change', selectScope);
   $('question-order').addEventListener('change', selectScope);
   for (const name of ['study', 'list', 'history']) $(`tab-${name}`).addEventListener('click', () => switchView(name));
-  $('meaning').addEventListener('click', () => { meaning = true; renderStudy(); });
-  $('reading').addEventListener('click', () => { reading = true; renderStudy(); });
+  $('meaning').addEventListener('click', () => { meaning = !meaning; renderStudy(); });
+  $('reading').addEventListener('click', () => { reading = !reading; renderStudy(); });
+  function hideReading() { reading = false; renderStudy(); $('reading').focus(); }
+  function closeKanji() {
+    const layer = $('kanji-layer');
+    if (kanjiOpen) layer.hidePopover?.();
+    layer.hidden = true; layer.replaceChildren();
+    kanjiOpen = false; kanjiCards = [];
+    document.body.classList.toggle('kanji-side-open', false);
+    $('reading').setAttribute('aria-expanded', 'false');
+    for (const anchor of kanjiAnchors) anchor.node.classList.toggle('explained', false);
+  }
+  function positionKanji() {
+    if (!kanjiOpen) return;
+    const viewport = window.visualViewport;
+    const width = viewport?.width || window.innerWidth, height = viewport?.height || window.innerHeight;
+    const offsetX = viewport?.offsetLeft || 0, offsetY = viewport?.offsetTop || 0;
+    const rect = node => { const r = node.getBoundingClientRect(); return { left: r.left - offsetX, top: r.top - offsetY, width: r.width, height: r.height }; };
+    const word = rect(japaneseNode), anchors = kanjiAnchors.map(a => rect(a.node));
+    const boxes = KanjiUI.layout(anchors, word, { width, height });
+    const layer = $('kanji-layer'); layer.classList.toggle('kanji-rail', !boxes);
+    layer.style.left = `${offsetX}px`; layer.style.top = `${offsetY}px`;
+    layer.style.width = `${width}px`; layer.style.height = `${height}px`;
+    if (!boxes) {
+      // Preserve the side relationship even on unusually narrow/zoomed viewports.
+      const railHeight = Math.max(80, Math.min(480, height - 20));
+      layer.style.left = `${offsetX + word.left + word.width + 14}px`;
+      layer.style.top = `${offsetY + Math.max(10, Math.min(word.top, height - railHeight - 10))}px`;
+      layer.style.width = `${Math.max(0, width - word.left - word.width - 24)}px`;
+      layer.style.height = `${railHeight}px`;
+    }
+    kanjiCards.forEach((card, i) => {
+      if (!boxes) { card.removeAttribute('style'); return; }
+      const b = boxes[i];
+      Object.assign(card.style, { left: `${b.left}px`, top: `${b.top}px`, width: `${b.width}px`, height: `${b.height}px` });
+    });
+  }
+  function openKanji() {
+    if (!kanjiAnchors.length) return;
+    document.body.classList.toggle('kanji-side-open', true);
+    const layer = $('kanji-layer'); layer.replaceChildren();
+    for (const [index, anchor] of kanjiAnchors.entries()) {
+      const note = window.KANJI_DETAILS[anchor.character];
+      const card = el('section', 'kanji-float'); card.setAttribute('aria-labelledby', `kanji-title-${index}`);
+      const heading = el('div', 'kanji-heading'), title = el('h2', '', anchor.character); title.id = `kanji-title-${index}`; title.lang = 'ja';
+      const close = el('button', 'kanji-close', '×'); close.setAttribute('aria-label', '읽기 도움 끄기'); close.addEventListener('click', hideReading);
+      heading.append(title, el('span', '', note.label?.replace(/^.\(|\)$/g, '') || note.meaning), close);
+      const body = el('div', 'kanji-copy'); body.tabIndex = 0;
+      body.append(el('h3', '', '유래·구성'), el('p', '', note.origin), el('h3', '', '글자의 뜻'), el('p', '', note.meaning), el('h3', '', '뜻의 확장·쓰임'), el('p', '', note.usage));
+      card.append(heading, body); layer.append(card); kanjiCards.push(card);
+      anchor.node.classList.toggle('explained', true);
+    }
+    layer.hidden = false; layer.showPopover?.(); kanjiOpen = true;
+    $('reading').setAttribute('aria-expanded', 'true'); positionKanji();
+  }
+  window.addEventListener('resize', positionKanji);
+  document.addEventListener('scroll', positionKanji, true);
+  window.visualViewport?.addEventListener('resize', positionKanji);
+  window.visualViewport?.addEventListener('scroll', positionKanji);
+  document.fonts?.ready.then(positionKanji);
   function judge(status) { if (!engine.judge(status)) return; hideAnswers(); engine.current(); save(); render(); notice(status === 'known' ? '암기 완료로 기록했습니다.' : '복습 대상으로 남겼습니다. 다음 회독에서 다시 만나요.'); }
   $('again').addEventListener('click', () => judge('review')); $('memorize').addEventListener('click', () => judge('known'));
   $('undo').addEventListener('click', () => { if (!engine.undo()) return; hideAnswers(); selectors(); save(); render(); notice('직전 판단을 취소했습니다. 해당 판단은 누적 횟수에서도 제외됩니다.'); });
@@ -201,10 +287,12 @@
     pending = null;
   });
   document.addEventListener('keydown', event => {
-    if (view !== 'study' || event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey || $('import-dialog').open || $('reset-dialog').open || $('study-tools').open) return;
+    if (reading && view === 'study' && !settingsExpanded && !$('import-dialog').open && !$('reset-dialog').open && !$('study-tools').open && event.code === 'Escape' && !event.isComposing) { event.preventDefault(); hideReading(); return; }
+    if (event.code === 'Escape') { settingsExpanded = false; closeSettings(); return; }
+    if (view !== 'study' || settingsExpanded || event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey || $('import-dialog').open || $('reset-dialog').open || $('study-tools').open) return;
     const target = event.target;
     if (['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName) || target.isContentEditable) return;
-    const mapping = { KeyZ: 'meaning', KeyX: 'reading', KeyC: 'again', Space: 'again', KeyV: 'memorize', KeyB: 'undo' };
+    const mapping = { KeyZ: 'meaning', KeyX: 'reading', KeyC: 'again', Space: 'memorize', KeyB: 'undo' };
     if (mapping[event.code]) { event.preventDefault(); const button = $(mapping[event.code]); if (!button.disabled && !button.closest('[hidden]')) button.click(); }
     else if (event.code === 'Enter' && target.tagName !== 'BUTTON' && !engine.current() && engine.totals().known < engine.totals().total) { event.preventDefault(); restart(); }
   });
