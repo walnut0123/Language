@@ -96,6 +96,8 @@ body[data-view="study"] .japanese.long{font-size:clamp(30px,3.2vw,56px)}
 }
 /* Character-anchored notes. The layer never paints or intercepts the background. */
 .actions button[aria-pressed="true"]{background:#e0ead8;border-color:#879c78;color:#244f46;box-shadow:inset 0 0 0 1px #879c78}
+.previous-appearance{display:flex;flex-direction:column;gap:3px;font-family:inherit;font-size:10px;line-height:1.5;color:#73816a;background:#edf2e8;border:1px solid #dce5d5;border-radius:8px;padding:7px 12px;margin-top:7px;max-width:100%;max-height:90px;overflow:auto}
+.previous-appearance-title{font-weight:600}.previous-appearance-day{font-size:9px;color:#839078}.jp .previous-appearance{display:flex;width:fit-content;font-family:inherit;font-size:10px;text-align:left}
 body[data-view="study"] .japanese{margin-bottom:3px}
 body[data-view="study"] .card>.answer{margin-top:0}
 .japanese ruby{ruby-align:center;ruby-position:over}.japanese rt{font-size:clamp(11px,.28em,23px);font-weight:400;color:#728467;line-height:1.5;letter-spacing:.02em}

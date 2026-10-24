@@ -25,6 +25,17 @@
   const unitName = (book, unit) => data.books.find(b => b.id === book)?.units.find(u => u.id === unit)?.name || unit;
   const formatDate = at => new Date(at).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   function el(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
+  function previousAppearance(word) {
+    const appearances = data.previousAppearances?.[word.id] || [];
+    if (!appearances.length) return null;
+    const badge = el('div', 'previous-appearance');
+    badge.append(el('span', 'previous-appearance-title', '등장한 적 있는 단어'));
+    for (const prior of appearances) {
+      const match = /^day-(\d+)$/.exec(prior.unit);
+      badge.append(el('span', 'previous-appearance-day', `${match ? `D - ${Number(match[1])}` : unitName(prior.book, prior.unit)} / ${bookName(prior.book)}`));
+    }
+    return badge;
+  }
   function save() {
     try { localStorage.setItem(window.CloudSession?.key || KEY, JSON.stringify(state())); $('storage-error').hidden = true; return true; }
     catch { $('storage-error').textContent = '브라우저 저장에 실패했습니다. 새로고침하거나 닫기 전에 백업을 내보내세요. 현재 화면에서는 학습을 계속할 수 있습니다.'; $('storage-error').hidden = false; return false; }
@@ -55,7 +66,9 @@
     $('total').textContent = t.total.toLocaleString(); $('known').textContent = t.known.toLocaleString(); $('remaining').textContent = (t.total - t.known).toLocaleString();
     $('compact-scope').textContent = `${bookName($('book').value)} · ${$('unit').value === 'all' ? '전체' : unitName($('book').value, $('unit').value)} · 남은 ${t.total - t.known}`;
     $('known-count').textContent = t.knownCount.toLocaleString(); $('review-count').textContent = t.reviewCount.toLocaleString();
-    $('source-label').textContent = $('book').value === 'check' ? '유하다요 N3 · 체크북 2,376개' : '메인북 · DAY 01–02 · 167개';
+    const selectedBook = $('book').value;
+    const count = data.words.filter(w => w.book === selectedBook).length;
+    $('source-label').textContent = selectedBook === 'check' ? `유하다요 N3 · 체크북 ${count.toLocaleString()}개` : `메인북 · DAY 01–02 · ${count.toLocaleString()}개`;
     $('scope-description').textContent = view !== 'study' ? '단원과 상태로 살펴보고, 단어별 누적 학습 횟수를 확인하세요.' : {
       chapter: `선택한 DAY의 남은 단어를 ${state().selection.questionOrder === 'random' ? '랜덤으로' : '순서대로'} 학습합니다.`,
       ordered: 'DAY 구분 없이 01부터 30까지 이어서 학습합니다.',
@@ -92,6 +105,7 @@
       const record = state().records[word.id];
       $('card').append(el('span', 'unit-tag', `${bookName(word.book)} / ${unitName(word.book, word.unit)} / ${String(word.order).padStart(2, '0')}${word.starred ? ' · ★ 기출' : ''}`), jp, answer,
         el('p', 'word-history', `누적 알고 있음 ${record?.knownCount || 0} · 다시 학습 ${record?.reviewCount || 0} · 리셋 ${record?.resetCount || 0}`));
+      const previous = previousAppearance(word); if (previous) $('card').append(previous);
       $('meaning').disabled = false; $('reading').disabled = false;
       if (reading) openKanji();
     } else {
@@ -116,6 +130,7 @@
       for (const word of words) {
         const tr = el('tr'), jp = el('td', 'jp', word.japanese); jp.lang = 'ja';
         if (word.starred) jp.append(el('span', 'star', '★'));
+        const previous = previousAppearance(word); if (previous) jp.append(previous);
         const kana = el('td', 'kana', word.reading); kana.lang = 'ja';
         const def = el('td'); def.append(el('span', 'pos', word.partOfSpeech), document.createTextNode(word.meaning));
         const record = state().records[word.id], stats = el('td', 'word-counts', `알고 있음 ${record?.knownCount || 0} / 다시 학습 ${record?.reviewCount || 0}`);

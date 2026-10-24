@@ -1,0 +1,1544 @@
+{
+  "matchFields": [
+    "japanese",
+    "reading",
+    "meaning"
+  ],
+  "scope": "all books and days; retain earliest DAY, book order breaks ties",
+  "sourceCount": 2543,
+  "activeCount": 2389,
+  "books": [
+    {
+      "id": "check",
+      "name": "체크북",
+      "activeCount": 2240
+    },
+    {
+      "id": "main",
+      "name": "메인북",
+      "activeCount": 149
+    }
+  ],
+  "removed": [
+    {
+      "id": "yuhadayo-n3-main-d01-064",
+      "keptId": "yuhadayo-n3-main-d01-039",
+      "japanese": "裏",
+      "reading": "うら",
+      "meaning": "뒤, 뒷면",
+      "book": "main",
+      "unit": "day-01"
+    },
+    {
+      "id": "yuhadayo-n3-main-d01-071",
+      "keptId": "yuhadayo-n3-main-d01-008",
+      "japanese": "呼吸",
+      "reading": "こきゅう",
+      "meaning": "호흡",
+      "book": "main",
+      "unit": "day-01"
+    },
+    {
+      "id": "yuhadayo-n3-main-d01-080",
+      "keptId": "yuhadayo-n3-check-d01-034",
+      "japanese": "預ける",
+      "reading": "あずける",
+      "meaning": "맡기다",
+      "book": "main",
+      "unit": "day-01"
+    },
+    {
+      "id": "yuhadayo-n3-main-d01-085",
+      "keptId": "yuhadayo-n3-main-d01-048",
+      "japanese": "留守",
+      "reading": "るす",
+      "meaning": "부재중",
+      "book": "main",
+      "unit": "day-01"
+    },
+    {
+      "id": "yuhadayo-n3-main-d01-086",
+      "keptId": "yuhadayo-n3-main-d01-033",
+      "japanese": "疑う",
+      "reading": "うたがう",
+      "meaning": "의심하다",
+      "book": "main",
+      "unit": "day-01"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-004",
+      "keptId": "yuhadayo-n3-main-d01-087",
+      "japanese": "調査",
+      "reading": "ちょうさ",
+      "meaning": "조사",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-010",
+      "keptId": "yuhadayo-n3-main-d01-061",
+      "japanese": "包む",
+      "reading": "つつむ",
+      "meaning": "싸다, 포장하다",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-011",
+      "keptId": "yuhadayo-n3-main-d01-006",
+      "japanese": "郵便",
+      "reading": "ゆうびん",
+      "meaning": "우편",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-017",
+      "keptId": "yuhadayo-n3-check-d01-038",
+      "japanese": "遊ぶ",
+      "reading": "あそぶ",
+      "meaning": "놀다",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-019",
+      "keptId": "yuhadayo-n3-main-d01-055",
+      "japanese": "血圧",
+      "reading": "けつあつ",
+      "meaning": "혈압",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-023",
+      "keptId": "yuhadayo-n3-main-d01-033",
+      "japanese": "疑う",
+      "reading": "うたがう",
+      "meaning": "의심하다",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-025",
+      "keptId": "yuhadayo-n3-main-d01-065",
+      "japanese": "恋しい",
+      "reading": "こいしい",
+      "meaning": "그립다",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-033",
+      "keptId": "yuhadayo-n3-check-d02-057",
+      "japanese": "位置",
+      "reading": "いち",
+      "meaning": "위치",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-035",
+      "keptId": "yuhadayo-n3-main-d01-070",
+      "japanese": "過去",
+      "reading": "かこ",
+      "meaning": "과거",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-038",
+      "keptId": "yuhadayo-n3-main-d01-050",
+      "japanese": "計算",
+      "reading": "けいさん",
+      "meaning": "계산",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-046",
+      "keptId": "yuhadayo-n3-main-d01-025",
+      "japanese": "主要だ",
+      "reading": "しゅようだ",
+      "meaning": "주요하다",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-052",
+      "keptId": "yuhadayo-n3-main-d01-073",
+      "japanese": "努力",
+      "reading": "どりょく",
+      "meaning": "노력",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-054",
+      "keptId": "yuhadayo-n3-main-d01-057",
+      "japanese": "丸い",
+      "reading": "まるい",
+      "meaning": "둥글다",
+      "book": "main",
+      "unit": "day-02"
+    },
+    {
+      "id": "yuhadayo-n3-check-d03-007",
+      "keptId": "yuhadayo-n3-main-d01-083",
+      "japanese": "岩",
+      "reading": "いわ",
+      "meaning": "바위",
+      "book": "check",
+      "unit": "day-03"
+    },
+    {
+      "id": "yuhadayo-n3-check-d03-010",
+      "keptId": "yuhadayo-n3-main-d02-001",
+      "japanese": "印象",
+      "reading": "いんしょう",
+      "meaning": "인상",
+      "book": "check",
+      "unit": "day-03"
+    },
+    {
+      "id": "yuhadayo-n3-check-d03-033",
+      "keptId": "yuhadayo-n3-main-d01-033",
+      "japanese": "疑う",
+      "reading": "うたがう",
+      "meaning": "의심하다",
+      "book": "check",
+      "unit": "day-03"
+    },
+    {
+      "id": "yuhadayo-n3-check-d03-036",
+      "keptId": "yuhadayo-n3-main-d02-071",
+      "japanese": "美しい",
+      "reading": "うつくしい",
+      "meaning": "아름답다",
+      "book": "check",
+      "unit": "day-03"
+    },
+    {
+      "id": "yuhadayo-n3-check-d03-037",
+      "keptId": "yuhadayo-n3-main-d01-001",
+      "japanese": "移す",
+      "reading": "うつす",
+      "meaning": "옮기다",
+      "book": "check",
+      "unit": "day-03"
+    },
+    {
+      "id": "yuhadayo-n3-check-d03-052",
+      "keptId": "yuhadayo-n3-main-d01-039",
+      "japanese": "裏",
+      "reading": "うら",
+      "meaning": "뒤, 뒷면",
+      "book": "check",
+      "unit": "day-03"
+    },
+    {
+      "id": "yuhadayo-n3-check-d04-011",
+      "keptId": "yuhadayo-n3-main-d01-049",
+      "japanese": "横断",
+      "reading": "おうだん",
+      "meaning": "횡단",
+      "book": "check",
+      "unit": "day-04"
+    },
+    {
+      "id": "yuhadayo-n3-check-d04-060",
+      "keptId": "yuhadayo-n3-main-d02-007",
+      "japanese": "遅い",
+      "reading": "おそい",
+      "meaning": "늦다",
+      "book": "check",
+      "unit": "day-04"
+    },
+    {
+      "id": "yuhadayo-n3-check-d04-072",
+      "keptId": "yuhadayo-n3-main-d01-007",
+      "japanese": "帯",
+      "reading": "おび",
+      "meaning": "띠",
+      "book": "check",
+      "unit": "day-04"
+    },
+    {
+      "id": "yuhadayo-n3-check-d05-017",
+      "keptId": "yuhadayo-n3-main-d02-049",
+      "japanese": "折れる",
+      "reading": "おれる",
+      "meaning": "꺾이다, 부러지다",
+      "book": "check",
+      "unit": "day-05"
+    },
+    {
+      "id": "yuhadayo-n3-check-d05-040",
+      "keptId": "yuhadayo-n3-main-d02-028",
+      "japanese": "改札",
+      "reading": "かいさつ",
+      "meaning": "개찰",
+      "book": "check",
+      "unit": "day-05"
+    },
+    {
+      "id": "yuhadayo-n3-check-d05-051",
+      "keptId": "yuhadayo-n3-main-d01-017",
+      "japanese": "返す",
+      "reading": "かえす",
+      "meaning": "돌려주다, 되돌리다",
+      "book": "check",
+      "unit": "day-05"
+    },
+    {
+      "id": "yuhadayo-n3-check-d05-056",
+      "keptId": "yuhadayo-n3-main-d02-018",
+      "japanese": "換える",
+      "reading": "かえる",
+      "meaning": "바꾸다, 교환하다",
+      "book": "check",
+      "unit": "day-05"
+    },
+    {
+      "id": "yuhadayo-n3-check-d05-069",
+      "keptId": "yuhadayo-n3-main-d02-012",
+      "japanese": "各駅",
+      "reading": "かくえき",
+      "meaning": "각 역",
+      "book": "check",
+      "unit": "day-05"
+    },
+    {
+      "id": "yuhadayo-n3-check-d05-078",
+      "keptId": "yuhadayo-n3-main-d01-023",
+      "japanese": "家具",
+      "reading": "かぐ",
+      "meaning": "가구",
+      "book": "check",
+      "unit": "day-05"
+    },
+    {
+      "id": "yuhadayo-n3-check-d06-004",
+      "keptId": "yuhadayo-n3-main-d01-070",
+      "japanese": "過去",
+      "reading": "かこ",
+      "meaning": "과거",
+      "book": "check",
+      "unit": "day-06"
+    },
+    {
+      "id": "yuhadayo-n3-check-d06-018",
+      "keptId": "yuhadayo-n3-main-d02-037",
+      "japanese": "下線",
+      "reading": "かせん",
+      "meaning": "밑줄",
+      "book": "check",
+      "unit": "day-06"
+    },
+    {
+      "id": "yuhadayo-n3-check-d06-033",
+      "keptId": "yuhadayo-n3-main-d02-002",
+      "japanese": "勝つ",
+      "reading": "かつ",
+      "meaning": "이기다",
+      "book": "check",
+      "unit": "day-06"
+    },
+    {
+      "id": "yuhadayo-n3-check-d06-043",
+      "keptId": "yuhadayo-n3-main-d01-075",
+      "japanese": "悲しい",
+      "reading": "かなしい",
+      "meaning": "슬프다",
+      "book": "check",
+      "unit": "day-06"
+    },
+    {
+      "id": "yuhadayo-n3-check-d07-001",
+      "keptId": "yuhadayo-n3-main-d02-055",
+      "japanese": "観客",
+      "reading": "かんきゃく",
+      "meaning": "관객",
+      "book": "check",
+      "unit": "day-07"
+    },
+    {
+      "id": "yuhadayo-n3-check-d07-016",
+      "keptId": "yuhadayo-n3-main-d01-018",
+      "japanese": "感情的だ",
+      "reading": "かんじょうてきだ",
+      "meaning": "감정적이다",
+      "book": "check",
+      "unit": "day-07"
+    },
+    {
+      "id": "yuhadayo-n3-check-d07-020",
+      "keptId": "yuhadayo-n3-main-d01-012",
+      "japanese": "完全",
+      "reading": "かんぜん",
+      "meaning": "완전",
+      "book": "check",
+      "unit": "day-07"
+    },
+    {
+      "id": "yuhadayo-n3-check-d07-051",
+      "keptId": "yuhadayo-n3-main-d02-024",
+      "japanese": "機械",
+      "reading": "きかい",
+      "meaning": "기계",
+      "book": "check",
+      "unit": "day-07"
+    },
+    {
+      "id": "yuhadayo-n3-check-d07-071",
+      "keptId": "yuhadayo-n3-main-d02-034",
+      "japanese": "汚い",
+      "reading": "きたない",
+      "meaning": "더럽다",
+      "book": "check",
+      "unit": "day-07"
+    },
+    {
+      "id": "yuhadayo-n3-check-d08-004",
+      "keptId": "yuhadayo-n3-main-d01-024",
+      "japanese": "基本",
+      "reading": "きほん",
+      "meaning": "기본",
+      "book": "check",
+      "unit": "day-08"
+    },
+    {
+      "id": "yuhadayo-n3-check-d08-017",
+      "keptId": "yuhadayo-n3-main-d02-029",
+      "japanese": "休日",
+      "reading": "きゅうじつ",
+      "meaning": "휴일",
+      "book": "check",
+      "unit": "day-08"
+    },
+    {
+      "id": "yuhadayo-n3-check-d08-029",
+      "keptId": "yuhadayo-n3-main-d02-061",
+      "japanese": "共通",
+      "reading": "きょうつう",
+      "meaning": "공통",
+      "book": "check",
+      "unit": "day-08"
+    },
+    {
+      "id": "yuhadayo-n3-check-d08-041",
+      "keptId": "yuhadayo-n3-main-d02-036",
+      "japanese": "禁煙",
+      "reading": "きんえん",
+      "meaning": "금연",
+      "book": "check",
+      "unit": "day-08"
+    },
+    {
+      "id": "yuhadayo-n3-check-d08-048",
+      "keptId": "yuhadayo-n3-check-d08-010",
+      "japanese": "疑問",
+      "reading": "ぎもん",
+      "meaning": "의문",
+      "book": "check",
+      "unit": "day-08"
+    },
+    {
+      "id": "yuhadayo-n3-check-d08-073",
+      "keptId": "yuhadayo-n3-main-d02-076",
+      "japanese": "首",
+      "reading": "くび",
+      "meaning": "목",
+      "book": "check",
+      "unit": "day-08"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-004",
+      "keptId": "yuhadayo-n3-main-d01-059",
+      "japanese": "比べる",
+      "reading": "くらべる",
+      "meaning": "비교하다",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-011",
+      "keptId": "yuhadayo-n3-main-d01-002",
+      "japanese": "苦しい",
+      "reading": "くるしい",
+      "meaning": "괴롭다, 고통스럽다",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-018",
+      "keptId": "yuhadayo-n3-main-d02-056",
+      "japanese": "訓練",
+      "reading": "くんれん",
+      "meaning": "훈련",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-030",
+      "keptId": "yuhadayo-n3-main-d02-066",
+      "japanese": "経営学",
+      "reading": "けいえいがく",
+      "meaning": "경영학",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-035",
+      "keptId": "yuhadayo-n3-main-d01-050",
+      "japanese": "計算",
+      "reading": "けいさん",
+      "meaning": "계산",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-049",
+      "keptId": "yuhadayo-n3-main-d01-055",
+      "japanese": "血圧",
+      "reading": "けつあつ",
+      "meaning": "혈압",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-051",
+      "keptId": "yuhadayo-n3-main-d02-072",
+      "japanese": "血液型",
+      "reading": "けつえきがた",
+      "meaning": "혈액형",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-066",
+      "keptId": "yuhadayo-n3-main-d01-060",
+      "japanese": "件",
+      "reading": "けん",
+      "meaning": "건, 사항",
+      "book": "check",
+      "unit": "day-09"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-001",
+      "keptId": "yuhadayo-n3-main-d01-044",
+      "japanese": "月末",
+      "reading": "げつまつ",
+      "meaning": "월말",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-008",
+      "keptId": "yuhadayo-n3-main-d01-051",
+      "japanese": "現在",
+      "reading": "げんざい",
+      "meaning": "현재",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-011",
+      "keptId": "yuhadayo-n3-check-d09-077",
+      "japanese": "芸術",
+      "reading": "げいじゅつ",
+      "meaning": "예술",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-018",
+      "keptId": "yuhadayo-n3-main-d01-065",
+      "japanese": "恋しい",
+      "reading": "こいしい",
+      "meaning": "그립다",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-043",
+      "keptId": "yuhadayo-n3-main-d01-081",
+      "japanese": "交流",
+      "reading": "こうりゅう",
+      "meaning": "교류",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-048",
+      "keptId": "yuhadayo-n3-main-d01-040",
+      "japanese": "小型",
+      "reading": "こがた",
+      "meaning": "소형",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-049",
+      "keptId": "yuhadayo-n3-main-d01-008",
+      "japanese": "呼吸",
+      "reading": "こきゅう",
+      "meaning": "호흡",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-057",
+      "keptId": "yuhadayo-n3-main-d02-008",
+      "japanese": "腰",
+      "reading": "こし",
+      "meaning": "허리",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-059",
+      "keptId": "yuhadayo-n3-main-d02-062",
+      "japanese": "個人",
+      "reading": "こじん",
+      "meaning": "개인",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-066",
+      "keptId": "yuhadayo-n3-main-d01-045",
+      "japanese": "断る",
+      "reading": "ことわる",
+      "meaning": "거절하다",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-077",
+      "keptId": "yuhadayo-n3-main-d01-013",
+      "japanese": "困る",
+      "reading": "こまる",
+      "meaning": "곤란하다",
+      "book": "check",
+      "unit": "day-10"
+    },
+    {
+      "id": "yuhadayo-n3-check-d11-005",
+      "keptId": "yuhadayo-n3-main-d02-039",
+      "japanese": "転ぶ",
+      "reading": "ころぶ",
+      "meaning": "구르다, 넘어지다",
+      "book": "check",
+      "unit": "day-11"
+    },
+    {
+      "id": "yuhadayo-n3-check-d11-031",
+      "keptId": "yuhadayo-n3-main-d01-019",
+      "japanese": "最初",
+      "reading": "さいしょ",
+      "meaning": "최초, 맨 처음",
+      "book": "check",
+      "unit": "day-11"
+    },
+    {
+      "id": "yuhadayo-n3-check-d12-006",
+      "keptId": "yuhadayo-n3-main-d01-035",
+      "japanese": "産業",
+      "reading": "さんぎょう",
+      "meaning": "산업",
+      "book": "check",
+      "unit": "day-12"
+    },
+    {
+      "id": "yuhadayo-n3-check-d12-021",
+      "keptId": "yuhadayo-n3-main-d02-030",
+      "japanese": "塩",
+      "reading": "しお",
+      "meaning": "소금",
+      "book": "check",
+      "unit": "day-12"
+    },
+    {
+      "id": "yuhadayo-n3-check-d12-024",
+      "keptId": "yuhadayo-n3-main-d02-077",
+      "japanese": "支給",
+      "reading": "しきゅう",
+      "meaning": "지급",
+      "book": "check",
+      "unit": "day-12"
+    },
+    {
+      "id": "yuhadayo-n3-check-d12-036",
+      "keptId": "yuhadayo-n3-main-d01-076",
+      "japanese": "自然",
+      "reading": "しぜん",
+      "meaning": "자연",
+      "book": "check",
+      "unit": "day-12"
+    },
+    {
+      "id": "yuhadayo-n3-check-d13-008",
+      "keptId": "yuhadayo-n3-main-d02-043",
+      "japanese": "手術",
+      "reading": "しゅじゅつ",
+      "meaning": "수술",
+      "book": "check",
+      "unit": "day-13"
+    },
+    {
+      "id": "yuhadayo-n3-check-d13-020",
+      "keptId": "yuhadayo-n3-main-d01-025",
+      "japanese": "主要だ",
+      "reading": "しゅようだ",
+      "meaning": "주요하다",
+      "book": "check",
+      "unit": "day-13"
+    },
+    {
+      "id": "yuhadayo-n3-check-d13-021",
+      "keptId": "yuhadayo-n3-main-d01-084",
+      "japanese": "種類",
+      "reading": "しゅるい",
+      "meaning": "종류",
+      "book": "check",
+      "unit": "day-13"
+    },
+    {
+      "id": "yuhadayo-n3-check-d13-041",
+      "keptId": "yuhadayo-n3-main-d02-040",
+      "japanese": "商品",
+      "reading": "しょうひん",
+      "meaning": "상품",
+      "book": "check",
+      "unit": "day-13"
+    },
+    {
+      "id": "yuhadayo-n3-check-d13-080",
+      "keptId": "yuhadayo-n3-main-d01-009",
+      "japanese": "身長",
+      "reading": "しんちょう",
+      "meaning": "신장, 키",
+      "book": "check",
+      "unit": "day-13"
+    },
+    {
+      "id": "yuhadayo-n3-check-d14-062",
+      "keptId": "yuhadayo-n3-main-d02-013",
+      "japanese": "上品だ",
+      "reading": "じょうひんだ",
+      "meaning": "품위가 있다",
+      "book": "check",
+      "unit": "day-14"
+    },
+    {
+      "id": "yuhadayo-n3-check-d14-063",
+      "keptId": "yuhadayo-n3-main-d01-056",
+      "japanese": "情報",
+      "reading": "じょうほう",
+      "meaning": "정보",
+      "book": "check",
+      "unit": "day-14"
+    },
+    {
+      "id": "yuhadayo-n3-check-d15-078",
+      "keptId": "yuhadayo-n3-main-d01-004",
+      "japanese": "西洋",
+      "reading": "せいよう",
+      "meaning": "서양",
+      "book": "check",
+      "unit": "day-15"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-007",
+      "keptId": "yuhadayo-n3-main-d01-030",
+      "japanese": "石油",
+      "reading": "せきゆ",
+      "meaning": "석유",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-017",
+      "keptId": "yuhadayo-n3-main-d02-003",
+      "japanese": "線",
+      "reading": "せん",
+      "meaning": "선",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-021",
+      "keptId": "yuhadayo-n3-main-d01-041",
+      "japanese": "選手",
+      "reading": "せんしゅ",
+      "meaning": "선수",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-033",
+      "keptId": "yuhadayo-n3-main-d02-051",
+      "japanese": "税金",
+      "reading": "ぜいきん",
+      "meaning": "세금",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-049",
+      "keptId": "yuhadayo-n3-main-d02-067",
+      "japanese": "想像",
+      "reading": "そうぞう",
+      "meaning": "상상",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-050",
+      "keptId": "yuhadayo-n3-main-d02-044",
+      "japanese": "早退",
+      "reading": "そうたい",
+      "meaning": "조퇴",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-051",
+      "keptId": "yuhadayo-n3-main-d02-026",
+      "japanese": "相談",
+      "reading": "そうだん",
+      "meaning": "상담",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d16-063",
+      "keptId": "yuhadayo-n3-main-d02-031",
+      "japanese": "卒業",
+      "reading": "そつぎょう",
+      "meaning": "졸업",
+      "book": "check",
+      "unit": "day-16"
+    },
+    {
+      "id": "yuhadayo-n3-check-d17-001",
+      "keptId": "yuhadayo-n3-main-d01-066",
+      "japanese": "増減",
+      "reading": "ぞうげん",
+      "meaning": "증감",
+      "book": "check",
+      "unit": "day-17"
+    },
+    {
+      "id": "yuhadayo-n3-check-d17-004",
+      "keptId": "yuhadayo-n3-main-d01-046",
+      "japanese": "退院",
+      "reading": "たいいん",
+      "meaning": "퇴원",
+      "book": "check",
+      "unit": "day-17"
+    },
+    {
+      "id": "yuhadayo-n3-check-d17-028",
+      "keptId": "yuhadayo-n3-main-d02-021",
+      "japanese": "確かに",
+      "reading": "たしかに",
+      "meaning": "확실히",
+      "book": "check",
+      "unit": "day-17"
+    },
+    {
+      "id": "yuhadayo-n3-check-d17-055",
+      "keptId": "yuhadayo-n3-main-d01-010",
+      "japanese": "他人",
+      "reading": "たにん",
+      "meaning": "타인",
+      "book": "check",
+      "unit": "day-17"
+    },
+    {
+      "id": "yuhadayo-n3-check-d18-062",
+      "keptId": "yuhadayo-n3-main-d01-072",
+      "japanese": "駐車",
+      "reading": "ちゅうしゃ",
+      "meaning": "주차",
+      "book": "check",
+      "unit": "day-18"
+    },
+    {
+      "id": "yuhadayo-n3-check-d18-065",
+      "keptId": "yuhadayo-n3-main-d02-014",
+      "japanese": "昼食",
+      "reading": "ちゅうしょく",
+      "meaning": "점심 식사",
+      "book": "check",
+      "unit": "day-18"
+    },
+    {
+      "id": "yuhadayo-n3-check-d18-073",
+      "keptId": "yuhadayo-n3-main-d01-036",
+      "japanese": "朝刊",
+      "reading": "ちょうかん",
+      "meaning": "조간",
+      "book": "check",
+      "unit": "day-18"
+    },
+    {
+      "id": "yuhadayo-n3-check-d18-074",
+      "keptId": "yuhadayo-n3-main-d01-087",
+      "japanese": "調査",
+      "reading": "ちょうさ",
+      "meaning": "조사",
+      "book": "check",
+      "unit": "day-18"
+    },
+    {
+      "id": "yuhadayo-n3-check-d18-077",
+      "keptId": "yuhadayo-n3-main-d02-073",
+      "japanese": "朝食",
+      "reading": "ちょうしょく",
+      "meaning": "조식, 아침 식사",
+      "book": "check",
+      "unit": "day-18"
+    },
+    {
+      "id": "yuhadayo-n3-check-d19-006",
+      "keptId": "yuhadayo-n3-main-d02-047",
+      "japanese": "直接",
+      "reading": "ちょくせつ",
+      "meaning": "직접",
+      "book": "check",
+      "unit": "day-19"
+    },
+    {
+      "id": "yuhadayo-n3-check-d19-027",
+      "keptId": "yuhadayo-n3-main-d01-077",
+      "japanese": "通知",
+      "reading": "つうち",
+      "meaning": "통지",
+      "book": "check",
+      "unit": "day-19"
+    },
+    {
+      "id": "yuhadayo-n3-check-d19-041",
+      "keptId": "yuhadayo-n3-main-d02-078",
+      "japanese": "伝える",
+      "reading": "つたえる",
+      "meaning": "전하다",
+      "book": "check",
+      "unit": "day-19"
+    },
+    {
+      "id": "yuhadayo-n3-check-d19-044",
+      "keptId": "yuhadayo-n3-main-d01-061",
+      "japanese": "包む",
+      "reading": "つつむ",
+      "meaning": "싸다, 포장하다",
+      "book": "check",
+      "unit": "day-19"
+    },
+    {
+      "id": "yuhadayo-n3-check-d19-076",
+      "keptId": "yuhadayo-n3-main-d01-020",
+      "japanese": "適当だ",
+      "reading": "てきとうだ",
+      "meaning": "적당하다",
+      "book": "check",
+      "unit": "day-19"
+    },
+    {
+      "id": "yuhadayo-n3-check-d20-038",
+      "keptId": "yuhadayo-n3-main-d02-057",
+      "japanese": "到着",
+      "reading": "とうちゃく",
+      "meaning": "도착",
+      "book": "check",
+      "unit": "day-20"
+    },
+    {
+      "id": "yuhadayo-n3-check-d20-050",
+      "keptId": "yuhadayo-n3-main-d02-027",
+      "japanese": "得意だ",
+      "reading": "とくいだ",
+      "meaning": "잘하다, 자신이 있다",
+      "book": "check",
+      "unit": "day-20"
+    },
+    {
+      "id": "yuhadayo-n3-check-d21-009",
+      "keptId": "yuhadayo-n3-main-d01-067",
+      "japanese": "動作",
+      "reading": "どうさ",
+      "meaning": "동작",
+      "book": "check",
+      "unit": "day-21"
+    },
+    {
+      "id": "yuhadayo-n3-check-d21-016",
+      "keptId": "yuhadayo-n3-main-d02-063",
+      "japanese": "独立",
+      "reading": "どくりつ",
+      "meaning": "독립",
+      "book": "check",
+      "unit": "day-21"
+    },
+    {
+      "id": "yuhadayo-n3-check-d21-021",
+      "keptId": "yuhadayo-n3-main-d01-073",
+      "japanese": "努力",
+      "reading": "どりょく",
+      "meaning": "노력",
+      "book": "check",
+      "unit": "day-21"
+    },
+    {
+      "id": "yuhadayo-n3-check-d21-046",
+      "keptId": "yuhadayo-n3-main-d01-015",
+      "japanese": "泣く",
+      "reading": "なく",
+      "meaning": "울다",
+      "book": "check",
+      "unit": "day-21"
+    },
+    {
+      "id": "yuhadayo-n3-check-d21-068",
+      "keptId": "yuhadayo-n3-main-d01-005",
+      "japanese": "涙",
+      "reading": "なみだ",
+      "meaning": "눈물",
+      "book": "check",
+      "unit": "day-21"
+    },
+    {
+      "id": "yuhadayo-n3-check-d22-001",
+      "keptId": "yuhadayo-n3-main-d01-078",
+      "japanese": "逃げる",
+      "reading": "にげる",
+      "meaning": "도망치다",
+      "book": "check",
+      "unit": "day-22"
+    },
+    {
+      "id": "yuhadayo-n3-check-d22-009",
+      "keptId": "yuhadayo-n3-main-d02-068",
+      "japanese": "荷物",
+      "reading": "にもつ",
+      "meaning": "짐",
+      "book": "check",
+      "unit": "day-22"
+    },
+    {
+      "id": "yuhadayo-n3-check-d22-046",
+      "keptId": "yuhadayo-n3-main-d01-026",
+      "japanese": "残す",
+      "reading": "のこす",
+      "meaning": "남기다",
+      "book": "check",
+      "unit": "day-22"
+    },
+    {
+      "id": "yuhadayo-n3-check-d22-047",
+      "keptId": "yuhadayo-n3-main-d01-068",
+      "japanese": "残り",
+      "reading": "のこり",
+      "meaning": "나머지",
+      "book": "check",
+      "unit": "day-22"
+    },
+    {
+      "id": "yuhadayo-n3-check-d22-073",
+      "keptId": "yuhadayo-n3-main-d01-074",
+      "japanese": "生える",
+      "reading": "はえる",
+      "meaning": "나다, 자라다",
+      "book": "check",
+      "unit": "day-22"
+    },
+    {
+      "id": "yuhadayo-n3-check-d23-039",
+      "keptId": "yuhadayo-n3-main-d02-053",
+      "japanese": "払う",
+      "reading": "はらう",
+      "meaning": "지불하다",
+      "book": "check",
+      "unit": "day-23"
+    },
+    {
+      "id": "yuhadayo-n3-check-d23-075",
+      "keptId": "yuhadayo-n3-main-d02-041",
+      "japanese": "冷える",
+      "reading": "ひえる",
+      "meaning": "차가워지다, 식다",
+      "book": "check",
+      "unit": "day-23"
+    },
+    {
+      "id": "yuhadayo-n3-check-d24-029",
+      "keptId": "yuhadayo-n3-main-d01-042",
+      "japanese": "広場",
+      "reading": "ひろば",
+      "meaning": "광장",
+      "book": "check",
+      "unit": "day-24"
+    },
+    {
+      "id": "yuhadayo-n3-check-d24-039",
+      "keptId": "yuhadayo-n3-main-d01-079",
+      "japanese": "秒",
+      "reading": "びょう",
+      "meaning": "초",
+      "book": "check",
+      "unit": "day-24"
+    },
+    {
+      "id": "yuhadayo-n3-check-d24-058",
+      "keptId": "yuhadayo-n3-main-d01-047",
+      "japanese": "夫婦",
+      "reading": "ふうふ",
+      "meaning": "부부",
+      "book": "check",
+      "unit": "day-24"
+    },
+    {
+      "id": "yuhadayo-n3-check-d24-060",
+      "keptId": "yuhadayo-n3-main-d01-031",
+      "japanese": "深い",
+      "reading": "ふかい",
+      "meaning": "깊다",
+      "book": "check",
+      "unit": "day-24"
+    },
+    {
+      "id": "yuhadayo-n3-check-d24-068",
+      "keptId": "yuhadayo-n3-main-d01-037",
+      "japanese": "復習",
+      "reading": "ふくしゅう",
+      "meaning": "복습",
+      "book": "check",
+      "unit": "day-24"
+    },
+    {
+      "id": "yuhadayo-n3-check-d25-003",
+      "keptId": "yuhadayo-n3-main-d01-082",
+      "japanese": "普通",
+      "reading": "ふつう",
+      "meaning": "보통",
+      "book": "check",
+      "unit": "day-25"
+    },
+    {
+      "id": "yuhadayo-n3-check-d25-031",
+      "keptId": "yuhadayo-n3-main-d02-032",
+      "japanese": "部分",
+      "reading": "ぶぶん",
+      "meaning": "부분",
+      "book": "check",
+      "unit": "day-25"
+    },
+    {
+      "id": "yuhadayo-n3-check-d25-041",
+      "keptId": "yuhadayo-n3-main-d02-074",
+      "japanese": "分類",
+      "reading": "ぶんるい",
+      "meaning": "분류",
+      "book": "check",
+      "unit": "day-25"
+    },
+    {
+      "id": "yuhadayo-n3-check-d25-051",
+      "keptId": "yuhadayo-n3-main-d02-079",
+      "japanese": "平均",
+      "reading": "へいきん",
+      "meaning": "평균",
+      "book": "check",
+      "unit": "day-25"
+    },
+    {
+      "id": "yuhadayo-n3-check-d25-060",
+      "keptId": "yuhadayo-n3-main-d02-069",
+      "japanese": "変化",
+      "reading": "へんか",
+      "meaning": "변화",
+      "book": "check",
+      "unit": "day-25"
+    },
+    {
+      "id": "yuhadayo-n3-check-d25-078",
+      "keptId": "yuhadayo-n3-main-d02-015",
+      "japanese": "方角",
+      "reading": "ほうがく",
+      "meaning": "방향",
+      "book": "check",
+      "unit": "day-25"
+    },
+    {
+      "id": "yuhadayo-n3-check-d25-079",
+      "keptId": "yuhadayo-n3-main-d02-059",
+      "japanese": "方向",
+      "reading": "ほうこう",
+      "meaning": "방향",
+      "book": "check",
+      "unit": "day-25"
+    },
+    {
+      "id": "yuhadayo-n3-check-d26-003",
+      "keptId": "yuhadayo-n3-main-d01-027",
+      "japanese": "包丁",
+      "reading": "ほうちょう",
+      "meaning": "식칼",
+      "book": "check",
+      "unit": "day-26"
+    },
+    {
+      "id": "yuhadayo-n3-check-d26-014",
+      "keptId": "yuhadayo-n3-main-d02-075",
+      "japanese": "干す",
+      "reading": "ほす",
+      "meaning": "말리다",
+      "book": "check",
+      "unit": "day-26"
+    },
+    {
+      "id": "yuhadayo-n3-check-d26-016",
+      "keptId": "yuhadayo-n3-main-d01-043",
+      "japanese": "細い",
+      "reading": "ほそい",
+      "meaning": "가늘다",
+      "book": "check",
+      "unit": "day-26"
+    },
+    {
+      "id": "yuhadayo-n3-check-d27-016",
+      "keptId": "yuhadayo-n3-main-d02-064",
+      "japanese": "豆",
+      "reading": "まめ",
+      "meaning": "콩",
+      "book": "check",
+      "unit": "day-27"
+    },
+    {
+      "id": "yuhadayo-n3-check-d27-022",
+      "keptId": "yuhadayo-n3-main-d01-057",
+      "japanese": "丸い",
+      "reading": "まるい",
+      "meaning": "둥글다",
+      "book": "check",
+      "unit": "day-27"
+    },
+    {
+      "id": "yuhadayo-n3-check-d27-043",
+      "keptId": "yuhadayo-n3-main-d02-080",
+      "japanese": "湖",
+      "reading": "みずうみ",
+      "meaning": "호수",
+      "book": "check",
+      "unit": "day-27"
+    },
+    {
+      "id": "yuhadayo-n3-check-d27-056",
+      "keptId": "yuhadayo-n3-main-d02-005",
+      "japanese": "未来",
+      "reading": "みらい",
+      "meaning": "미래",
+      "book": "check",
+      "unit": "day-27"
+    },
+    {
+      "id": "yuhadayo-n3-check-d27-074",
+      "keptId": "yuhadayo-n3-main-d02-048",
+      "japanese": "結ぶ",
+      "reading": "むすぶ",
+      "meaning": "매다, 묶다, 잇다",
+      "book": "check",
+      "unit": "day-27"
+    },
+    {
+      "id": "yuhadayo-n3-check-d27-076",
+      "keptId": "yuhadayo-n3-main-d01-062",
+      "japanese": "難しい",
+      "reading": "むずかしい",
+      "meaning": "어렵다",
+      "book": "check",
+      "unit": "day-27"
+    },
+    {
+      "id": "yuhadayo-n3-check-d28-009",
+      "keptId": "yuhadayo-n3-main-d02-022",
+      "japanese": "命令",
+      "reading": "めいれい",
+      "meaning": "명령",
+      "book": "check",
+      "unit": "day-28"
+    },
+    {
+      "id": "yuhadayo-n3-check-d28-030",
+      "keptId": "yuhadayo-n3-main-d02-060",
+      "japanese": "申し込み",
+      "reading": "もうしこみ",
+      "meaning": "신청",
+      "book": "check",
+      "unit": "day-28"
+    },
+    {
+      "id": "yuhadayo-n3-check-d28-036",
+      "keptId": "yuhadayo-n3-main-d02-042",
+      "japanese": "燃える",
+      "reading": "もえる",
+      "meaning": "타다",
+      "book": "check",
+      "unit": "day-28"
+    },
+    {
+      "id": "yuhadayo-n3-check-d28-063",
+      "keptId": "yuhadayo-n3-main-d01-016",
+      "japanese": "薬局",
+      "reading": "やっきょく",
+      "meaning": "약국",
+      "book": "check",
+      "unit": "day-28"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-002",
+      "keptId": "yuhadayo-n3-main-d01-069",
+      "japanese": "郵送",
+      "reading": "ゆうそう",
+      "meaning": "우송, 우편",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-004",
+      "keptId": "yuhadayo-n3-main-d01-053",
+      "japanese": "夕日",
+      "reading": "ゆうひ",
+      "meaning": "석양",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-005",
+      "keptId": "yuhadayo-n3-main-d01-006",
+      "japanese": "郵便",
+      "reading": "ゆうびん",
+      "meaning": "우편",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-006",
+      "keptId": "yuhadayo-n3-main-d01-058",
+      "japanese": "有名だ",
+      "reading": "ゆうめいだ",
+      "meaning": "유명하다",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-025",
+      "keptId": "yuhadayo-n3-main-d01-063",
+      "japanese": "容器",
+      "reading": "ようき",
+      "meaning": "용기, 그릇",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-038",
+      "keptId": "yuhadayo-n3-main-d01-032",
+      "japanese": "横",
+      "reading": "よこ",
+      "meaning": "옆, 가로",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-040",
+      "keptId": "yuhadayo-n3-main-d01-038",
+      "japanese": "汚す",
+      "reading": "よごす",
+      "meaning": "더럽히다",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-042",
+      "keptId": "yuhadayo-n3-main-d02-070",
+      "japanese": "汚れる",
+      "reading": "よごれる",
+      "meaning": "더러워지다",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d29-052",
+      "keptId": "yuhadayo-n3-main-d02-016",
+      "japanese": "予約",
+      "reading": "よやく",
+      "meaning": "예약",
+      "book": "check",
+      "unit": "day-29"
+    },
+    {
+      "id": "yuhadayo-n3-check-d30-009",
+      "keptId": "yuhadayo-n3-main-d01-048",
+      "japanese": "留守",
+      "reading": "るす",
+      "meaning": "부재중",
+      "book": "check",
+      "unit": "day-30"
+    },
+    {
+      "id": "yuhadayo-n3-check-d30-038",
+      "keptId": "yuhadayo-n3-main-d02-006",
+      "japanese": "若い",
+      "reading": "わかい",
+      "meaning": "젊다",
+      "book": "check",
+      "unit": "day-30"
+    },
+    {
+      "id": "yuhadayo-n3-check-d30-063",
+      "keptId": "yuhadayo-n3-main-d01-022",
+      "japanese": "割る",
+      "reading": "わる",
+      "meaning": "나누다",
+      "book": "check",
+      "unit": "day-30"
+    }
+  ],
+  "repeatedVariants": [
+    {
+      "id": "yuhadayo-n3-check-d06-041",
+      "japanese": "角",
+      "meaning": "모퉁이, 귀퉁이",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-01"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d08-072",
+      "japanese": "配る",
+      "meaning": "배포하다",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-01"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d09-015",
+      "japanese": "加える",
+      "meaning": "더하다",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-02"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d10-021",
+      "japanese": "高価",
+      "meaning": "고가, 값이 비쌈",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-01"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d14-034",
+      "japanese": "地面",
+      "meaning": "땅, 지면",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-01"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d15-006",
+      "japanese": "空く",
+      "meaning": "틈이 나다, 비다",
+      "previous": [
+        {
+          "book": "check",
+          "unit": "day-01"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d15-077",
+      "japanese": "制服",
+      "meaning": "제복, 교복",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-02"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d17-035",
+      "japanese": "助ける",
+      "meaning": "돕다, 구조하다",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-02"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d22-074",
+      "japanese": "測る",
+      "meaning": "(길이, 넓이 등을) 재다",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-02"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d24-070",
+      "japanese": "複数",
+      "meaning": "복수, 둘 이상의 수",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-01"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-check-d27-024",
+      "japanese": "回す",
+      "meaning": "돌리다",
+      "previous": [
+        {
+          "book": "main",
+          "unit": "day-02"
+        }
+      ]
+    },
+    {
+      "id": "yuhadayo-n3-main-d02-065",
+      "japanese": "表す",
+      "meaning": "나타내다",
+      "previous": [
+        {
+          "book": "check",
+          "unit": "day-01"
+        }
+      ]
+    }
+  ]
+}

@@ -182,7 +182,7 @@ function ui(storage = {}, failSave = false, vocabulary = fixture()) {
     fire(name) { return this.events[name]?.({ target: this }); }
   }
   const document = { getElementById: id => nodes[id] ||= new Element(), createElement: tag => new Element(tag), createDocumentFragment: () => new Element(), createTextNode: text => ({ textContent: text }), body: new Element('body'), addEventListener: (type, fn) => documentEvents[type] = fn };
-  const context = vm.createContext({ window: { VOCABULARY: vocabulary, scrollTo() {}, addEventListener() {}, innerWidth: 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
+  const context = vm.createContext({ window: { VOCABULARY: require('../vocabulary.js').prepare(vocabulary), scrollTo() {}, addEventListener() {}, innerWidth: 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
     getItem: key => storage[key] || null, setItem: (key, value) => { if (failSave) throw Error('quota'); storage[key] = value; }
   } });
   nodes['actions'] = new Element();
@@ -267,6 +267,20 @@ test('meaning and reading toggle independently without changing learning records
   assert.equal(app.nodes.reading.getAttribute('aria-pressed'), 'false');
   assert.equal(app.nodes['kanji-layer'].hidden, true);
   app.key('KeyV'); assert.equal(app.nodes['kanji-layer'].hidden, true);
+});
+
+test('prior-appearance badge is a separate title/date block in study and list, never on the first DAY', () => {
+  const vocabulary = fixture();
+  vocabulary.words.push({ ...vocabulary.words[0], id: 'variant', unit: 'day-02', meaning: '사랑, 애정', order: 2 });
+  const app = ui({}, false, vocabulary);
+  assert.doesNotMatch(app.card(), /등장한 적 있는 단어/);
+  app.nodes.unit.value = 'day-02'; app.nodes.unit.fire('change');
+  app.key('Space');
+  assert.match(app.card(), /등장한 적 있는 단어/);
+  const badge = app.nodes.card.children.find(n => n.className === 'previous-appearance');
+  assert.deepEqual(badge.children.map(n => n.textContent), ['등장한 적 있는 단어', 'D - 1 / 체크북']);
+  app.click('tab-list');
+  assert.match(app.nodes['word-list'].textContent, /등장한 적 있는 단어D - 1 \/ 체크북/);
 });
 
 test('UI shortcuts reveal answers and advance, ignore repeat/editable/modal/list contexts', () => {
