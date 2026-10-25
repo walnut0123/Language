@@ -162,7 +162,7 @@ test('empty unit has no questions and does not count a reset', () => {
 function ui(storage = {}, failSave = false, vocabulary = fixture()) {
   const nodes = {}, documentEvents = {};
   class Element {
-    constructor(tag = 'DIV') { this.tagName = tag.toUpperCase(); this.children = []; this.events = {}; this.dataset = {}; this.style = { setProperty() {} }; this.value = ''; this._text = ''; this.hidden = false; this.firstChild = { textContent: '' }; this.classList = { toggle() {}, contains() { return false; } }; }
+    constructor(tag = 'DIV') { this.tagName = tag.toUpperCase(); this.children = []; this.events = {}; this.dataset = {}; this.style = { setProperty() {} }; this.value = ''; this._text = ''; this.hidden = false; this.firstChild = { textContent: '' }; this.classList = { add() {}, toggle() {}, contains() { return false; } }; }
     get textContent() { return this._text + this.children.map(n => n.textContent).join(''); }
     set textContent(value) { this._text = value; this.children = []; }
     append(...items) { for (const item of items) { item.parent = this; this.children.push(item); } }
@@ -185,6 +185,13 @@ function ui(storage = {}, failSave = false, vocabulary = fixture()) {
   const context = vm.createContext({ window: { VOCABULARY: require('../vocabulary.js').prepare(vocabulary), scrollTo() {}, addEventListener() {}, innerWidth: 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
     getItem: key => storage[key] || null, setItem: (key, value) => { if (failSave) throw Error('quota'); storage[key] = value; }
   } });
+  const quizButtons = ['classic', 'pronunciation', 'kanji'].map(type => {
+    const button = nodes['type-' + type] = new Element('button'); button.dataset.quiz = type; return button;
+  });
+  const descendants = node => (node?.children || []).flatMap(n => [n, ...descendants(n)]);
+  document.getElementById = id => descendants(nodes.card).find(n => n.id === id) || (nodes[id] ||= new Element());
+  document.querySelectorAll = selector => selector === '[data-quiz]' ? quizButtons : descendants(nodes.card).filter(n => n.className === 'quiz-choice');
+  context.Quiz = require('../quiz.js');
   nodes['actions'] = new Element();
   for (const id of ['meaning', 'reading', 'again', 'memorize']) { nodes[id] = new Element('button'); nodes.actions.append(nodes[id]); }
   vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-notes.js'), 'utf8'), context);
@@ -313,7 +320,53 @@ test('settings drawer blocks study shortcuts and Escape restores study without c
   app.key('Escape'); app.key('Space');
   assert.equal(app.state().records.a.knownCount, 1);
   app.click('settings-toggle'); app.click('tab-list'); app.click('tab-study');
+  assert.equal(app.nodes['quiz-dialog'].open, true); app.close('quiz-dialog', '');
   app.key('KeyC'); assert.equal(app.state().records.b.reviewCount, 1);
+});
+
+test('pronunciation quiz shows four readings immediately and keeps its rows when revealing the answer', () => {
+  const app = ui(); app.click('type-pronunciation');
+  assert.match(app.card(), /사랑/); assert.match(app.card(), /あい/); assert.doesNotMatch(app.card(), /愛/);
+  const rows = app.nodes.card.children.map(n => n.className);
+  app.key('Space'); assert.equal(app.state().round.index, 0);
+  const choices = app.nodes.card.children.find(n => n.className === 'quiz-choices').children;
+  choices.find(n => n.children[1].textContent === 'あい').click();
+  assert.match(app.card(), /愛/); assert.equal(app.state().round.index, 0);
+  assert.deepEqual(app.nodes.card.children.map(n => n.className), rows);
+  app.key('Space'); assert.equal(app.state().round.index, 1);
+});
+
+test('kanji quiz shows choices immediately, Z reveals meaning, wrong answer remains review', () => {
+  const app = ui(); app.click('type-kanji');
+  assert.match(app.card(), /あい/); assert.match(app.card(), /愛/); assert.doesNotMatch(app.card(), /사랑/);
+  const rows = app.nodes.card.children.map(n => n.className);
+  const controls = app.nodes.card.children.find(n => n.className === 'quiz-controls');
+  assert.equal(controls.children[0].id, 'quiz-hint');
+  app.key('KeyZ'); assert.match(app.card(), /사랑/);
+  assert.deepEqual(app.nodes.card.children.map(n => n.className), rows);
+  assert.doesNotMatch(app.card(), /한글 뜻 힌트/);
+  assert.equal(app.nodes.card.children.filter(n => n.className === 'answer').length, 0);
+  const choices = app.nodes.card.children.find(n => n.className === 'quiz-choices').children;
+  choices.find(n => n.children[1].textContent !== '愛').click();
+  assert.equal(app.state().round.index, 0);
+  choices.find(n => n.children[1].textContent === '愛').click();
+  assert.match(app.card(), /신호|아침|책/);
+  const revealed = app.nodes.card.children.find(n => n.className === 'quiz-choices').children;
+  assert.ok(revealed.every(n => n.children.some(c => c.className === 'quiz-explanation' && !c.hidden)));
+  app.key('Space'); assert.equal(app.state().records.a.status, 'review');
+});
+
+test('both choice quizzes map QWER to the displayed positions and ignore numeric keys', () => {
+  for (const type of ['pronunciation', 'kanji']) for (const [index, code] of ['KeyQ', 'KeyW', 'KeyE', 'KeyR'].entries()) {
+    const app = ui(); app.click('type-' + type);
+    if (type === 'pronunciation') app.key('KeyZ');
+    const buttons = () => app.nodes.card.children.find(n => n.className === 'quiz-choices').children;
+    assert.ok(buttons()[index].children[0].textContent === 'QWER'[index]);
+    for (const old of ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Numpad1']) app.key(old);
+    assert.ok(buttons().every(button => !button.disabled));
+    app.key(code); assert.equal(buttons()[index].disabled, true);
+    assert.equal(app.state().round.index, 0);
+  }
 });
 
 test('Space maps to known once, prevents scrolling/native click, ignores old keys and open management', () => {

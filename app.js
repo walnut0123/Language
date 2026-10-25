@@ -16,11 +16,24 @@
       return result;
     };
   }
+  const quiz = Quiz.create(data.words), quizOrders = new Map();
+  let quizType = 'classic', quizHint = false, quizSolved = false, quizMissed = false;
+  try {
+    const saved = JSON.parse(localStorage.getItem('haru-quiz-preferences') || 'null');
+    if (saved && ['classic', 'pronunciation', 'kanji'].includes(saved.type)) quizType = saved.type;
+    if (Array.isArray(saved?.orders)) for (const [key, ids] of saved.orders) {
+      if (typeof key === 'string' && Array.isArray(ids) && ids.length === 4 && new Set(ids).size === 4 && ids.every(id => byId.has(id))) quizOrders.set(key, ids.map(id => byId.get(id)));
+    }
+  } catch { /* Preferences do not affect learning records. */ }
+  function saveQuizPreferences() {
+    try { localStorage.setItem('haru-quiz-preferences', JSON.stringify({ type: quizType, orders: [...quizOrders].map(([key, words]) => [key, words.map(w => w.id)]) })); } catch { /* Learning storage reports its own failures. */ }
+  }
+  const quizNames = { classic: '한자 → 뜻과 읽기', pronunciation: '한글 뜻 → 발음', kanji: '히라가나 → 한자' };
   let view = 'study', meaning = false, reading = false, pending = null, pendingReset = null;
   let kanjiOpen = false, kanjiAnchors = [], kanjiCards = [], japaneseNode = null;
   const state = () => engine.state;
   const notice = text => { $('notice').textContent = text; };
-  const hideAnswers = () => { meaning = false; reading = false; };
+  const hideAnswers = () => { meaning = false; reading = false; quizHint = false; quizSolved = false; quizMissed = false; };
   const bookName = id => data.books.find(b => b.id === id)?.name || id;
   const unitName = (book, unit) => data.books.find(b => b.id === book)?.units.find(u => u.id === unit)?.name || unit;
   const formatDate = at => new Date(at).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -76,6 +89,7 @@
     }[state().selection.mode];
   }
   function renderStudy() {
+    document.body.dataset.quiz = quizType;
     const word = engine.current(), r = state().round, t = engine.totals();
     closeKanji();
     kanjiAnchors = [];
@@ -84,8 +98,11 @@
     $('undo').disabled = !state().undo;
     $('round-label').textContent = `이번 회독 · ${r.index.toLocaleString()} / ${r.ids.length.toLocaleString()}`;
     $('progress').max = r.ids.length || 1; $('progress').value = r.index;
-    $('actions').hidden = !word; $('card').replaceChildren();
+    $('actions').hidden = !word || quizType !== 'classic'; $('card').replaceChildren();
+    $('card').className = quizType === 'classic' ? 'card' : 'card quiz-card';
+    for (const id of ['meaning', 'reading', 'again', 'memorize']) $(id).hidden = quizType !== 'classic';
     $('reset-scope').disabled = !t.total; $('reset-all').disabled = !data.words.length;
+    if (word && quizType !== 'classic') { renderQuiz(word); return; }
     if (word) {
       const jp = el('div', `japanese${word.japanese.length > 8 ? ' long' : ''}`); jp.lang = 'ja';
       japaneseNode = jp;
@@ -114,6 +131,71 @@
       if (t.total > t.known) { const button = el('button', 'primary', '남은 단어 다시 학습 ↵'); button.id = 'restart'; button.addEventListener('click', restart); $('card').append(button); }
     }
   }
+  function renderQuiz(word) {
+    const card = $('card');
+    card.append(el('span', 'unit-tag', bookName(word.book) + ' / ' + unitName(word.book, word.unit)));
+    const prompt = el('h2', quizType === 'pronunciation' ? 'quiz-meaning' : 'japanese', quizType === 'pronunciation' ? word.meaning : Quiz.hiragana(word.reading));
+    if (quizType === 'kanji') prompt.lang = 'ja';
+    card.append(prompt);
+    const description = el('p', 'quiz-description', quizType === 'kanji' ? (quizHint || quizSolved ? word.meaning : '이 단어의 뜻은 무엇일까요?') : '뜻에 맞는 발음을 골라 보세요.');
+    card.append(description);
+    {
+      const key = quizType + '/' + word.id;
+      if (!quizOrders.has(key)) { quizOrders.set(key, Quiz.shuffle(quiz.choices(word, quizType))); saveQuizPreferences(); }
+      const list = el('div', 'quiz-choices');
+      quizOrders.get(key).forEach((choice, i) => {
+        const button = el('button', 'quiz-choice');
+        button.append(el('span', 'quiz-key', 'QWER'[i]), el('span', 'quiz-choice-label', quizType === 'pronunciation' ? choice.reading : choice.japanese));
+        button.lang = 'ja'; button.disabled = quizSolved;
+        const explanation = el('span', 'quiz-explanation', Quiz.hiragana(choice.reading) + ' · ' + choice.meaning);
+        explanation.hidden = !quizSolved;
+        button.append(explanation);
+        if (quizSolved) {
+          button.classList.add(choice.id === word.id ? 'correct' : 'revealed');
+        }
+        button.addEventListener('click', () => {
+          if (choice.id === word.id) { quizSolved = true; renderStudy(); notice('정답입니다. 확인 후 다음 문제로 넘어가세요.'); }
+          else { quizMissed = true; button.disabled = true; button.classList.add('incorrect'); notice('다시 골라 보세요. 이 단어는 복습 대상으로 남깁니다.'); }
+        }); list.append(button);
+      }); card.append(list);
+    }
+    const result = el('p', 'quiz-result', quizSolved && quizType === 'pronunciation' ? word.japanese + ' · ' + Quiz.hiragana(word.reading) + ' · ' + word.meaning : '');
+    card.append(result);
+    const controls = el('div', 'quiz-controls');
+    if (quizType === 'kanji') {
+      const hint = el('button', 'text-button', '한글 뜻 보기 (Z)');
+      hint.id = 'quiz-hint'; hint.disabled = quizHint || quizSolved;
+      hint.addEventListener('click', () => { quizHint = true; renderStudy(); }); controls.append(hint);
+    }
+    {
+      const next = el('button', 'primary', '다음 문제 (Space)');
+      next.disabled = !quizSolved;
+      next.id = 'quiz-next'; next.addEventListener('click', () => judge(quizMissed ? 'review' : 'known')); controls.append(next);
+    }
+    const review = el('button', 'text-button', '정답 확인 · 다시 학습 (C)'); review.id = 'quiz-review'; review.disabled = quizSolved;
+    review.addEventListener('click', () => { quizMissed = true; quizSolved = true; renderStudy(); }); controls.append(review);
+    card.append(controls);
+    window.requestAnimationFrame?.(fitQuizChoices);
+  }
+  function fitQuizChoices() {
+    for (const button of document.querySelectorAll('.quiz-choice')) {
+      const label = button.querySelector('.quiz-choice-label'), explanation = button.querySelector('.quiz-explanation');
+      const key = button.querySelector('.quiz-key'), style = getComputedStyle(button);
+      label.style.fontSize = ''; explanation.style.fontSize = '';
+      const gap = parseFloat(style.columnGap) || 0;
+      const available = button.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) - key.offsetWidth - gap;
+      if (label.scrollWidth > available) label.style.fontSize = `${parseFloat(getComputedStyle(label).fontSize) * available / label.scrollWidth}px`;
+      if (!explanation.hidden) {
+        const room = Math.max(1, available - label.offsetWidth - gap);
+        if (explanation.scrollWidth > room) explanation.style.fontSize = `${parseFloat(getComputedStyle(explanation).fontSize) * room / explanation.scrollWidth}px`;
+      }
+    }
+  }
+  window.addEventListener('resize', () => window.requestAnimationFrame?.(fitQuizChoices));
+  function openQuizPicker() { if (!$('quiz-dialog').open) $('quiz-dialog').showModal(); }
+  for (const button of document.querySelectorAll('[data-quiz]')) button.addEventListener('click', () => {
+    quizType = button.dataset.quiz; saveQuizPreferences(); hideAnswers(); $('quiz-dialog').close(); render(); notice('');
+  });
   function renderList() {
     const query = $('search').value.trim().toLocaleLowerCase(), status = $('status-filter').value;
     const list = selectedWords().filter(w => (!query || `${w.japanese} ${w.reading} ${w.meaning}`.toLocaleLowerCase().includes(query)) &&
@@ -194,7 +276,7 @@
   $('mode').addEventListener('change', () => { fillUnits(state().selection.unit); selectScope(); });
   $('unit').addEventListener('change', selectScope);
   $('question-order').addEventListener('change', selectScope);
-  for (const name of ['study', 'list', 'history']) $(`tab-${name}`).addEventListener('click', () => switchView(name));
+  for (const name of ['study', 'list', 'history']) $(`tab-${name}`).addEventListener('click', () => { switchView(name); if (name === 'study') openQuizPicker(); });
   $('meaning').addEventListener('click', () => { meaning = !meaning; renderStudy(); });
   $('reading').addEventListener('click', () => { reading = !reading; renderStudy(); });
   function hideReading() { reading = false; renderStudy(); $('reading').focus(); }
@@ -258,7 +340,7 @@
   function judge(status) { if (!engine.judge(status)) return; hideAnswers(); engine.current(); save(); render(); notice(status === 'known' ? '암기 완료로 기록했습니다.' : '복습 대상으로 남겼습니다. 다음 회독에서 다시 만나요.'); }
   $('again').addEventListener('click', () => judge('review')); $('memorize').addEventListener('click', () => judge('known'));
   $('undo').addEventListener('click', () => { if (!engine.undo()) return; hideAnswers(); selectors(); save(); render(); notice('직전 판단을 취소했습니다. 해당 판단은 누적 횟수에서도 제외됩니다.'); });
-  function restart() { engine.start(); hideAnswers(); save(); render(); notice('남은 단어로 새 회독을 시작했습니다.'); }
+  function restart() { quizOrders.clear(); saveQuizPreferences(); engine.start(); hideAnswers(); save(); render(); notice('남은 단어로 새 회독을 시작했습니다.'); }
   function askReset(all) {
     $('study-tools').open = false;
     const targets = all ? data.words : engine.scope(), known = targets.filter(w => engine.known(w.id)).length;
@@ -269,7 +351,7 @@
   }
   $('reset-scope').addEventListener('click', () => askReset(false)); $('reset-all').addEventListener('click', () => askReset(true));
   $('reset-dialog').addEventListener('close', () => {
-    if ($('reset-dialog').returnValue === 'confirm' && pendingReset !== null) { engine.reset(pendingReset); hideAnswers(); save(); render(); notice('암기 상태를 해제했습니다. 누적 판단을 보존하고 리셋 이력을 추가했습니다.'); }
+    if ($('reset-dialog').returnValue === 'confirm' && pendingReset !== null) { engine.reset(pendingReset); quizOrders.clear(); saveQuizPreferences(); hideAnswers(); save(); render(); notice('암기 상태를 해제했습니다. 누적 판단을 보존하고 리셋 이력을 추가했습니다.'); }
     pendingReset = null;
   });
   $('search').addEventListener('input', renderList); $('status-filter').addEventListener('change', renderList);
@@ -304,9 +386,17 @@
   document.addEventListener('keydown', event => {
     if (reading && view === 'study' && !settingsExpanded && !$('import-dialog').open && !$('reset-dialog').open && !$('study-tools').open && event.code === 'Escape' && !event.isComposing) { event.preventDefault(); hideReading(); return; }
     if (event.code === 'Escape') { settingsExpanded = false; closeSettings(); return; }
+    if ($('quiz-dialog').open) return;
     if (view !== 'study' || settingsExpanded || event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey || $('import-dialog').open || $('reset-dialog').open || $('study-tools').open) return;
     const target = event.target;
     if (['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName) || target.isContentEditable) return;
+    if (quizType !== 'classic') {
+      const id = { KeyZ: 'quiz-hint', Space: 'quiz-next', KeyC: 'quiz-review' }[event.code];
+      if (id) { event.preventDefault(); const button = $(id); if (button && !button.disabled && !button.hidden) button.click(); return; }
+      const choiceIndex = ['KeyQ', 'KeyW', 'KeyE', 'KeyR'].indexOf(event.code);
+      if (choiceIndex !== -1) { event.preventDefault(); const button = document.querySelectorAll('.quiz-choice')[choiceIndex]; if (button && !button.disabled) button.click(); return; }
+      if (event.code === 'KeyX') return;
+    }
     const mapping = { KeyZ: 'meaning', KeyX: 'reading', KeyC: 'again', Space: 'memorize', KeyB: 'undo' };
     if (mapping[event.code]) { event.preventDefault(); const button = $(mapping[event.code]); if (!button.disabled && !button.closest('[hidden]')) button.click(); }
     else if (event.code === 'Enter' && target.tagName !== 'BUTTON' && !engine.current() && engine.totals().known < engine.totals().total) { event.preventDefault(); restart(); }

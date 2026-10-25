@@ -3,7 +3,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
-const assets = new Set(['/index.html', '/styles.css', '/app.js', '/learning.js', '/vocabulary.js', '/kanji-ui.js', '/cloud.js', '/cloud-state.js', '/firebase-config.js', '/data/words.js', '/data/kanji-notes.js', '/data/kanji-details.js', '/data/kanji-all.js']);
+const assets = new Set(['/index.html', '/styles.css', '/app.js', '/learning.js', '/quiz.js', '/vocabulary.js', '/kanji-ui.js', '/cloud.js', '/cloud-state.js', '/firebase-config.js', '/data/words.js', '/data/kanji-notes.js', '/data/kanji-details.js', '/data/kanji-all.js']);
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json' };
 const server = http.createServer((req, res) => {
   let name;
