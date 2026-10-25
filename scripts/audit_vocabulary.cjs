@@ -4,7 +4,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const { prepare } = require('../vocabulary.js');
 const root = path.resolve(__dirname, '..'), context = { window: {} };
-vm.runInNewContext(fs.readFileSync(path.join(root, 'data/words.js'), 'utf8'), context);
+vm.runInNewContext(fs.readFileSync(path.join(root, 'data/source-words.js'), 'utf8'), context);
 const source = context.window.VOCABULARY, active = prepare(source);
 const byId = new Map(source.words.map(word => [word.id, word]));
 const report = {

@@ -12,3 +12,11 @@
 재생성: `tmp/kanji-sources`에 위 세 원본과 Make Me a Hanzi의 `COPYING`, `LGPL`을 각각 `hanja.txt`, `dictionary.txt`, `jp-old-style.txt`, `COPYING.txt`, `LGPL.txt`로 저장한 뒤 `node scripts/build_kanji.cjs`를 실행합니다. 공개한 부분 집합은 수정·재가공할 수 있으며 브라우저 실행 시 외부 사전에 접속하지 않습니다.
 
 LGPL이 참조하는 GNU GPL v3 원문도 `GPL.txt`에 함께 보존합니다.
+
+## 간결한 설명 형식
+
+현재 배포 파일 `kanji-all.js`는 기존 항목을 포함한 1,070개 전체를 ‘구성 요소의 훈·음’과 ‘짧은 형성 원리’로 다시 생성합니다. 예문·중복 뜻풀이·긴 주의 문구는 표시하지 않습니다. `compact-coverage.json`은 이 형식의 별도 점검 결과이며, 위 `coverage.json`은 원자료의 수록 범위를 기록한 이전 집계입니다.
+
+`kanji-formation-overrides.json`의 郵·便·情·報는 각 항목에 명시한 한자페디아(角川新字源 개정신판 기반) 설명을 간결하게 다시 쓴 것입니다. 변형 부수의 이름을 원 글자와 함께 적으며, 형성자는 뜻 요소와 소리 요소를 분리합니다. 상형자·기본 획은 억지로 여러 한자로 분해하지 않습니다. 자형만 확인한 항목에는 역사적 형성 원리가 미확정임을 짧게 표시합니다.
+
+드문 구성 요소의 명칭은 Unicode Unihan의 독음·뜻과 공개 HanjaDB 원문의 표제 훈음을 대조하고, 일반 부수명과 함께 `scripts/compact_kanji.cjs`에 정리했습니다. 참고: [Unicode Unihan](https://www.unicode.org/charts/unihan.html), [HanjaDB 원문](https://github.com/NeoMindStd/HanjaDB/blob/master/input/resource). 원문 전체를 추가 재배포하지 않습니다.

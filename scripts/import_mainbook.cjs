@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
-const target = path.join(root, 'data/words.js');
+const target = path.join(root, 'data/source-words.js');
 const original = fs.readFileSync(target, 'utf8');
 const ctx = { window: {} };
 vm.runInNewContext(original, ctx);
@@ -28,4 +28,5 @@ for (const word of imported) {
   if (!existing) data.words.push(word);
 }
 fs.writeFileSync(target, original.slice(0, original.indexOf('window.VOCABULARY')) + 'window.VOCABULARY = ' + JSON.stringify(data, null, 2) + ';\n');
+require('./build_vocabulary.cjs');
 console.log(JSON.stringify({ days: counts, images: pages, imported: imported.length, total: data.words.length }));

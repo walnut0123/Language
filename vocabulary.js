@@ -12,7 +12,7 @@
     if (!['day', 'book', 'all'].includes(duplicateScope)) throw Error('Unknown duplicate scope');
     const bookOrder = new Map(source.books.map((book, index) => [book.id, index]));
     const ordered = [...source.words].sort((a, b) => dayOf(source, a) - dayOf(source, b) || bookOrder.get(a.book) - bookOrder.get(b.book) || a.order - b.order);
-    const seen = new Map(), duplicateOf = {}, retained = new Set();
+    const seen = new Map(), duplicateOf = { ...source.duplicateOf }, retained = new Set();
     for (const word of ordered) {
       const scope = duplicateScope === 'all' ? [] : duplicateScope === 'book' ? [word.book] : [word.book, word.unit];
       // Match exactly the three user-specified fields; never normalize or merge synonyms.

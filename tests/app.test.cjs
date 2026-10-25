@@ -18,7 +18,7 @@ const engine = () => Learning.create(fixture());
 const copy = value => JSON.parse(JSON.stringify(value));
 
 test('PDF import: 30 days, 2376 unique IDs; source counts and sequence match', () => {
-  const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, 'data/words.js'), 'utf8'), ctx);
+  const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, 'data/source-words.js'), 'utf8'), ctx);
   const data = ctx.window.VOCABULARY, report = JSON.parse(fs.readFileSync(path.join(root, 'data/import-report.json'), 'utf8'));
   assert.equal(data.words.filter(w => w.book === 'check').length, 2376);
   assert.equal(new Set(data.words.map(w => w.id)).size, data.words.length);
@@ -33,7 +33,7 @@ test('PDF import: 30 days, 2376 unique IDs; source counts and sequence match', (
 });
 
 test('mainbook photos: day assignment, printed entries and source counts', () => {
-  const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, 'data/words.js'), 'utf8'), ctx);
+  const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, 'data/source-words.js'), 'utf8'), ctx);
   const words = ctx.window.VOCABULARY.words.filter(w => w.book === 'main');
   for (const [unit, count] of [['day-01', 87], ['day-02', 80]]) {
     const entries = words.filter(w => w.unit === unit);
@@ -206,26 +206,26 @@ test('all vocabulary characters have notes; DAY 01 keeps exact per-character rub
   const context = { window: {} };
   for (const file of ['data/words.js', 'data/kanji-notes.js', 'data/kanji-details.js', 'data/kanji-all.js']) vm.runInNewContext(fs.readFileSync(path.join(root, file), 'utf8'), context);
   const words = context.window.VOCABULARY.words.filter(w => w.book === 'main' && w.unit === 'day-01');
-  assert.equal(words.length, 87);
+  assert.equal(words.length, 82);
   for (const word of words) {
     const note = context.window.KANJI_NOTES[word.japanese];
     assert.ok(note?.origin && note?.connection, word.japanese);
     for (const character of word.japanese.match(/\p{Script=Han}/gu) || []) {
       const detail = context.window.KANJI_DETAILS[character];
-      assert.ok(detail?.label && detail.origin && detail.meaning && detail.usage, character);
+      assert.ok(detail?.label && detail.components && detail.formation, character);
     }
     const parts = require('../kanji-ui.js').segments(word, context.window.KANJI_READINGS);
     assert.equal(parts.map(p => p.reading || p.text).join(''), word.reading, word.japanese);
     assert.ok(parts.filter(p => p.kanji).every(p => [...p.text].length === 1), word.japanese);
   }
   const allWords = context.window.VOCABULARY.words;
-  assert.equal(allWords.length, 2543);
+  assert.equal(allWords.length, 2389);
   const characters = new Set(allWords.flatMap(w => w.japanese.match(/\p{Script=Han}/gu) || []));
   assert.equal(characters.size, 1070);
   for (const character of characters) {
     const detail = context.window.KANJI_DETAILS[character];
-    assert.ok(detail?.label && detail.origin && detail.meaning && detail.usage, character);
-    assert.doesNotMatch([detail.label, detail.origin, detail.meaning, detail.usage].join(''), /undefined|\[object Object\]/);
+    assert.ok(detail?.label && detail.components && detail.formation, character);
+    assert.doesNotMatch([detail.label, detail.components, detail.formation].join(''), /undefined|\[object Object\]/);
   }
   const app = ui({}, false, context.window.VOCABULARY);
   app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].hidden, false);
@@ -235,6 +235,9 @@ test('all vocabulary characters have notes; DAY 01 keeps exact per-character rub
   app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].hidden, false);
   assert.equal(app.nodes['kanji-layer'].children.length, 1);
   assert.match(app.nodes['kanji-layer'].textContent, /移/);
+  const body = app.nodes['kanji-layer'].children[0].children[1];
+  assert.deepEqual(body.children.filter(n => n.tagName === 'H3').map(n => n.textContent), ['구성', '형성 원리']);
+  assert.doesNotMatch(body.textContent, /뜻의 확장|글자의 뜻|유래·구성/);
   app.key('KeyX'); assert.equal(app.nodes['kanji-layer'].hidden, true);
   app.key('KeyX'); app.key('Escape'); assert.equal(app.nodes['kanji-layer'].hidden, true);
   app.key('KeyX'); app.key('Space'); assert.equal(app.nodes['kanji-layer'].hidden, true);
@@ -281,6 +284,17 @@ test('prior-appearance badge is a separate title/date block in study and list, n
   assert.deepEqual(badge.children.map(n => n.textContent), ['등장한 적 있는 단어', 'D - 1 / 체크북']);
   app.click('tab-list');
   assert.match(app.nodes['word-list'].textContent, /등장한 적 있는 단어D - 1 \/ 체크북/);
+});
+
+test('published main DAY 02 word list does not display 郵便; DAY 01 still does', () => {
+  const context = { window: {} };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'data/words.js'), 'utf8'), context);
+  const app = ui({}, false, context.window.VOCABULARY);
+  app.nodes.book.value = 'main'; app.nodes.book.fire('change'); app.click('tab-list');
+  app.nodes.unit.value = 'day-02'; app.nodes.unit.fire('change');
+  assert.doesNotMatch(app.nodes['word-list'].textContent, /郵便/);
+  app.nodes.unit.value = 'day-01'; app.nodes.unit.fire('change');
+  assert.match(app.nodes['word-list'].textContent, /郵便/);
 });
 
 test('UI shortcuts reveal answers and advance, ignore repeat/editable/modal/list contexts', () => {

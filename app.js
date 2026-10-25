@@ -243,7 +243,7 @@
       const close = el('button', 'kanji-close', '×'); close.setAttribute('aria-label', '읽기 도움 끄기'); close.addEventListener('click', hideReading);
       heading.append(title, el('span', '', note.label?.replace(/^.\(|\)$/g, '') || note.meaning), close);
       const body = el('div', 'kanji-copy'); body.tabIndex = 0;
-      body.append(el('h3', '', '유래·구성'), el('p', '', note.origin), el('h3', '', '글자의 뜻'), el('p', '', note.meaning), el('h3', '', '뜻의 확장·쓰임'), el('p', '', note.usage));
+      body.append(el('h3', '', '구성'), el('p', '', note.components), el('h3', '', '형성 원리'), el('p', '', note.formation));
       card.append(heading, body); layer.append(card); kanjiCards.push(card);
       anchor.node.classList.toggle('explained', true);
     }

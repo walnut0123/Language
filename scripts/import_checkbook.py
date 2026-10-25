@@ -42,6 +42,8 @@ with pdfplumber.open(source) as pdf:
 assert len(set(w['id'] for w in words)) == len(words)
 units = [dict(id=f'day-{day:02}', name=f'DAY {day:02}') for day in range(1, 31)]
 vocab = dict(books=[dict(id='check', name='체크북', units=units, ready=True), dict(id='main', name='메인북', units=units, ready=False)], words=words)
-(root / 'data/words.js').write_text('// PDF 원문 단원·번호 기반 영구 ID. 기존 ID를 변경하거나 재사용하지 마세요.\nwindow.VOCABULARY = ' + json.dumps(vocab, ensure_ascii=False, indent=2) + ';\n', encoding='utf-8')
+(root / 'data/source-words.js').write_text('// PDF 원문 단원·번호 기반 영구 ID. 기존 ID를 변경하거나 재사용하지 마세요.\nwindow.VOCABULARY = ' + json.dumps(vocab, ensure_ascii=False, indent=2) + ';\n', encoding='utf-8')
+import subprocess
+subprocess.run(['node', str(root / 'scripts/build_vocabulary.cjs')], check=True)
 (root / 'data/import-report.json').write_text(json.dumps(dict(source=source.name, total=len(words), days=report), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 print(json.dumps(dict(total=len(words), days=report), ensure_ascii=False))

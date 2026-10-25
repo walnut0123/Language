@@ -38,7 +38,7 @@ test('prior appearances use only strictly earlier DAYs, include other books and 
 
 test('global deduplication retires 154 exact copies across books/days and preserves historical records', () => {
   const context = { window: {} };
-  vm.runInNewContext(fs.readFileSync(require.resolve('../data/words.js'), 'utf8'), context);
+  vm.runInNewContext(fs.readFileSync(require.resolve('../data/source-words.js'), 'utf8'), context);
   const source = context.window.VOCABULARY, data = prepare(source);
   assert.equal(source.words.length - data.words.length, 154);
   assert.equal(data.words.length, 2389);
@@ -54,4 +54,20 @@ test('global deduplication retires 154 exact copies across books/days and preser
   assert.equal(migrated.current().id, 'yuhadayo-n3-main-d01-087');
   assert.equal(migrated.state.records['yuhadayo-n3-main-d01-086'].knownCount, 1);
   assert.equal(migrated.state.history.length, old.state.history.length);
+});
+
+test('published words contain no exact duplicates even without browser curation; 郵便 survives only in main DAY 01', () => {
+  const context = { window: {} };
+  vm.runInNewContext(fs.readFileSync(require.resolve('../data/words.js'), 'utf8'), context);
+  const data = context.window.VOCABULARY, seen = new Set();
+  assert.equal(data.words.length, 2389);
+  for (const word of data.words) {
+    const key = JSON.stringify([word.japanese, word.reading, word.meaning]);
+    assert.equal(seen.has(key), false, `${word.id} ${word.japanese}`); seen.add(key);
+  }
+  assert.deepEqual(Array.from(data.words.filter(w => w.japanese === '郵便'), w => w.id), ['yuhadayo-n3-main-d01-006']);
+  assert.equal(data.words.filter(w => w.japanese === '表す').length, 2);
+  const prepared = prepare(data);
+  assert.equal(Object.keys(prepared.duplicateOf).length, 154);
+  assert.equal(prepared.words.length, data.words.length);
 });
