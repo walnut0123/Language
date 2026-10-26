@@ -1,74 +1,27 @@
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const vm = require('node:vm');
-const { prepare } = require('../vocabulary.js');
-const Learning = require('../learning.js');
-const book = id => ({ id, units: [{ id: 'day-01' }, { id: 'day-02' }, { id: 'day-03' }] });
-const word = (id, extra = {}) => ({ id, book: 'main', unit: 'day-01', order: 1, japanese: '疑う', reading: 'うたがう', meaning: '의심하다', partOfSpeech: '동', ...extra });
-
-test('day-only option preserves other days while comparing exactly the three specified fields', () => {
-  const source = { books: [book('main'), book('check')], words: [
-    word('later', { order: 8 }), word('first'),
-    word('different-meaning', { meaning: '의심하다, 의문을 품다' }),
-    word('different-reading', { reading: 'うたがい' }),
-    word('different-pos', { partOfSpeech: '명' }),
-    word('different-spacing', { meaning: '의심하다 ' }),
-    word('next-day', { unit: 'day-02' }), word('other-book', { book: 'check' })
-  ] };
-  const before = JSON.stringify(source), data = prepare(source, { duplicateScope: 'day' });
-  assert.deepEqual(data.duplicateOf, { later: 'first', 'different-pos': 'first' });
-  assert.equal(data.words.length, 6);
-  assert.equal(JSON.stringify(source), before);
-  assert.equal(data.words.find(w => w.id === 'first').order, 1);
+const {test}=require('node:test'), assert=require('node:assert/strict');
+const fs=require('node:fs'),vm=require('node:vm');
+const {prepare}=require('../vocabulary.js');
+function load(file){const c={window:{}};vm.runInNewContext(fs.readFileSync(require.resolve('../data/'+file),'utf8'),c);return c.window.VOCABULARY;}
+test('keeps all occurrences and flags same-day, future and other-book duplicates symmetrically',()=>{
+ const word=(id,extra={})=>({id,book:'main',unit:'day-01',order:1,japanese:'同じ',reading:'おなじ',meaning:'같다',...extra});
+ const source={books:[{id:'main',units:[]},{id:'check',units:[]}],words:[word('a'),word('b',{order:2}),word('c',{unit:'day-02'}),word('d',{book:'check',meaning:'동일하다'})],duplicateOf:{b:'a'}};
+ const before=JSON.stringify(source),data=prepare(source);
+ assert.deepEqual(data.words,source.words);assert.deepEqual(data.duplicateOf,{});assert.equal(JSON.stringify(source),before);
+ assert.equal(data.duplicateOccurrences.a.length,3);
+ assert.equal(data.duplicateOccurrences.a.find(w=>w.id==='b').exact,true);
+ assert.equal(data.duplicateOccurrences.a.find(w=>w.id==='d').exact,false);
+ assert.ok(data.duplicateOccurrences.b.some(w=>w.id==='a'));
+ assert.deepEqual(data.previousAppearances.a,[]);
+ assert.equal(data.previousAppearances.c.length,2);
 });
-
-test('prior appearances use only strictly earlier DAYs, include other books and variant meanings, and deduplicate locations', () => {
-  const source = { books: [book('main'), book('check')], words: [
-    word('current', { unit: 'day-02' }), word('same-day', { unit: 'day-02', book: 'check' }),
-    word('later', { unit: 'day-03' }), word('earlier'),
-    word('earlier-variant', { meaning: '의문을 품다' }), word('other-earlier', { book: 'check' }),
-    word('another-word', { japanese: '考える' })
-  ] };
-  const data = prepare(source, { duplicateScope: 'day' });
-  assert.deepEqual(data.previousAppearances.current, [{ book: 'main', unit: 'day-01' }, { book: 'check', unit: 'day-01' }]);
-  assert.deepEqual(data.previousAppearances.earlier, []);
-  assert.deepEqual(data.previousAppearances['another-word'], []);
-});
-
-test('global deduplication preserves classified core exercises and historical records', () => {
-  const context = { window: {} };
-  vm.runInNewContext(fs.readFileSync(require.resolve('../data/source-words.js'), 'utf8'), context);
-  const source = context.window.VOCABULARY, data = prepare(source);
-  assert.equal(source.words.length - data.words.length, 882);
-  assert.equal(data.words.length, 3903);
-  assert.equal(data.words.filter(w => w.book === 'main' && w.unit === 'day-01').length, 82);
-  assert.equal(data.words.filter(w => w.book === 'main' && w.unit === 'day-01' && w.japanese === '疑う').length, 1);
-  assert.ok(!data.words.some(w => w.id === 'yuhadayo-n3-main-d02-023'));
-  assert.equal(data.duplicateOf['yuhadayo-n3-main-d02-023'], 'yuhadayo-n3-main-d01-033');
-  assert.equal(data.words.filter(w => w.japanese === '疑う' && w.entryType !== 'core' && w.entryType !== 'synonym').length, 1);
-  for (let day=16;day<=26;day++) assert.ok(data.words.some(w=>w.book==='main' && w.unit===`day-${day}` && w.entryType==='core'));
-  const old = Learning.create(source); old.select({ book: 'main', mode: 'chapter', unit: 'day-01', questionOrder: 'ordered' });
-  old.state.round = { ids: ['yuhadayo-n3-main-d01-086', 'yuhadayo-n3-main-d01-087'], index: 0 };
-  old.judge('known');
-  const migrated = Learning.create(data, Learning.parse(JSON.parse(JSON.stringify(old.state)), data));
-  assert.equal(migrated.current().id, 'yuhadayo-n3-main-d01-087');
-  assert.equal(migrated.state.records['yuhadayo-n3-main-d01-086'].knownCount, 1);
-  assert.equal(migrated.state.history.length, old.state.history.length);
-});
-
-test('published words contain no exact duplicates even without browser curation; 郵便 survives only in main DAY 01', () => {
-  const context = { window: {} };
-  vm.runInNewContext(fs.readFileSync(require.resolve('../data/words.js'), 'utf8'), context);
-  const data = context.window.VOCABULARY, seen = new Set();
-  assert.equal(data.words.length, 3903);
-  for (const word of data.words) {
-    const key = JSON.stringify([...(word.entryType === 'core' ? ['core',word.category] : []),word.japanese, word.reading, word.meaning]);
-    assert.equal(seen.has(key), false, `${word.id} ${word.japanese}`); seen.add(key);
-  }
-  assert.deepEqual(Array.from(data.words.filter(w => w.japanese === '郵便' && w.entryType !== 'core'), w => w.id), ['yuhadayo-n3-main-d01-006']);
-  assert.equal(data.words.filter(w => w.japanese === '表す' && w.entryType !== 'core').length, 2);
-  const prepared = prepare(data);
-  assert.equal(Object.keys(prepared.duplicateOf).length, 882);
-  assert.equal(prepared.words.length, data.words.length);
+test('published data preserves every source ID, field, order and repeated item across all DAYs',()=>{
+ const source=load('source-words.js'),published=load('words.js'),data=prepare(source);
+ assert.equal(source.words.length,4785);assert.equal(data.words.length,4785);
+ assert.equal(JSON.stringify(published.words),JSON.stringify(source.words));
+ assert.equal(Object.keys(published.duplicateOf).length,0);
+ for(const [book,count] of [['main',2409],['check',2376]])assert.equal(data.words.filter(w=>w.book===book).length,count);
+ for(const [day,count] of [[1,87],[2,80],[3,80]])assert.equal(data.words.filter(w=>w.book==='main'&&Number(w.unit.slice(4))===day).length,count);
+ const d3=data.words.filter(w=>w.book==='main'&&w.unit==='day-03');
+ assert.ok(d3.some(w=>w.order===3&&w.japanese==='一般的だ'));
+ for(const w of data.words)for(const other of data.duplicateOccurrences[w.id]||[])assert.ok(data.duplicateOccurrences[other.id].some(o=>o.id===w.id));
 });

@@ -1,0 +1,1171 @@
+{
+  "reviewDate": "2026-10-26",
+  "scope": "Photographed printed headwords, DAY assignment, sequence and counts; handwriting ignored. Mainbook photo transcription and checkbook photo headword comparison. This is not a fresh independent transcription of every reading/meaning.",
+  "photoCount": 119,
+  "sourceCount": 4785,
+  "publishedCount": 4785,
+  "omittedIDs": [],
+  "days": [
+    {
+      "book": "main",
+      "day": 1,
+      "sourceCount": 87,
+      "publishedCount": 87,
+      "first": "移す",
+      "last": "留守",
+      "photos": [
+        "20261023_155119.jpg",
+        "20261023_155122.jpg",
+        "20261023_155129.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 2,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "印象",
+      "last": "汚れる",
+      "photos": [
+        "20261023_155139.jpg",
+        "20261023_155142.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 3,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "相手",
+      "last": "夫婦",
+      "photos": [
+        "20261024_124847.jpg",
+        "20261024_124850.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 4,
+      "sourceCount": 66,
+      "publishedCount": 66,
+      "first": "辺り",
+      "last": "複雑だ",
+      "photos": [
+        "20261024_124902.jpg",
+        "20261024_124906.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 5,
+      "sourceCount": 60,
+      "publishedCount": 60,
+      "first": "浅い",
+      "last": "緑",
+      "photos": [
+        "20261024_124912.jpg",
+        "20261024_124915.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 6,
+      "sourceCount": 60,
+      "publishedCount": 60,
+      "first": "移る",
+      "last": "物語",
+      "photos": [
+        "20261024_124921.jpg",
+        "20261024_124924.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 7,
+      "sourceCount": 121,
+      "publishedCount": 121,
+      "first": "預ける",
+      "last": "ユーモア",
+      "photos": [
+        "20261024_124932.jpg",
+        "20261024_124935.jpg",
+        "20261024_124940.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 8,
+      "sourceCount": 110,
+      "publishedCount": 110,
+      "first": "うろうろ",
+      "last": "割合",
+      "photos": [
+        "20261024_124955.jpg",
+        "20261024_124958.jpg",
+        "20261024_125002.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 9,
+      "sourceCount": 110,
+      "publishedCount": 110,
+      "first": "あきる",
+      "last": "りっぱだ",
+      "photos": [
+        "20261024_125010.jpg",
+        "20261024_125013.jpg",
+        "20261024_125018.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 10,
+      "sourceCount": 55,
+      "publishedCount": 55,
+      "first": "おしまい",
+      "last": "楽だ",
+      "photos": [
+        "20261024_125027.jpg",
+        "20261024_125031.jpg",
+        "20261024_125044.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 11,
+      "sourceCount": 50,
+      "publishedCount": 50,
+      "first": "おかしな",
+      "last": "得意だ",
+      "photos": [
+        "20261024_125059.jpg",
+        "20261024_125101.jpg",
+        "20261024_125108.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 12,
+      "sourceCount": 50,
+      "publishedCount": 50,
+      "first": "あわてて",
+      "last": "まご",
+      "photos": [
+        "20261024_125131.jpg",
+        "20261024_125139.jpg",
+        "20261024_125145.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 13,
+      "sourceCount": 55,
+      "publishedCount": 55,
+      "first": "オーバー",
+      "last": "割引",
+      "photos": [
+        "20261024_125201.jpg",
+        "20261024_125205.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 14,
+      "sourceCount": 50,
+      "publishedCount": 50,
+      "first": "お互いに",
+      "last": "ゆでる",
+      "photos": [
+        "20261024_125253.jpg",
+        "20261024_125256.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 15,
+      "sourceCount": 50,
+      "publishedCount": 50,
+      "first": "期限",
+      "last": "ユーモア",
+      "photos": [
+        "20261024_125302.jpg",
+        "20261024_125305.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 16,
+      "sourceCount": 121,
+      "publishedCount": 121,
+      "first": "愛",
+      "last": "お尻",
+      "photos": [
+        "20261024_125318.jpg",
+        "20261024_125322.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 17,
+      "sourceCount": 135,
+      "publishedCount": 135,
+      "first": "お辞儀",
+      "last": "喫煙",
+      "photos": [
+        "20261024_125327.jpg",
+        "20261024_125330.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 18,
+      "sourceCount": 138,
+      "publishedCount": 138,
+      "first": "記入",
+      "last": "国会",
+      "photos": [
+        "20261024_125335.jpg",
+        "20261024_125338.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 19,
+      "sourceCount": 133,
+      "publishedCount": 133,
+      "first": "骨折",
+      "last": "食欲",
+      "photos": [
+        "20261024_125344.jpg",
+        "20261024_125346.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 20,
+      "sourceCount": 138,
+      "publishedCount": 138,
+      "first": "初心者",
+      "last": "想像",
+      "photos": [
+        "20261024_125352.jpg",
+        "20261024_125356.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 21,
+      "sourceCount": 135,
+      "publishedCount": 135,
+      "first": "早退",
+      "last": "倒産",
+      "photos": [
+        "20261024_125401.jpg",
+        "20261024_125404.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 22,
+      "sourceCount": 130,
+      "publishedCount": 130,
+      "first": "当日",
+      "last": "一人娘",
+      "photos": [
+        "20261024_125410.jpg",
+        "20261024_125413.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 23,
+      "sourceCount": 132,
+      "publishedCount": 132,
+      "first": "避難",
+      "last": "飯",
+      "photos": [
+        "20261024_125418.jpg",
+        "20261024_125421.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 24,
+      "sourceCount": 99,
+      "publishedCount": 99,
+      "first": "目下",
+      "last": "割引",
+      "photos": [
+        "20261024_125425.jpg",
+        "20261024_125429.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 25,
+      "sourceCount": 77,
+      "publishedCount": 77,
+      "first": "浅い",
+      "last": "若々しい",
+      "photos": [
+        "20261024_125435.jpg",
+        "20261024_125438.jpg"
+      ]
+    },
+    {
+      "book": "main",
+      "day": 26,
+      "sourceCount": 87,
+      "publishedCount": 87,
+      "first": "明らかだ",
+      "last": "わがままだ",
+      "photos": [
+        "20261024_125443.jpg",
+        "20261024_125447.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 1,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "愛",
+      "last": "表れる",
+      "photos": [
+        "20261021_140248.jpg",
+        "20261021_140252.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 2,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "有り難い",
+      "last": "イメージ",
+      "photos": [
+        "20261021_140301.jpg",
+        "20261021_140304.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 3,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "いも",
+      "last": "遠足",
+      "photos": [
+        "20261021_140316.jpg",
+        "20261021_140319.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 4,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "遠慮",
+      "last": "思い",
+      "photos": [
+        "20261021_140327.jpg",
+        "20261021_140330.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 5,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "思い込む",
+      "last": "掛け算",
+      "photos": [
+        "20261021_140337.jpg",
+        "20261021_140340.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 6,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "掛ける",
+      "last": "考え",
+      "photos": [
+        "20261021_140344.jpg",
+        "20261021_140347.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 7,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "観客",
+      "last": "記入",
+      "photos": [
+        "20261021_140353.jpg",
+        "20261021_140356.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 8,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "記念",
+      "last": "悔しい",
+      "photos": [
+        "20261021_140401.jpg",
+        "20261021_140404.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 9,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "暮らし",
+      "last": "下旬",
+      "photos": [
+        "20261021_140409.jpg",
+        "20261021_140411.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 10,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "月末",
+      "last": "小麦粉",
+      "photos": [
+        "20261021_140417.jpg",
+        "20261021_140419.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 11,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "小指",
+      "last": "去る",
+      "photos": [
+        "20261021_140424.jpg",
+        "20261021_140426.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 12,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "騒ぎ",
+      "last": "集中",
+      "photos": [
+        "20261021_140433.jpg",
+        "20261021_140435.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 13,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "終電",
+      "last": "身長",
+      "photos": [
+        "20261021_140440.jpg",
+        "20261021_140442.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 14,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "心配だ",
+      "last": "スーツケース",
+      "photos": [
+        "20261021_140447.jpg",
+        "20261021_140449.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 15,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "スープ",
+      "last": "整理する",
+      "photos": [
+        "20261021_140454.jpg",
+        "20261021_140457.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 16,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "セール",
+      "last": "ぞうきん",
+      "photos": [
+        "20261021_140504.jpg",
+        "20261021_140506.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 17,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "増減",
+      "last": "誕生",
+      "photos": [
+        "20261021_140510.jpg",
+        "20261021_140513.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 18,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "誕生日",
+      "last": "挑戦",
+      "photos": [
+        "20261021_140517.jpg",
+        "20261021_140520.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 19,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "ちょうど",
+      "last": "鉄道",
+      "photos": [
+        "20261021_140528.jpg",
+        "20261021_140530.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 20,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "徹夜",
+      "last": "取り消す",
+      "photos": [
+        "20261021_140535.jpg",
+        "20261021_140537.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 21,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "取り込む",
+      "last": "憎らしい",
+      "photos": [
+        "20261021_140543.jpg",
+        "20261021_140545.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 22,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "逃げる",
+      "last": "博物館",
+      "photos": [
+        "20261021_140551.jpg",
+        "20261021_140553.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 23,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "激しい",
+      "last": "引き落とす",
+      "photos": [
+        "20261021_140557.jpg",
+        "20261021_140559.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 24,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "引き出す",
+      "last": "蓋",
+      "photos": [
+        "20261021_140603.jpg",
+        "20261021_140605.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 25,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "双子",
+      "last": "報告",
+      "photos": [
+        "20261021_140610.jpg",
+        "20261021_140612.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 26,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "宝石",
+      "last": "真っ黒",
+      "photos": [
+        "20261021_140616.jpg",
+        "20261021_140618.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 27,
+      "sourceCount": 80,
+      "publishedCount": 80,
+      "first": "真っ青",
+      "last": "夢中だ",
+      "photos": [
+        "20261021_140623.jpg",
+        "20261021_140625.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 28,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "胸",
+      "last": "友情",
+      "photos": [
+        "20261021_140629.jpg",
+        "20261021_140631.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 29,
+      "sourceCount": 79,
+      "publishedCount": 79,
+      "first": "友人",
+      "last": "量",
+      "photos": [
+        "20261021_140634.jpg",
+        "20261021_140636.jpg"
+      ]
+    },
+    {
+      "book": "check",
+      "day": 30,
+      "sourceCount": 65,
+      "publishedCount": 65,
+      "first": "両替",
+      "last": "ワンピース",
+      "photos": [
+        "20261021_140641.jpg",
+        "20261021_140643.jpg"
+      ]
+    }
+  ],
+  "inventory": {
+    "main": [
+      {
+        "name": "20261023_155119.jpg",
+        "sha256": "72da2b882ef7ff40e38bc9ae0acab252960eff21ce6f4b0116712fc14e48c497"
+      },
+      {
+        "name": "20261023_155122.jpg",
+        "sha256": "7ae8f932d7563a5ad57d434118693a52fe5105e7c898e6b99c53158836bd9ab3"
+      },
+      {
+        "name": "20261023_155129.jpg",
+        "sha256": "524e74ff6fc68a736a48d29509875ea179ddf2bc5b13a84f3ecbd7cbda7559dd"
+      },
+      {
+        "name": "20261023_155139.jpg",
+        "sha256": "fb1f3b0cb264cf4c52b8c0e132fa3135357a1fedce887d22b3081992a2f99041"
+      },
+      {
+        "name": "20261023_155142.jpg",
+        "sha256": "e0920611fe91e2c9abfa3706d95ac1f3f10a5efceab1932b32e13baba5bcef65"
+      },
+      {
+        "name": "20261024_124847.jpg",
+        "sha256": "e1c9ee757fc2841ae8ccb08f9817021b27b0764a34eeb2b53f19ebda3eeb36ef"
+      },
+      {
+        "name": "20261024_124850.jpg",
+        "sha256": "177062e6ae1496ef9f524f6a7a312438e34a641b08314f1a202afb86eab3913b"
+      },
+      {
+        "name": "20261024_124902.jpg",
+        "sha256": "676395d3db500cf14abc0800855a4879bada097235e0c6ddd58c63290d768a4e"
+      },
+      {
+        "name": "20261024_124906.jpg",
+        "sha256": "f9d5e401ebd91bd3e4da13d9d07c71b2fb1a7aaa03de33fd4e31e5ac02ca65f5"
+      },
+      {
+        "name": "20261024_124912.jpg",
+        "sha256": "b458b6dfd3378e488d476218512f3c123328911d0e0010ec91dd149115cea7d9"
+      },
+      {
+        "name": "20261024_124915.jpg",
+        "sha256": "0adf9804347140a8a6bac4175704591311f87ca7384251663de9bbccb3803fdc"
+      },
+      {
+        "name": "20261024_124921.jpg",
+        "sha256": "721da69bab646b4892a5926e01a223208200cedb09c6e4ce801bc820a35839b7"
+      },
+      {
+        "name": "20261024_124924.jpg",
+        "sha256": "67d3dd3b3de583311765fb8736dbd13c8d3a4d3844153a221c5ce4aa8ca8025a"
+      },
+      {
+        "name": "20261024_124932.jpg",
+        "sha256": "54322a00c13116041ff7bf4c7a24b8572df6b8895d3518a41dae3773228c3d28"
+      },
+      {
+        "name": "20261024_124935.jpg",
+        "sha256": "76f52d2475e829cab6d1e0bd98ca635d809ed8e2474890ada58213821d12ad35"
+      },
+      {
+        "name": "20261024_124940.jpg",
+        "sha256": "1ae9d7d1d34ee5a9a8cb88721aceedc6175033d99850ccb396e219105b5393a7"
+      },
+      {
+        "name": "20261024_124955.jpg",
+        "sha256": "fc6ead9e38cd7af12654d609504ad528b5f90f3391b1cc6e3530f843af343577"
+      },
+      {
+        "name": "20261024_124958.jpg",
+        "sha256": "de71a004027c6ed7eaeda7e1cb101f2b5945b382802cad4e84f2361cd8d72b3d"
+      },
+      {
+        "name": "20261024_125002.jpg",
+        "sha256": "4816bf421bfd58bfeed64dc6c717d1eb03b96deb63df57395ed78d0b058d5144"
+      },
+      {
+        "name": "20261024_125010.jpg",
+        "sha256": "5953776660993acb4b1b4b50bb7ebc3f1c408fd8df2e624d895e4dc0e23e5e9e"
+      },
+      {
+        "name": "20261024_125013.jpg",
+        "sha256": "80121b54bf74cd4995a7f4b930f29dc29e7caca66753609d673a516986786443"
+      },
+      {
+        "name": "20261024_125018.jpg",
+        "sha256": "3f67ac06539d156f8ae2ebac967ba9bcec61963565376e0f2910622a4aa525fa"
+      },
+      {
+        "name": "20261024_125027.jpg",
+        "sha256": "b19682ff0cc97e9a9ee7fb139c7dd898e37f27561f1cbde9f3ea1dadb2878adf"
+      },
+      {
+        "name": "20261024_125031.jpg",
+        "sha256": "7faca76cdfe2843eec4e975e0795c9eb3396e4b845244f2a0b37d64151570b3d"
+      },
+      {
+        "name": "20261024_125044.jpg",
+        "sha256": "955c7f41ee3a984cfec465c815ce34fe72f277f72f2e7ebca8d9e2aa23562d62"
+      },
+      {
+        "name": "20261024_125059.jpg",
+        "sha256": "72df6cea9fdff6b68c188e63d91aa10e14bcde0ea2ef399c2ca6a5142c0397e6"
+      },
+      {
+        "name": "20261024_125101.jpg",
+        "sha256": "a6151b3bba66120f2decbbab250ec74e9599e5199bcbddb4748f2e875264ff38"
+      },
+      {
+        "name": "20261024_125108.jpg",
+        "sha256": "899ec398579dbacbe581940f048ff676e1526c12af57bf610e9eb260e5f8b2c2"
+      },
+      {
+        "name": "20261024_125131.jpg",
+        "sha256": "fcabd252fedfd870c61640b8755682a4a352d8dfc9dfeaab1a2cce05b2ca049b"
+      },
+      {
+        "name": "20261024_125139.jpg",
+        "sha256": "f317a78b70e589e4afe7653f44dfc536a36c026ec7c7c897080c7d1cf1f5ead5"
+      },
+      {
+        "name": "20261024_125145.jpg",
+        "sha256": "999d2cb43c788886bd3830efbb9335cf7ee0cc8fa2439c8f0d190a4e0944157c"
+      },
+      {
+        "name": "20261024_125201.jpg",
+        "sha256": "b012b0003ab5c764c5f038aa19a96eb08ed3a821858122ab2154acd7756d58f0"
+      },
+      {
+        "name": "20261024_125205.jpg",
+        "sha256": "50477ee7ddc7c6f42488c304bff1d82b4c6a24a6912e42d685598fa4850133d6"
+      },
+      {
+        "name": "20261024_125253.jpg",
+        "sha256": "f51bae4019bd348449a35f56efd7d2a95190206c37dbb9e93234e4ed7faf62d5"
+      },
+      {
+        "name": "20261024_125256.jpg",
+        "sha256": "8282a718d4543fe5dc2e8d5706edfc945c2677cafac45f17a1275800112fe863"
+      },
+      {
+        "name": "20261024_125302.jpg",
+        "sha256": "39a21efb2053fd8adcd371b087deb9161fa2274c9e601f1c58d76ac9cd929cdb"
+      },
+      {
+        "name": "20261024_125305.jpg",
+        "sha256": "163075627bce207926c7378bc0da53d149ea02c287a67a4c3fad5976d16b8ad5"
+      },
+      {
+        "name": "20261024_125318.jpg",
+        "sha256": "bafede8b6ece97d17dbc2339fe386ad89e407ef3d34ec0b221909e771f487900"
+      },
+      {
+        "name": "20261024_125322.jpg",
+        "sha256": "b7fa793b6b1fc42ef5f1b6580fdb964a9ae4e680c40960b2bf01c6e72f89d367"
+      },
+      {
+        "name": "20261024_125327.jpg",
+        "sha256": "46a7774c8c6cf8312dc0de8e41b32a626c0fbcbef8f796d50f960d896516ab60"
+      },
+      {
+        "name": "20261024_125330.jpg",
+        "sha256": "b664640f3d9ab1cc8c97ddf09df42eba92f6d1ef4243a38c75868add0139f1c9"
+      },
+      {
+        "name": "20261024_125335.jpg",
+        "sha256": "79c12db37f7f1ed089098af93ee47dd4d46e39c2fff1ee806ba603349fdc90e7"
+      },
+      {
+        "name": "20261024_125338.jpg",
+        "sha256": "98e165d4dd86b13b6585d37ea0de99b7c9daf5c142a816d14f1038bc5c650c49"
+      },
+      {
+        "name": "20261024_125344.jpg",
+        "sha256": "28f39dca3b8581caf994266be214dd72897f509416fb611181b8942cc5eb35f3"
+      },
+      {
+        "name": "20261024_125346.jpg",
+        "sha256": "6fd2f29458789b52ee1222254aee961618581762f7db8ed976cf6d5f0dd04fe0"
+      },
+      {
+        "name": "20261024_125352.jpg",
+        "sha256": "8b16814ea786bda9e02cb93d5341323bd234f5bb2b791b559e38d3eecc78f312"
+      },
+      {
+        "name": "20261024_125356.jpg",
+        "sha256": "b957f95803552daab516409b5253cbeffc8c15be294e32fa148da9a5fa2e164c"
+      },
+      {
+        "name": "20261024_125401.jpg",
+        "sha256": "ac879ab641a4a1bba3c26a91cc3b804495ea1b72b63024c0cdc155d1e053400a"
+      },
+      {
+        "name": "20261024_125404.jpg",
+        "sha256": "373e7eb1613a5c2c837ffafc06c72c8572a57e3fbf77c3b4dd9134284e75ea6f"
+      },
+      {
+        "name": "20261024_125410.jpg",
+        "sha256": "fd7eaf806810bb83b037a9d40b81de47aa2bb317e8c726d5db07330d8a743d69"
+      },
+      {
+        "name": "20261024_125413.jpg",
+        "sha256": "195ea7edce9dee48d884f20e7a1b9d428275f02f3669b0a24ffce53bcd3cf159"
+      },
+      {
+        "name": "20261024_125418.jpg",
+        "sha256": "2972ddffa44f899d0ebab720792f3ddc74087d678d645fcae701826e0696e4f1"
+      },
+      {
+        "name": "20261024_125421.jpg",
+        "sha256": "0f85ad45596a23dadf8f1f5753128f2b3fda7fc90a49de10e75bbb3f8cc1eff3"
+      },
+      {
+        "name": "20261024_125425.jpg",
+        "sha256": "3643305398f9fc3e329926abdd5f9ee69da74815d7050c3380cbba96196fe52b"
+      },
+      {
+        "name": "20261024_125429.jpg",
+        "sha256": "5edf81425c230612488751344d6fa4d2e1920c21c3e9bdea7ae5287fdb8f3463"
+      },
+      {
+        "name": "20261024_125435.jpg",
+        "sha256": "40208498e3e5e24e25de1faa8106776ffec509acaa58c7ee1eda9fd8ff4ec6d9"
+      },
+      {
+        "name": "20261024_125438.jpg",
+        "sha256": "624918244f332e5a27a6fd1839cebb42346eb49237de048c5e678e10b1a57870"
+      },
+      {
+        "name": "20261024_125443.jpg",
+        "sha256": "2d7f2de1d29b303e180d7fefe0223bf70564e8dfbe156af6928771e73dcc70c8"
+      },
+      {
+        "name": "20261024_125447.jpg",
+        "sha256": "22e616d9180e24232e515c8907282db27e97c29aa0025720043f9b3f74f54672"
+      }
+    ],
+    "check": [
+      {
+        "name": "20261021_140248.jpg",
+        "sha256": "238df2d406c3dad0d10d9e153a5f193585597bb4a1be02a172e4e7b81f0ae785"
+      },
+      {
+        "name": "20261021_140252.jpg",
+        "sha256": "0a5e7585fa2f6f0a6bd9a9f278004c54f762c5ed8913846af9233e18ec9d6881"
+      },
+      {
+        "name": "20261021_140301.jpg",
+        "sha256": "78ad77ad1774c8d08efa8e88ddd932c6d98f00230b6722e8dfa31ec3cdfcabf2"
+      },
+      {
+        "name": "20261021_140304.jpg",
+        "sha256": "e652eb8c0c991db2a80fee0604095d02f8096caa433ac09736c436dcbde77740"
+      },
+      {
+        "name": "20261021_140316.jpg",
+        "sha256": "662744cfdb8d5ac29f3575f653b7c78664711e6e005246a45f1175f86e67c8c7"
+      },
+      {
+        "name": "20261021_140319.jpg",
+        "sha256": "50a2fa92c73fae22b14e7668471feedfc4b482301b1b72b0390bb0c986ff7a39"
+      },
+      {
+        "name": "20261021_140327.jpg",
+        "sha256": "da6573e587e09decd515d66eb258b71dfac75286a9b48a68f20343b888de4dc9"
+      },
+      {
+        "name": "20261021_140330.jpg",
+        "sha256": "b4905a2bd3b4e2279b0dd2bd7b369d9f3449f234f8cda09ad3959d5fa3020d83"
+      },
+      {
+        "name": "20261021_140337.jpg",
+        "sha256": "d9aed3894ec8e5e5c979ef4dfbe4b17929781466ff5c1f3fdfee2ea39a681d62"
+      },
+      {
+        "name": "20261021_140340.jpg",
+        "sha256": "6cbadb8c824b59fc8c8020ee038e4108db878e5918f21904330b30b409b7312e"
+      },
+      {
+        "name": "20261021_140344.jpg",
+        "sha256": "dbcca7f47071f9034274370b59a5a8970d09d2cd188e92b993ee17006dca0ae0"
+      },
+      {
+        "name": "20261021_140347.jpg",
+        "sha256": "96c443c24e64f4073e2059ec94cdffb5801f0cfaba53bcb56579421021f90263"
+      },
+      {
+        "name": "20261021_140353.jpg",
+        "sha256": "bdc09ceef2b3c900e0cd6f93d5acca636a35b521f7222a8972b9c397415726bf"
+      },
+      {
+        "name": "20261021_140356.jpg",
+        "sha256": "3d8c0f14e6a780fc1390fbc70b935a241619d08a7f740ba01e3953766f5331ce"
+      },
+      {
+        "name": "20261021_140401.jpg",
+        "sha256": "b360aa7bf12c3155b852eb2604dcee3855d476b61cffbeaf262ea02aa571aedd"
+      },
+      {
+        "name": "20261021_140404.jpg",
+        "sha256": "e57283961198c91919bf449f6262fcd66d7e6a46c268a091fa139c465bc1f8cd"
+      },
+      {
+        "name": "20261021_140409.jpg",
+        "sha256": "b36a6ef46cf1bb001efc42930252c14a054ae3bc6b40426367115edf79b9e789"
+      },
+      {
+        "name": "20261021_140411.jpg",
+        "sha256": "51c6537dfdd4566761d3fa3cd3ff1b2118ac7b98bbf2f951dab9ce7b2f527ee7"
+      },
+      {
+        "name": "20261021_140417.jpg",
+        "sha256": "fb4cc7ee9ff084791daef5163ae0dc5ac6a09656424adbdcbeb70424042fca63"
+      },
+      {
+        "name": "20261021_140419.jpg",
+        "sha256": "53d4ba386080bf144b50c3d68c7bc589ef280cc03a8a54cd3f7f116d3c450ed1"
+      },
+      {
+        "name": "20261021_140424.jpg",
+        "sha256": "d8fb57ac141d4dbcc313f69ffdad3e9aefe052b0ac8c90b2b68e2146ae564ee6"
+      },
+      {
+        "name": "20261021_140426.jpg",
+        "sha256": "1ac199d3a7131c6794daea1441db5f656f9c7563daafcdcaff9a0cd46556f7a2"
+      },
+      {
+        "name": "20261021_140433.jpg",
+        "sha256": "f379e5387a993d4634f385904e24556cbff1cf86fd3c57f7237ad4bb13659ed3"
+      },
+      {
+        "name": "20261021_140435.jpg",
+        "sha256": "8602004106790002a903680c9d4c6832e7235efaac662eff989ecba48f7c473b"
+      },
+      {
+        "name": "20261021_140440.jpg",
+        "sha256": "e001d2705003af99d40ef94be44e96f3e0bd1e22accf666358586df52eb04ea1"
+      },
+      {
+        "name": "20261021_140442.jpg",
+        "sha256": "925526a7de707a799b0140b1e7b9bdb7e9365368b55634de002acb71a3b5a586"
+      },
+      {
+        "name": "20261021_140447.jpg",
+        "sha256": "e53b25f36437c0579d9e08ac042f62ab20787d210e761e1d4c649cb99a10d616"
+      },
+      {
+        "name": "20261021_140449.jpg",
+        "sha256": "4d611518574bf2a67befc5dc579ad1f8aab803c057ccb700650f04094fd41483"
+      },
+      {
+        "name": "20261021_140454.jpg",
+        "sha256": "0e4aaad9d8058c12a84a3272a16fa063fa625db6434113a506ef01801342ff4e"
+      },
+      {
+        "name": "20261021_140457.jpg",
+        "sha256": "4bf9904bb6901cb10ee62395e382196909bed8665c45dc2fe9c4ce657956628e"
+      },
+      {
+        "name": "20261021_140504.jpg",
+        "sha256": "a204e53df7b9f13ae40216134f4bb0bfd64901b1a708b29790de24c0f1536577"
+      },
+      {
+        "name": "20261021_140506.jpg",
+        "sha256": "4e0d4d6d9cd047da4db6dc1c164ed8c41b98d4b334736554772cf0c457c6a197"
+      },
+      {
+        "name": "20261021_140510.jpg",
+        "sha256": "66dd95e8a84f61894e7f4a4626aea9c4c5a788336a02d1e51253af4d57541f93"
+      },
+      {
+        "name": "20261021_140513.jpg",
+        "sha256": "7553aceb932e9ddfaeea3a381609f10595865a75efe4fb3853bcc8664f4536e5"
+      },
+      {
+        "name": "20261021_140517.jpg",
+        "sha256": "fec7c0f231ebfc7c05b32644e5f2526a20bcdf730a104b04e58d6cdb11774789"
+      },
+      {
+        "name": "20261021_140520.jpg",
+        "sha256": "0615aabfd624d5419c1237a8591d0a45926ae9f753366c5d8af060198b8605e7"
+      },
+      {
+        "name": "20261021_140528.jpg",
+        "sha256": "11f258a797ad793c281c9c20022d229f4ba1d574366b2b996c8f266a028ec319"
+      },
+      {
+        "name": "20261021_140530.jpg",
+        "sha256": "da8457b8917bf2a9f627d72f22719810d5e1f8ba6935578db8559d1d94bc0cec"
+      },
+      {
+        "name": "20261021_140535.jpg",
+        "sha256": "33c703297449f67d74157e284701be19736f80e84aa1f6da1645432ae454c2f7"
+      },
+      {
+        "name": "20261021_140537.jpg",
+        "sha256": "7e8991baddd8ec2833b94290358134799d70495b7b2c2f3fac5604abdd76e401"
+      },
+      {
+        "name": "20261021_140543.jpg",
+        "sha256": "497375ad3db0854d6534f4ab4ad45d08746b5f7d7ec67e4326cd5f88bab66899"
+      },
+      {
+        "name": "20261021_140545.jpg",
+        "sha256": "d1b6cab09ddd1c39ded643a3bad89f08c9071b97f5aafde1fd77cd20e0c4d2ce"
+      },
+      {
+        "name": "20261021_140551.jpg",
+        "sha256": "b558c98e88eb2f77552f74ef21d88b18fd60ae74cc7e9749594c729a70fc117c"
+      },
+      {
+        "name": "20261021_140553.jpg",
+        "sha256": "2f5875f1bb507d9646b7cba2e69f70f7d84611195e2139e1847a6712adb18973"
+      },
+      {
+        "name": "20261021_140557.jpg",
+        "sha256": "b684bc7947ce0df96827d70595d26e3aca169c6fb90e7270a89c9db089f8ed04"
+      },
+      {
+        "name": "20261021_140559.jpg",
+        "sha256": "f5056d1ddaa8e7e7b30b4395cef50f1229ec71da4837ba0d97d9d338f01da082"
+      },
+      {
+        "name": "20261021_140603.jpg",
+        "sha256": "f1f5fec6647d141658f842db4523fd82a94e1f953079426e331c4c991442db17"
+      },
+      {
+        "name": "20261021_140605.jpg",
+        "sha256": "6a5171e9a334f56dd59a95df6f9b5e961fe3effbe009d3f3feab7cbfbdc3da18"
+      },
+      {
+        "name": "20261021_140610.jpg",
+        "sha256": "a03ab0767eb66f8b5112f06cebc861fb1ef3594d84cdb8345fbabb537e176829"
+      },
+      {
+        "name": "20261021_140612.jpg",
+        "sha256": "b66d966af82804eb3fc4e4805e00b1fd6b212f366b2abe102c5f7301e28e14c8"
+      },
+      {
+        "name": "20261021_140616.jpg",
+        "sha256": "89ba2dbbd3783cbe0312d7ef0c0b6f9b4c743fafcb0724984e9c65f01b3072f9"
+      },
+      {
+        "name": "20261021_140618.jpg",
+        "sha256": "1eeb7a367e55afcc7e8e94b4b4981b57ddb1b1d52d0eb00e4fa6af72e266f256"
+      },
+      {
+        "name": "20261021_140623.jpg",
+        "sha256": "0c3a074eecb8b2d0c66a73f597c5dcf61bd2402309158d22e10e897ee3398dc7"
+      },
+      {
+        "name": "20261021_140625.jpg",
+        "sha256": "19094bbe1ac0f26e868f37ba7c814d8a2d23b27c5c3b03cbf8eac589c0faedeb"
+      },
+      {
+        "name": "20261021_140629.jpg",
+        "sha256": "28c41219efd581029c9f30b1324baa18c5c7b16598ee5ad39f2954b25021ff37"
+      },
+      {
+        "name": "20261021_140631.jpg",
+        "sha256": "ab6af1e580de764a80dc27cc2db352a4ebdcfac148f8aab97fd2854349a92c78"
+      },
+      {
+        "name": "20261021_140634.jpg",
+        "sha256": "0baf628c27cd7cd6d7b9ea1c337f7042dec37290a2bbeb01404d757ed5094ff5"
+      },
+      {
+        "name": "20261021_140636.jpg",
+        "sha256": "44cf4236ba4a90936dd05ca5c0091a287a1745687f75a86930488a41931f1a43"
+      },
+      {
+        "name": "20261021_140641.jpg",
+        "sha256": "b25c6f6310a68064bbd8f9eb7f392c953f59bda4cffb08cdea99709cbb78dd64"
+      },
+      {
+        "name": "20261021_140643.jpg",
+        "sha256": "f1834cb22bac16884320587dbd522733354c7869477d1f784ba297209ad95df3"
+      }
+    ]
+  }
+}

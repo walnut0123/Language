@@ -1,4 +1,4 @@
-const { test } = require('node:test');
+﻿const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
@@ -16,6 +16,19 @@ const fixture = () => ({ books: [
 ] });
 const engine = () => Learning.create(fixture());
 const copy = value => JSON.parse(JSON.stringify(value));
+
+test('restored same-day occurrence is appended to saved round without losing judgments', () => {
+  const old = fixture(), e = Learning.create(old);
+  e.select({book:'check',mode:'chapter',unit:'day-01',questionOrder:'ordered'});
+  e.judge('known');
+  const saved=copy(e.state), updated=fixture();
+  updated.words.push({...updated.words[0],id:'restored-repeat',order:3});
+  const parsed=Learning.parse(saved,updated);
+  assert.deepEqual(parsed.round.ids,[...saved.round.ids,'restored-repeat']);
+  assert.equal(parsed.round.index,saved.round.index);
+  assert.deepEqual(copy(parsed.records),saved.records);
+  assert.deepEqual(parsed.history,saved.history);
+});
 
 test('PDF import: 30 days, 2376 unique IDs; source counts and sequence match', () => {
   const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, 'data/source-words.js'), 'utf8'), ctx);
@@ -230,7 +243,7 @@ test('all vocabulary characters have notes; DAY 01 keeps exact per-character rub
   const context = { window: {} };
   for (const file of ['data/words.js', 'data/kanji-notes.js', 'data/kanji-details.js', 'data/kanji-all.js']) vm.runInNewContext(fs.readFileSync(path.join(root, file), 'utf8'), context);
   const words = context.window.VOCABULARY.words.filter(w => w.book === 'main' && w.unit === 'day-01');
-  assert.equal(words.length, 82);
+  assert.equal(words.length, 87);
   for (const word of words) {
     const note = context.window.KANJI_NOTES[word.japanese];
     assert.ok(note?.origin && note?.connection, word.japanese);
@@ -243,7 +256,7 @@ test('all vocabulary characters have notes; DAY 01 keeps exact per-character rub
     assert.ok(parts.filter(p => p.kanji).every(p => [...p.text].length === 1), word.japanese);
   }
   const allWords = context.window.VOCABULARY.words;
-  assert.equal(allWords.length, 3903);
+  assert.equal(allWords.length, 4785);
   const characters = new Set(allWords.flatMap(w => (w.japanese + (w.synonym?.japanese || '')).match(/\p{Script=Han}/gu) || []));
   assert.equal(characters.size, 1081);
   for (const character of characters) {
@@ -296,27 +309,27 @@ test('meaning and reading toggle independently without changing learning records
   app.key('KeyV'); assert.equal(app.nodes['kanji-layer'].hidden, true);
 });
 
-test('prior-appearance badge is a separate title/date block in study and list, never on the first DAY', () => {
+test('duplicate badge appears on both occurrences in study and list with the other location', () => {
   const vocabulary = fixture();
   vocabulary.words.push({ ...vocabulary.words[0], id: 'variant', unit: 'day-02', meaning: '사랑, 애정', order: 2 });
   const app = ui({}, false, vocabulary);
-  assert.doesNotMatch(app.card(), /등장한 적 있는 단어/);
+  assert.match(app.card(), /같은 표기의 단어/);
   app.nodes.unit.value = 'day-02'; app.nodes.unit.fire('change');
   app.key('Space');
-  assert.match(app.card(), /등장한 적 있는 단어/);
+  assert.match(app.card(), /같은 표기의 단어/);
   const badge = app.nodes.card.children.find(n => n.className === 'previous-appearance');
-  assert.deepEqual(badge.children.map(n => n.textContent), ['등장한 적 있는 단어', 'D - 1 / 체크북']);
+  assert.deepEqual(badge.children.map(n => n.textContent), ['같은 표기의 단어 · 읽기·뜻 확인', '체크북 / D1 / 1번']);
   app.click('tab-list');
-  assert.match(app.nodes['word-list'].textContent, /등장한 적 있는 단어D - 1 \/ 체크북/);
+  assert.match(app.nodes['word-list'].textContent, /같은 표기의 단어 · 읽기·뜻 확인체크북 \/ D1 \/ 1번/);
 });
 
-test('published main DAY 02 word list does not display 郵便; DAY 01 still does', () => {
+test('published main DAY 02 and DAY 01 both display their printed 郵便 occurrence', () => {
   const context = { window: {} };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'data/words.js'), 'utf8'), context);
   const app = ui({}, false, context.window.VOCABULARY);
   app.nodes.book.value = 'main'; app.nodes.book.fire('change'); app.click('tab-list');
   app.nodes.unit.value = 'day-02'; app.nodes.unit.fire('change');
-  assert.doesNotMatch(app.nodes['word-list'].textContent, /郵便/);
+  assert.match(app.nodes['word-list'].textContent, /郵便/);
   app.nodes.unit.value = 'day-01'; app.nodes.unit.fire('change');
   assert.match(app.nodes['word-list'].textContent, /郵便/);
 });
@@ -458,3 +471,4 @@ test('core classification is visible before answering and searchable in the list
   app.click('tab-list'); app.nodes.search.value='명사 - あ행'; app.nodes.search.fire('input');
   assert.match(app.nodes['word-list'].textContent,/愛/); assert.doesNotMatch(app.nodes['word-list'].textContent,/合図/);
 });
+

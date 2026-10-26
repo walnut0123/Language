@@ -39,6 +39,22 @@
   const formatDate = at => new Date(at).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   function el(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
   function previousAppearance(word) {
+    const duplicates = data.duplicateOccurrences?.[word.id];
+    if (duplicates?.length) {
+      const badge = el('div', 'previous-appearance');
+      badge.append(el('span', 'previous-appearance-title', duplicates.some(d=>d.exact) ? '중복 단어 · 모든 항목 유지' : '같은 표기의 단어 · 읽기·뜻 확인'));
+      const locations = new Map();
+      for (const item of duplicates) {
+        const key = `${item.book}/${item.unit}`;
+        if (!locations.has(key)) locations.set(key, { ...item, orders: [] });
+        locations.get(key).orders.push(item.order);
+      }
+      const all = [...locations.values()];
+      for (const item of all.slice(0,5)) badge.append(el('span', 'previous-appearance-day', `${bookName(item.book)} / D${Number(item.unit.slice(4))} / ${item.orders.join(', ')}번`));
+      if (all.length > 5) badge.append(el('span', 'previous-appearance-day', `외 ${all.length-5}개 단원`));
+      badge.title = all.map(item=>`${bookName(item.book)} D${Number(item.unit.slice(4))} ${item.orders.join(', ')}번`).join('\n');
+      return badge;
+    }
     const appearances = data.previousAppearances?.[word.id] || [];
     if (!appearances.length) return null;
     const badge = el('div', 'previous-appearance');
@@ -153,6 +169,7 @@
     const card = $('card');
     card.append(el('span', 'unit-tag', bookName(word.book) + ' / ' + unitName(word.book, word.unit)));
     if (word.entryType === 'core') card.prepend(el('p', 'exercise-category', word.category));
+    const duplicate = previousAppearance(word); if (duplicate) card.append(duplicate);
     const prompt = el('h2', quizType === 'pronunciation' ? 'quiz-meaning' : 'japanese', quizType === 'pronunciation' ? word.meaning : Quiz.hiragana(word.reading));
     if (quizType === 'kanji') prompt.lang = 'ja';
     card.append(prompt);

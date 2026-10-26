@@ -50,6 +50,15 @@
         new Set(r.ids).size === r.ids.length && count(r.index) && r.index <= r.ids.length;
     }
     if (round(value.round, next.selection) && (!legacy || value.round.ids.some(id => byId.has(id)))) next.round = clone(value.round);
+    // Restore previously omitted catalog entries into the saved round without
+    // resetting the answered prefix, judgments, counters, or existing order.
+    if (next.round) {
+      const included = new Set(next.round.ids);
+      const missing = data.words.filter(w => w.book === next.selection.book && (next.selection.mode !== 'chapter' || w.unit === next.selection.unit) &&
+        !included.has(w.id) && !next.records[w.id]);
+      missing.sort((a,b)=>a.unit.localeCompare(b.unit) || a.order-b.order);
+      next.round.ids.push(...missing.map(w=>w.id));
+    }
     if (!legacy) {
       assert(Array.isArray(value.history) && object(value.unitResets));
       const eventIds = new Set();
