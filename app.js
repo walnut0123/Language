@@ -61,7 +61,9 @@
     const book = data.books.find(b => b.id === $('book').value);
     $('unit').replaceChildren();
     const all = view !== 'study' || $('mode').value !== 'chapter';
-    const units = all ? [{ id: 'all', name: '전체 단원 · DAY 01–30' }, ...(view !== 'study' ? book.units : [])] : book.units;
+    const available = book.units.filter(u => data.words.some(w => w.book === book.id && w.unit === u.id));
+    const last = available.at(-1)?.id.slice(4) || '01';
+    const units = all ? [{ id: 'all', name: `전체 단원 · DAY 01–${last}` }, ...(view !== 'study' ? available : [])] : available;
     for (const u of units) { const option = el('option', '', u.name); option.value = u.id; $('unit').append(option); }
     $('unit').value = units.some(u => u.id === selected) ? selected : units[0].id;
     $('unit').disabled = view === 'study' && $('mode').value !== 'chapter';
@@ -81,15 +83,16 @@
     $('known-count').textContent = t.knownCount.toLocaleString(); $('review-count').textContent = t.reviewCount.toLocaleString();
     const selectedBook = $('book').value;
     const count = data.words.filter(w => w.book === selectedBook).length;
-    $('source-label').textContent = selectedBook === 'check' ? `유하다요 N3 · 체크북 ${count.toLocaleString()}개` : `메인북 · DAY 01–02 · ${count.toLocaleString()}개`;
+    const populated = data.books.find(b => b.id === selectedBook).units.filter(u => data.words.some(w => w.book === selectedBook && w.unit === u.id));
+    $('source-label').textContent = `${bookName(selectedBook)} · ${populated[0]?.id.replace('day-', 'DAY ') || ''}–${populated.at(-1)?.id.replace('day-', '') || ''} · ${count.toLocaleString()}개`;
     $('scope-description').textContent = view !== 'study' ? '단원과 상태로 살펴보고, 단어별 누적 학습 횟수를 확인하세요.' : {
       chapter: `선택한 DAY의 남은 단어를 ${state().selection.questionOrder === 'random' ? '랜덤으로' : '순서대로'} 학습합니다.`,
-      ordered: 'DAY 구분 없이 01부터 30까지 이어서 학습합니다.',
+      ordered: `DAY 구분 없이 등록된 ${populated.length}개 단원을 이어서 학습합니다.`,
       random: '선택한 단어장 전체를 회독마다 무작위로 섞습니다.'
     }[state().selection.mode];
   }
   function renderStudy() {
-    document.body.dataset.quiz = quizType;
+    document.body.dataset.quiz = engine.current()?.entryType === 'synonym' ? 'classic' : quizType;
     const word = engine.current(), r = state().round, t = engine.totals();
     closeKanji();
     kanjiAnchors = [];
@@ -98,11 +101,12 @@
     $('undo').disabled = !state().undo;
     $('round-label').textContent = `이번 회독 · ${r.index.toLocaleString()} / ${r.ids.length.toLocaleString()}`;
     $('progress').max = r.ids.length || 1; $('progress').value = r.index;
-    $('actions').hidden = !word || quizType !== 'classic'; $('card').replaceChildren();
-    $('card').className = quizType === 'classic' ? 'card' : 'card quiz-card';
-    for (const id of ['meaning', 'reading', 'again', 'memorize']) $(id).hidden = quizType !== 'classic';
+    const classic = quizType === 'classic' || word?.entryType === 'synonym';
+    $('actions').hidden = !word || !classic; $('card').replaceChildren();
+    $('card').className = classic ? 'card' : 'card quiz-card';
+    for (const id of ['meaning', 'reading', 'again', 'memorize']) $(id).hidden = !classic;
     $('reset-scope').disabled = !t.total; $('reset-all').disabled = !data.words.length;
-    if (word && quizType !== 'classic') { renderQuiz(word); return; }
+    if (word && !classic) { renderQuiz(word); return; }
     if (word) {
       const jp = el('div', `japanese${word.japanese.length > 8 ? ' long' : ''}`); jp.lang = 'ja';
       japaneseNode = jp;
@@ -122,6 +126,20 @@
       const record = state().records[word.id];
       $('card').append(el('span', 'unit-tag', `${bookName(word.book)} / ${unitName(word.book, word.unit)} / ${String(word.order).padStart(2, '0')}${word.starred ? ' · ★ 기출' : ''}`), jp, answer,
         el('p', 'word-history', `누적 알고 있음 ${record?.knownCount || 0} · 다시 학습 ${record?.reviewCount || 0} · 리셋 ${record?.resetCount || 0}`));
+      if (word.entryType === 'core') $('card').prepend(el('p', 'exercise-category', word.category));
+      if (word.synonym) {
+        $('card').classList.add('synonym-card');
+        $('card').prepend(el('p', 'exercise-category', '유의어 · 비슷한 표현 떠올리기'));
+        answer.textContent = meaning ? word.meaning.split(' ≒ ')[0] : '비슷한 뜻의 일본어 표현은 무엇일까요?';
+        const pair = el('div', 'synonym-answer');
+        if (meaning) {
+          const expression = el('span', 'synonym-japanese', word.synonym.japanese); expression.lang = 'ja';
+          pair.append(el('span', 'synonym-symbol', '≒'), expression);
+          if (reading) pair.append(el('span', 'synonym-reading', word.synonym.reading));
+          pair.append(el('p', 'synonym-meaning', word.synonym.meaning));
+        } else pair.append(el('span', 'synonym-placeholder', '뜻 보기 · Z로 유의어 확인'));
+        answer.after(pair);
+      }
       const previous = previousAppearance(word); if (previous) $('card').append(previous);
       $('meaning').disabled = false; $('reading').disabled = false;
       if (reading) openKanji();
@@ -134,6 +152,7 @@
   function renderQuiz(word) {
     const card = $('card');
     card.append(el('span', 'unit-tag', bookName(word.book) + ' / ' + unitName(word.book, word.unit)));
+    if (word.entryType === 'core') card.prepend(el('p', 'exercise-category', word.category));
     const prompt = el('h2', quizType === 'pronunciation' ? 'quiz-meaning' : 'japanese', quizType === 'pronunciation' ? word.meaning : Quiz.hiragana(word.reading));
     if (quizType === 'kanji') prompt.lang = 'ja';
     card.append(prompt);
@@ -198,7 +217,7 @@
   });
   function renderList() {
     const query = $('search').value.trim().toLocaleLowerCase(), status = $('status-filter').value;
-    const list = selectedWords().filter(w => (!query || `${w.japanese} ${w.reading} ${w.meaning}`.toLocaleLowerCase().includes(query)) &&
+    const list = selectedWords().filter(w => (!query || `${w.category || ''} ${w.japanese} ${w.reading} ${w.meaning} ${w.synonym?.reading || ''}`.toLocaleLowerCase().includes(query)) &&
       (status === 'all' || (status === 'known' ? engine.known(w.id) : !engine.known(w.id))));
     $('word-list').replaceChildren(); $('list-count').textContent = `${list.length.toLocaleString()}개 단어`; $('list-empty').hidden = !!list.length;
     const book = data.books.find(b => b.id === $('book').value);
@@ -211,9 +230,11 @@
       head.append(hr); const body = el('tbody');
       for (const word of words) {
         const tr = el('tr'), jp = el('td', 'jp', word.japanese); jp.lang = 'ja';
+        if (word.entryType === 'core') jp.prepend(el('span', 'list-category', word.category));
+        if (word.synonym) jp.append(el('span', 'list-synonym', ` ≒ ${word.synonym.japanese}`));
         if (word.starred) jp.append(el('span', 'star', '★'));
         const previous = previousAppearance(word); if (previous) jp.append(previous);
-        const kana = el('td', 'kana', word.reading); kana.lang = 'ja';
+        const kana = el('td', 'kana', word.reading + (word.synonym ? ` ≒ ${word.synonym.reading}` : '')); kana.lang = 'ja';
         const def = el('td'); def.append(el('span', 'pos', word.partOfSpeech), document.createTextNode(word.meaning));
         const record = state().records[word.id], stats = el('td', 'word-counts', `알고 있음 ${record?.knownCount || 0} / 다시 학습 ${record?.reviewCount || 0}`);
         const status = el('td', 'status');
@@ -390,7 +411,7 @@
     if (view !== 'study' || settingsExpanded || event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey || $('import-dialog').open || $('reset-dialog').open || $('study-tools').open) return;
     const target = event.target;
     if (['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName) || target.isContentEditable) return;
-    if (quizType !== 'classic') {
+    if (quizType !== 'classic' && engine.current()?.entryType !== 'synonym') {
       const id = { KeyZ: 'quiz-hint', Space: 'quiz-next', KeyC: 'quiz-review' }[event.code];
       if (id) { event.preventDefault(); const button = $(id); if (button && !button.disabled && !button.hidden) button.click(); return; }
       const choiceIndex = ['KeyQ', 'KeyW', 'KeyE', 'KeyR'].indexOf(event.code);

@@ -10,8 +10,8 @@ function notes() {
   vm.runInNewContext(fs.readFileSync(path.join(root, 'data/kanji-all.js'), 'utf8'), context);
   return context.window.KANJI_DETAILS;
 }
-test('all 1,070 entries have short composition and formation fields with named components', () => {
-  const all = notes(); assert.equal(Object.keys(all).length, 1070);
+test('all 1,081 entries have short composition and formation fields with named components', () => {
+  const all = notes(); assert.equal(Object.keys(all).length, 1081);
   for (const [character, note] of Object.entries(all)) {
     assert.ok(note.components && note.formation, character);
     assert.ok(note.formation.length <= 65, `${character}: formation too long`);
@@ -35,5 +35,5 @@ test('unverified etymologies are disclosed rather than converted into invented m
   for (const note of Object.values(all).filter(n => n.formationKind === 'structural')) assert.match(note.formation, /형성 원리는 미확정/);
   const coverage = JSON.parse(fs.readFileSync(path.join(root, 'data/kanji-sources/compact-coverage.json'), 'utf8'));
   assert.deepEqual(coverage.unnamedComponents, []);
-  assert.equal(coverage.total, 1070);
+  assert.equal(coverage.total, 1081);
 });

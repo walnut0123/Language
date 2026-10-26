@@ -16,7 +16,10 @@
     for (const word of ordered) {
       const scope = duplicateScope === 'all' ? [] : duplicateScope === 'book' ? [word.book] : [word.book, word.unit];
       // Match exactly the three user-specified fields; never normalize or merge synonyms.
-      const key = JSON.stringify([...scope, word.japanese, word.reading, word.meaning]);
+      // A core-list exercise includes its printed classification. Keep it separate
+      // from ordinary vocabulary so importing it cannot leave whole lessons empty.
+      const exercise = word.entryType === 'core' ? ['core', word.category] : [];
+      const key = JSON.stringify([...scope, ...exercise, word.japanese, word.reading, word.meaning]);
       if (seen.has(key)) duplicateOf[word.id] = seen.get(key).id;
       else { seen.set(key, word); retained.add(word.id); }
     }

@@ -23,7 +23,7 @@ test('PDF import: 30 days, 2376 unique IDs; source counts and sequence match', (
   assert.equal(data.words.filter(w => w.book === 'check').length, 2376);
   assert.equal(new Set(data.words.map(w => w.id)).size, data.words.length);
   for (const book of data.books) assert.equal(book.units.length, 30);
-  assert.equal(data.words.filter(w => w.book === 'main').length, 167);
+  assert.equal(data.words.filter(w => w.book === 'main').length, 2409);
   for (const day of report.days) {
     const words = data.words.filter(w => w.book === 'check' && w.unit === `day-${String(day.day).padStart(2, '0')}`);
     assert.equal(words.length, day.expected); assert.equal(words[0].japanese, day.first); assert.equal(words.at(-1).japanese, day.last);
@@ -41,10 +41,13 @@ test('mainbook photos: day assignment, printed entries and source counts', () =>
     assert.deepEqual(Array.from(entries, w => w.order), Array.from({ length: count }, (_, i) => i + 1));
     for (const w of entries) assert.ok(w.japanese && w.reading && w.meaning && w.sourceImage && w.sourceYear);
   }
-  assert.deepEqual(Array.from(new Set(words.map(w => w.sourceImage)), file => words.filter(w => w.sourceImage === file).length), [32, 31, 24, 38, 42]);
-  assert.equal(words[0].japanese, '移す'); assert.equal(words[86].japanese, '調査');
-  assert.equal(words[87].japanese, '印象'); assert.equal(words.at(-1).japanese, '湖');
-  assert.equal(words.filter(w => w.japanese === '疑う').length, 3);
+  const counts = [32,31,24,38,42,38,42,36,30,36,24,36,24,44,44,33,44,44,22,44,44,22,17,20,18,17,19,14,17,19,14,30,25,33,17,33,17,53,68,66,69,69,69,64,69,69,69,66,69,64,66,69,63,69,30,62,15,63,24];
+  assert.deepEqual(Array.from(new Set(words.map(w => w.sourceImage)), file => words.filter(w => w.sourceImage === file).length), counts);
+  assert.deepEqual(Array.from(words.slice(0,6), w=>w.japanese), ['移す','帯','完全','苦しい','呼吸','困る']);
+  assert.equal(words[0].japanese, '移す'); assert.equal(words[86].japanese, '留守');
+  assert.equal(words[87].japanese, '印象'); assert.equal(words.at(-1).japanese, 'わがままだ');
+  assert.equal(words.filter(w => w.synonym).length, 155);
+  for (const word of words.filter(w=>w.entryType === 'core')) assert.ok(word.category);
 });
 
 test('one pass per round, remaining-only next round, known exclusion', () => {
@@ -159,6 +162,18 @@ test('empty unit has no questions and does not count a reset', () => {
 });
 
 // Small DOM/storage adapter for real app.js event wiring (not a layout/browser test).
+test('legacy 167 permanent IDs still identify the same printed occurrences after horizontal reordering', () => {
+  const ctx = {window:{}}; vm.runInNewContext(fs.readFileSync(path.join(root,'data/source-words.js'),'utf8'),ctx);
+  let day; const counts={};
+  for(const line of fs.readFileSync(path.join(root,'data/mainbook-transcription.txt'),'utf8').split(/\r?\n/)) {
+    if(!line || line.startsWith('#')) continue;
+    if(line.startsWith('@')) { day=Number(line.slice(1).split('|')[0]); continue; }
+    const order=counts[day]=(counts[day]||0)+1;
+    const id=`yuhadayo-n3-main-d${String(day).padStart(2,'0')}-${String(order).padStart(3,'0')}`;
+    assert.equal(ctx.window.VOCABULARY.words.find(w=>w.id===id)?.japanese,line.split('|')[0]);
+  }
+});
+
 function ui(storage = {}, failSave = false, vocabulary = fixture()) {
   const nodes = {}, documentEvents = {};
   class Element {
@@ -166,6 +181,8 @@ function ui(storage = {}, failSave = false, vocabulary = fixture()) {
     get textContent() { return this._text + this.children.map(n => n.textContent).join(''); }
     set textContent(value) { this._text = value; this.children = []; }
     append(...items) { for (const item of items) { item.parent = this; this.children.push(item); } }
+    prepend(...items) { for (const item of items) item.parent = this; this.children.unshift(...items); }
+    after(...items) { for (const item of items) item.parent = this.parent; this.parent.children.splice(this.parent.children.indexOf(this)+1,0,...items); }
     replaceChildren(...items) { this.children = []; this.append(...items); }
     addEventListener(name, handler) { this.events[name] = handler; }
     setAttribute(name, value) { (this.attributes ||= {})[name] = value; }
@@ -226,9 +243,9 @@ test('all vocabulary characters have notes; DAY 01 keeps exact per-character rub
     assert.ok(parts.filter(p => p.kanji).every(p => [...p.text].length === 1), word.japanese);
   }
   const allWords = context.window.VOCABULARY.words;
-  assert.equal(allWords.length, 2389);
-  const characters = new Set(allWords.flatMap(w => w.japanese.match(/\p{Script=Han}/gu) || []));
-  assert.equal(characters.size, 1070);
+  assert.equal(allWords.length, 3903);
+  const characters = new Set(allWords.flatMap(w => (w.japanese + (w.synonym?.japanese || '')).match(/\p{Script=Han}/gu) || []));
+  assert.equal(characters.size, 1081);
   for (const character of characters) {
     const detail = context.window.KANJI_DETAILS[character];
     assert.ok(detail?.label && detail.components && detail.formation, character);
@@ -422,4 +439,22 @@ test('UI import rejects invalid files, supports cancel/Escape, then restores cou
 test('UI failed save is visible and learning remains usable; malformed storage is not overwritten on load', () => {
   const app = ui({}, true); app.click('memorize'); assert.equal(app.nodes['storage-error'].hidden, false); assert.match(app.nodes['storage-error'].textContent, /保存|저장/); assert.match(app.card(), /合図/);
   const storage = { 'haru-vocabulary-v1': '{bad' }; const broken = ui(storage); assert.equal(storage['haru-vocabulary-v1'], '{bad'); assert.equal(broken.nodes['storage-error'].hidden, false);
+});
+
+test('synonym pairs reveal together with Z and keep classic shortcuts in both quiz modes', () => {
+  for (const type of ['classic','pronunciation','kanji']) {
+    const data=fixture(); Object.assign(data.words[0], {entryType:'synonym',japanese:'キッチン',reading:'きっちん',meaning:'키친, 부엌 ≒ 台所 (부엌)',synonym:{japanese:'台所',reading:'だいどころ',meaning:'부엌'}});
+    const app=ui({'haru-quiz-preferences':JSON.stringify({type})},false,data);
+    assert.match(app.card(), /비슷한 뜻/); assert.doesNotMatch(app.card(), /台所/);
+    app.key('KeyZ'); assert.match(app.card(), /台所/); assert.match(app.card(), /부엌/);
+    app.key('KeyX'); assert.match(app.card(), /だいどころ/);
+    app.key('Space'); assert.equal(app.state().records.a.status,'known');
+  }
+});
+
+test('core classification is visible before answering and searchable in the list', () => {
+  const data=fixture(); Object.assign(data.words[0],{entryType:'core',category:'명사 - あ행'});
+  const app=ui({},false,data); assert.match(app.card(),/명사 - あ행/);
+  app.click('tab-list'); app.nodes.search.value='명사 - あ행'; app.nodes.search.fire('input');
+  assert.match(app.nodes['word-list'].textContent,/愛/); assert.doesNotMatch(app.nodes['word-list'].textContent,/合図/);
 });

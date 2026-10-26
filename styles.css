@@ -186,3 +186,13 @@ body[data-view="study"][data-quiz="kanji"] .quiz-card .japanese { font-size: 36p
   .quiz-key { flex-basis: 14px; height: 16px; font-size: 8px; }
   .quiz-choice-label { font-size: 15px; }
 }
+/* Printed mainbook classifications and paired synonym recall. */
+.exercise-category { color: var(--accent, #397864); font-size: 14px; font-weight: 700; letter-spacing: .03em; margin: 0 0 12px; }
+.list-category { display: block; font: 600 11px/1.5 sans-serif; color: #52776a; margin-bottom: 5px; }
+.list-synonym { display: block; font-size: .85em; margin-top: 5px; }
+.synonym-answer { border-top: 1px solid #d8e2dc; padding: 18px 12px 8px; margin: 10px auto; max-width: 100%; overflow-wrap: anywhere; }
+.synonym-symbol { color: #52776a; margin-right: 12px; font-size: 25px; }
+.synonym-japanese { font-size: clamp(24px, 4vw, 40px); font-weight: 650; }
+.synonym-reading { display: block; margin-top: 8px; color: #52776a; }
+.synonym-meaning { margin: 10px 0 0; }
+.synonym-placeholder { font-size: 13px; color: #6b786f; }
