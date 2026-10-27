@@ -214,7 +214,7 @@ function ui(storage = {}, failSave = false, vocabulary = fixture(), layout = {})
     fire(name) { return this.events[name]?.({ target: this }); }
   }
   const document = { getElementById: id => nodes[id] ||= new Element(), createElement: tag => new Element(tag), createDocumentFragment: () => new Element(), createTextNode: text => ({ textContent: text }), body: new Element('body'), addEventListener: (type, fn) => documentEvents[type] = fn };
-  const context = vm.createContext({ window: { VOCABULARY: require('../vocabulary.js').prepare(vocabulary), scrollTo() {}, requestAnimationFrame: layout.width ? fn=>fn() : undefined, addEventListener(name,fn) { if(name==='resize')(layout.resize ||= []).push(fn); }, innerWidth: 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
+  const context = vm.createContext({ window: { VOCABULARY: require('../vocabulary.js').prepare(vocabulary), scrollTo() {}, requestAnimationFrame: layout.width ? fn=>fn() : undefined, addEventListener(name,fn) { if(name==='resize')(layout.resize ||= []).push(fn); }, innerWidth: layout.viewportWidth || 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
     getItem: key => storage[key] || null, setItem: (key, value) => { if (failSave) throw Error('quota'); storage[key] = value; }
   } });
   const quizButtons = ['classic', 'pronunciation', 'kanji'].map(type => {
@@ -225,6 +225,7 @@ function ui(storage = {}, failSave = false, vocabulary = fixture(), layout = {})
   document.querySelectorAll = selector => selector === '[data-quiz]' ? quizButtons : descendants(nodes.card).filter(n => n.className === 'quiz-choice');
   context.Quiz = require('../quiz.js');
   nodes['actions'] = new Element();
+  new Element().append(nodes.actions);
   for (const id of ['meaning', 'reading', 'again', 'memorize']) { nodes[id] = new Element('button'); nodes.actions.append(nodes[id]); }
   vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-notes.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-details.js'), 'utf8'), context);
@@ -267,6 +268,24 @@ test('background sync keeps solved quiz until Space, but resets answers for a di
   assert.equal(app.get('quiz-next').disabled,true);
   const changed=app.snapshot();changed.round.index=0;delete changed.records.a;
   app.apply(changed,{preserveScreen:true});assert.equal(app.get('quiz-next').disabled,true);
+});
+
+test('mobile reading notes are inline disclosures after controls and toggle off with the reading button', () => {
+  for(const viewportWidth of [320,390,760]) {
+    const app=ui({},false,fixture(),{viewportWidth});
+    app.click('reading');
+    const layer=app.nodes['kanji-layer'];
+    assert.equal(layer.hidden,false);
+    assert.equal(layer.getAttribute('popover'),undefined);
+    assert.equal(layer.parent,app.nodes.actions.parent);
+    assert.equal(layer.children[0].tagName,'DETAILS');
+    assert.equal(layer.children[0].children[0].tagName,'SUMMARY');
+    assert.match(layer.textContent,/구성/);
+    assert.equal(app.nodes.reading.getAttribute('aria-expanded'),'true');
+    app.click('reading');
+    assert.equal(layer.hidden,true);
+    assert.equal(app.nodes.reading.getAttribute('aria-expanded'),'false');
+  }
 });
 
 test('all vocabulary characters have notes; DAY 01 keeps exact per-character ruby readings', () => {

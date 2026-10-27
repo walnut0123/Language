@@ -237,8 +237,9 @@
   function fitQuizChoices() {
     for (const button of document.querySelectorAll('.quiz-choice')) {
       const label = button.querySelector('.quiz-choice-label'), explanation = button.querySelector('.quiz-explanation');
-      const key = button.querySelector('.quiz-key'), style = getComputedStyle(button);
       label.style.fontSize = ''; explanation.style.fontSize = '';
+      if (window.innerWidth <= 760) continue; // Mobile wraps at readable sizes.
+      const key = button.querySelector('.quiz-key'), style = getComputedStyle(button);
       const gap = parseFloat(style.columnGap) || 0;
       const available = button.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) - key.offsetWidth - gap;
       if (label.scrollWidth > available) label.style.fontSize = `${parseFloat(getComputedStyle(label).fontSize) * available / label.scrollWidth}px`;
@@ -344,7 +345,7 @@
   function hideReading() { reading = false; renderStudy(); $('reading').focus(); }
   function closeKanji() {
     const layer = $('kanji-layer');
-    if (kanjiOpen) layer.hidePopover?.();
+    if (kanjiOpen && layer.getAttribute('popover') === 'manual') layer.hidePopover?.();
     layer.hidden = true; layer.replaceChildren();
     kanjiOpen = false; kanjiCards = [];
     document.body.classList.toggle('kanji-side-open', false);
@@ -355,11 +356,25 @@
     if (!kanjiOpen) return;
     const viewport = window.visualViewport;
     const width = viewport?.width || window.innerWidth, height = viewport?.height || window.innerHeight;
+    const layer = $('kanji-layer');
+    if (window.innerWidth <= 760) {
+      if (layer.getAttribute('popover') === 'manual') layer.hidePopover?.();
+      layer.removeAttribute('popover'); layer.removeAttribute('style');
+      layer.classList.add('kanji-inline'); layer.classList.toggle('kanji-rail', false);
+      $('actions').after(layer);
+      return;
+    }
+    if (layer.getAttribute('popover') !== 'manual') {
+      layer.setAttribute('popover', 'manual'); document.body.append(layer);
+      layer.showPopover?.();
+    }
+    layer.classList.toggle('kanji-inline', false);
+    for (const card of kanjiCards) if (card.tagName === 'DETAILS') card.open = true;
     const offsetX = viewport?.offsetLeft || 0, offsetY = viewport?.offsetTop || 0;
     const rect = node => { const r = node.getBoundingClientRect(); return { left: r.left - offsetX, top: r.top - offsetY, width: r.width, height: r.height }; };
     const word = rect(japaneseNode), anchors = kanjiAnchors.map(a => rect(a.node));
     const boxes = KanjiUI.layout(anchors, word, { width, height });
-    const layer = $('kanji-layer'); layer.classList.toggle('kanji-rail', !boxes);
+    layer.classList.toggle('kanji-rail', !boxes);
     layer.style.left = `${offsetX}px`; layer.style.top = `${offsetY}px`;
     layer.style.width = `${width}px`; layer.style.height = `${height}px`;
     if (!boxes) {
@@ -378,20 +393,25 @@
   }
   function openKanji() {
     if (!kanjiAnchors.length) return;
-    document.body.classList.toggle('kanji-side-open', true);
+    const mobile = window.innerWidth <= 760;
+    document.body.classList.toggle('kanji-side-open', !mobile);
     const layer = $('kanji-layer'); layer.replaceChildren();
     for (const [index, anchor] of kanjiAnchors.entries()) {
       const note = window.KANJI_DETAILS[anchor.character];
-      const card = el('section', 'kanji-float'); card.setAttribute('aria-labelledby', `kanji-title-${index}`);
-      const heading = el('div', 'kanji-heading'), title = el('h2', '', anchor.character); title.id = `kanji-title-${index}`; title.lang = 'ja';
+      const card = el(mobile ? 'details' : 'section', 'kanji-float'); card.setAttribute('aria-labelledby', `kanji-title-${index}`);
+      const heading = el(mobile ? 'summary' : 'div', 'kanji-heading'), title = el('h2', '', anchor.character); title.id = `kanji-title-${index}`; title.lang = 'ja';
       const close = el('button', 'kanji-close', '×'); close.setAttribute('aria-label', '읽기 도움 끄기'); close.addEventListener('click', hideReading);
-      heading.append(title, el('span', '', note.label?.replace(/^.\(|\)$/g, '') || note.meaning), close);
+      heading.append(title, el('span', '', note.label?.replace(/^.\(|\)$/g, '') || note.meaning));
+      if (mobile) heading.append(el('span', 'kanji-expand', '설명 펼치기'));
+      else heading.append(close);
       const body = el('div', 'kanji-copy'); body.tabIndex = 0;
       body.append(el('h3', '', '구성'), el('p', '', note.components), el('h3', '', '형성 원리'), el('p', '', note.formation));
       card.append(heading, body); layer.append(card); kanjiCards.push(card);
       anchor.node.classList.toggle('explained', true);
     }
-    layer.hidden = false; layer.showPopover?.(); kanjiOpen = true;
+    layer.hidden = false;
+    if (!mobile) { layer.setAttribute('popover', 'manual'); layer.showPopover?.(); }
+    kanjiOpen = true;
     $('reading').setAttribute('aria-expanded', 'true'); positionKanji();
   }
   window.addEventListener('resize', positionKanji);
