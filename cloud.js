@@ -43,9 +43,9 @@ async function boot() {
   const backup = () => localStorage.setItem(`${key()}-recovery-${Date.now()}`, JSON.stringify(app.snapshot()));
   const errorText = error => error.code === 'permission-denied' ? '접근 권한이 없습니다. Firebase 보안 규칙을 확인하세요.' :
     error.code === 'resource-exhausted' ? '클라우드 사용 한도에 도달했습니다.' : error.message || '네트워크 또는 설정을 확인하세요.';
-  function apply(state, persist = true) {
+  function apply(state, persist = true, preserveScreen = true) {
     applying = true;
-    try { app.apply(state); if (persist) app.persist(); } finally { applying = false; }
+    try { app.apply(state, { preserveScreen }); if (persist) app.persist(); } finally { applying = false; }
   }
   window.CloudSession = {
     get key() { return key(); },
@@ -128,17 +128,17 @@ async function boot() {
     for (const id of ['book', 'mode', 'unit', 'question-order']) { const input = document.getElementById(id); if (input) input.inert = !!user; }
     if (!user) {
       const raw = localStorage.getItem(guestKey);
-      try { apply(raw ? Learning.parse(JSON.parse(raw), app.data) : Learning.fresh()); }
-      catch { apply(Learning.fresh(), false); status('기존 브라우저 기록을 읽지 못했습니다. 원래 저장값은 보존했습니다.'); return; }
+      try { apply(raw ? Learning.parse(JSON.parse(raw), app.data) : Learning.fresh(), true, false); }
+      catch { apply(Learning.fresh(), false, false); status('기존 브라우저 기록을 읽지 못했습니다. 원래 저장값은 보존했습니다.'); return; }
       status('로그아웃 상태 · 기존 브라우저 기록으로 학습합니다.'); return;
     }
     status('계정 기록을 불러오는 중…');
-    apply(Learning.fresh(), false);
+    apply(Learning.fresh(), false, false);
     try {
       queue = readQueue();
       const cached = localStorage.getItem(key());
       // Never leave another account's state on screen while loading this account.
-      apply(cached ? Learning.parse(JSON.parse(cached), app.data) : Learning.fresh());
+      apply(cached ? Learning.parse(JSON.parse(cached), app.data) : Learning.fresh(), true, false);
       if (token !== generation) return;
       ready = true;
       for (const child of document.querySelector('main').children) child.inert = false;

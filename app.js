@@ -468,7 +468,19 @@
   if (state().migratedFromV1) notice('이전 버전 기록을 보존했습니다. 샘플 기록은 실제 단어와 분리되며 백업에 함께 포함됩니다.');
   window.VocabularyApp = {
     data, snapshot: () => JSON.parse(JSON.stringify(state())),
-    apply(value) { engine.replace(Learning.parse(value, data)); hideAnswers(); selectors(); render(); },
+    apply(value, { preserveScreen = false } = {}) {
+      const next = Learning.parse(value, data);
+      // A focus-triggered sync often returns exactly the state already on screen.
+      // Avoid rebuilding the DOM (and losing the current interaction) in that case.
+      if (preserveScreen && JSON.stringify(next) === JSON.stringify(state())) return;
+      const question = engine.current()?.id, selection = JSON.stringify(state().selection);
+      engine.replace(next);
+      const sameQuestion = preserveScreen && question === engine.current()?.id && selection === JSON.stringify(state().selection);
+      if (!sameQuestion) hideAnswers();
+      // List filters are local browsing choices, independent of the study scope.
+      if (!preserveScreen || view === 'study') selectors();
+      render();
+    },
     persist: save
   };
 })();

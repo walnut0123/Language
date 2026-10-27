@@ -230,7 +230,7 @@ function ui(storage = {}, failSave = false, vocabulary = fixture(), layout = {})
   vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-details.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(root, 'data/kanji-all.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(root, 'app.js'), 'utf8'), context);
-  return { nodes, storage, click: id => nodes[id].click(), state: () => JSON.parse(storage['haru-vocabulary-v1']),
+  return { nodes, storage, get: id => document.getElementById(id), apply: (state, options) => context.window.VocabularyApp.apply(state,options), snapshot: () => copy(context.window.VocabularyApp.snapshot()), click: id => nodes[id].click(), state: () => JSON.parse(storage['haru-vocabulary-v1']),
     card: () => {
       const visible = n => n.hidden || n.className === 'ruby-hidden' ? '' : (n._text || '') + (n.children || []).map(visible).join('');
       return nodes.card.children.map(visible).join(' ');
@@ -240,6 +240,34 @@ function ui(storage = {}, failSave = false, vocabulary = fixture(), layout = {})
     close(id, result) { nodes[id].returnValue = result; nodes[id].open = false; nodes[id].fire('close'); }
   };
 }
+
+test('background sync preserves list DAY, book and search even when remote records change', () => {
+  const app=ui(); app.click('tab-list');
+  app.nodes.unit.value='day-02'; app.nodes.unit.fire('change');
+  app.nodes.search.value='本'; app.nodes.search.fire('input');
+  const next=app.snapshot(); next.records.a={status:'known',knownCount:1,reviewCount:0,restoreCount:0,resetCount:0,updatedAt:new Date().toISOString()};
+  app.apply(next,{preserveScreen:true});
+  assert.equal(app.nodes.unit.value,'day-02'); assert.equal(app.nodes.book.value,'check'); assert.equal(app.nodes.search.value,'本');
+  assert.match(app.nodes['word-list'].textContent,/本/);
+});
+
+test('background sync keeps solved quiz until Space, but resets answers for a different question', () => {
+  const app=ui(); app.click('type-pronunciation');
+  const choices=app.nodes.card.children.find(n=>n.className==='quiz-choices');
+  choices.children.find(n=>n.children[1].textContent==='あい').click();
+  assert.equal(app.get('quiz-next').disabled,false);
+  const card=app.nodes.card.children[0];
+  app.apply(app.snapshot(),{preserveScreen:true});
+  assert.equal(app.nodes.card.children[0],card);
+  assert.equal(app.get('quiz-next').disabled,false);
+  const next=app.snapshot();next.records.d={status:'known',knownCount:1,reviewCount:0,restoreCount:0,resetCount:0,updatedAt:new Date().toISOString()};
+  app.apply(next,{preserveScreen:true});
+  assert.equal(app.get('quiz-next').disabled,false);
+  app.key('Space');assert.equal(app.snapshot().records.a.status,'known');
+  assert.equal(app.get('quiz-next').disabled,true);
+  const changed=app.snapshot();changed.round.index=0;delete changed.records.a;
+  app.apply(changed,{preserveScreen:true});assert.equal(app.get('quiz-next').disabled,true);
+});
 
 test('all vocabulary characters have notes; DAY 01 keeps exact per-character ruby readings', () => {
   const context = { window: {} };
@@ -490,4 +518,5 @@ test('core classification is visible before answering and searchable in the list
   app.click('tab-list'); app.nodes.search.value='명사 - あ행'; app.nodes.search.fire('input');
   assert.match(app.nodes['word-list'].textContent,/愛/); assert.doesNotMatch(app.nodes['word-list'].textContent,/合図/);
 });
+
 
