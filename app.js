@@ -38,31 +38,52 @@
   const unitName = (book, unit) => data.books.find(b => b.id === book)?.units.find(u => u.id === unit)?.name || unit;
   const formatDate = at => new Date(at).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   function el(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
+  const duplicateFits = new Map();
+  const duplicateObserver = window.ResizeObserver ? new window.ResizeObserver(entries => {
+    for (const { target } of entries) duplicateFits.get(target)?.();
+  }) : null;
+  window.addEventListener('resize', () => { for (const fit of duplicateFits.values()) fit(); });
+  document.fonts?.ready.then(() => { for (const fit of duplicateFits.values()) fit(); });
   function previousAppearance(word) {
     const duplicates = data.duplicateOccurrences?.[word.id];
     if (duplicates?.length) {
       const badge = el('div', 'previous-appearance');
-      badge.append(el('span', 'previous-appearance-title', duplicates.some(d=>d.exact) ? '중복 단어 · 모든 항목 유지' : '같은 표기의 단어 · 읽기·뜻 확인'));
+      const label = duplicates.some(d=>d.exact) ? '중복' : '같은 표기';
       const locations = new Map();
       for (const item of duplicates) {
         const key = `${item.book}/${item.unit}`;
         if (!locations.has(key)) locations.set(key, { ...item, orders: [] });
         locations.get(key).orders.push(item.order);
       }
-      const all = [...locations.values()];
-      for (const item of all.slice(0,5)) badge.append(el('span', 'previous-appearance-day', `${bookName(item.book)} / D${Number(item.unit.slice(4))} / ${item.orders.join(', ')}번`));
-      if (all.length > 5) badge.append(el('span', 'previous-appearance-day', `외 ${all.length-5}개 단원`));
+      const all = [...locations.values()].sort((a,b)=>data.books.findIndex(x=>x.id===a.book)-data.books.findIndex(x=>x.id===b.book) || Number(a.unit.slice(4))-Number(b.unit.slice(4)));
+      const format = count => {
+        const books = new Map();
+        for (const item of all.slice(0,count)) {
+          if (!books.has(item.book)) books.set(item.book, []);
+          books.get(item.book).push(`D${Number(item.unit.slice(4))}`);
+        }
+        const text = [...books].map(([book,days])=>`${bookName(book)} ${days.join('·')}`).join(' / ');
+        return `${label} · ${text}${count < all.length ? `${count ? ' ' : ''}외 ${all.length-count}곳` : ''}`;
+      };
+      badge.textContent = format(all.length);
       badge.title = all.map(item=>`${bookName(item.book)} D${Number(item.unit.slice(4))} ${item.orders.join(', ')}번`).join('\n');
+      badge.setAttribute('aria-label', `${label} · ${badge.title.replace(/\n/g, ' / ')}`);
+      const fit = () => {
+        // A hidden list has no measurable width. Retry when it becomes visible.
+        if (!badge.clientWidth) return;
+        let count = all.length;
+        badge.textContent = format(count);
+        while (count > 0 && badge.scrollWidth > badge.clientWidth) badge.textContent = format(--count);
+      };
+      duplicateFits.set(badge, fit);
+      duplicateObserver?.observe(badge);
+      window.requestAnimationFrame?.(fit);
       return badge;
     }
     const appearances = data.previousAppearances?.[word.id] || [];
     if (!appearances.length) return null;
     const badge = el('div', 'previous-appearance');
-    badge.append(el('span', 'previous-appearance-title', '등장한 적 있는 단어'));
-    for (const prior of appearances) {
-      const match = /^day-(\d+)$/.exec(prior.unit);
-      badge.append(el('span', 'previous-appearance-day', `${match ? `D - ${Number(match[1])}` : unitName(prior.book, prior.unit)} / ${bookName(prior.book)}`));
-    }
+    badge.textContent = `중복 · ${appearances.map(prior=>`${bookName(prior.book)} D${Number(prior.unit.slice(4))}`).join(' / ')}`;
     return badge;
   }
   function save() {
@@ -286,7 +307,10 @@
       $('event-history').append(li);
     }
   }
-  function render() { renderStats(); if (view === 'study') renderStudy(); else if (view === 'list') renderList(); else renderHistory(); }
+  function render() {
+    duplicateObserver?.disconnect(); duplicateFits.clear();
+    renderStats(); if (view === 'study') renderStudy(); else if (view === 'list') renderList(); else renderHistory();
+  }
   function switchView(next) {
     closeKanji();
     closeSettings();

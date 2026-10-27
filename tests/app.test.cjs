@@ -187,9 +187,11 @@ test('legacy 167 permanent IDs still identify the same printed occurrences after
   }
 });
 
-function ui(storage = {}, failSave = false, vocabulary = fixture()) {
+function ui(storage = {}, failSave = false, vocabulary = fixture(), layout = {}) {
   const nodes = {}, documentEvents = {};
   class Element {
+    get clientWidth() { return layout.width || 0; }
+    get scrollWidth() { return this.textContent.length * 5; }
     constructor(tag = 'DIV') { this.tagName = tag.toUpperCase(); this.children = []; this.events = {}; this.dataset = {}; this.style = { setProperty() {} }; this.value = ''; this._text = ''; this.hidden = false; this.firstChild = { textContent: '' }; this.classList = { add() {}, toggle() {}, contains() { return false; } }; }
     get textContent() { return this._text + this.children.map(n => n.textContent).join(''); }
     set textContent(value) { this._text = value; this.children = []; }
@@ -212,7 +214,7 @@ function ui(storage = {}, failSave = false, vocabulary = fixture()) {
     fire(name) { return this.events[name]?.({ target: this }); }
   }
   const document = { getElementById: id => nodes[id] ||= new Element(), createElement: tag => new Element(tag), createDocumentFragment: () => new Element(), createTextNode: text => ({ textContent: text }), body: new Element('body'), addEventListener: (type, fn) => documentEvents[type] = fn };
-  const context = vm.createContext({ window: { VOCABULARY: require('../vocabulary.js').prepare(vocabulary), scrollTo() {}, addEventListener() {}, innerWidth: 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
+  const context = vm.createContext({ window: { VOCABULARY: require('../vocabulary.js').prepare(vocabulary), scrollTo() {}, requestAnimationFrame: layout.width ? fn=>fn() : undefined, addEventListener(name,fn) { if(name==='resize')(layout.resize ||= []).push(fn); }, innerWidth: 1200, innerHeight: 800 }, document, Learning, KanjiUI: require('../kanji-ui.js'), console, Blob, URL, setTimeout: fn => fn(), localStorage: {
     getItem: key => storage[key] || null, setItem: (key, value) => { if (failSave) throw Error('quota'); storage[key] = value; }
   } });
   const quizButtons = ['classic', 'pronunciation', 'kanji'].map(type => {
@@ -313,14 +315,31 @@ test('duplicate badge appears on both occurrences in study and list with the oth
   const vocabulary = fixture();
   vocabulary.words.push({ ...vocabulary.words[0], id: 'variant', unit: 'day-02', meaning: '사랑, 애정', order: 2 });
   const app = ui({}, false, vocabulary);
-  assert.match(app.card(), /같은 표기의 단어/);
+  assert.match(app.card(), /같은 표기/);
   app.nodes.unit.value = 'day-02'; app.nodes.unit.fire('change');
   app.key('Space');
-  assert.match(app.card(), /같은 표기의 단어/);
+  assert.match(app.card(), /같은 표기/);
   const badge = app.nodes.card.children.find(n => n.className === 'previous-appearance');
-  assert.deepEqual(badge.children.map(n => n.textContent), ['같은 표기의 단어 · 읽기·뜻 확인', '체크북 / D1 / 1번']);
+  assert.equal(badge.textContent, '같은 표기 · 체크북 D1');
+  assert.match(badge.title, /체크북 D1 1번/);
   app.click('tab-list');
-  assert.match(app.nodes['word-list'].textContent, /같은 표기의 단어 · 읽기·뜻 확인체크북 \/ D1 \/ 1번/);
+  assert.match(app.nodes['word-list'].textContent, /같은 표기 · 체크북 D1/);
+});
+
+test('duplicate line shows every location until measured overflow, then expands again on resize', () => {
+  const vocabulary=fixture();
+  for(let i=0;i<8;i++) vocabulary.words.push({...vocabulary.words[0],id:`repeat-${i}`,unit:i%2?'day-02':'day-03',order:i+2});
+  vocabulary.words.push({...vocabulary.words[0],id:'main-repeat',book:'main'});
+  const layout={width:1000},app=ui({},false,vocabulary,layout);
+  const badge=app.nodes.card.children.find(n=>n.className==='previous-appearance');
+  assert.equal(badge.textContent,'중복 · 체크북 D2·D3 / 메인북 D1');
+  assert.doesNotMatch(badge.textContent,/외/);
+  layout.width=95;layout.resize.forEach(fn=>fn());
+  assert.match(badge.textContent,/외 \d곳/);
+  assert.ok(badge.scrollWidth<=badge.clientWidth);
+  assert.match(badge.getAttribute('aria-label'),/메인북 D1/);
+  layout.width=1000;layout.resize.forEach(fn=>fn());
+  assert.equal(badge.textContent,'중복 · 체크북 D2·D3 / 메인북 D1');
 });
 
 test('published main DAY 02 and DAY 01 both display their printed 郵便 occurrence', () => {
