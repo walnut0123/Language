@@ -331,7 +331,19 @@
   $('book').addEventListener('change', () => { fillUnits(view === 'study' ? 'day-01' : 'all'); selectScope(); });
   function closeSettings() { settingsExpanded = false; $('settings-panel').classList.toggle('expanded', false); $('settings-toggle').setAttribute('aria-expanded', 'false'); }
   let settingsExpanded = false;
+  const accountToggle = $('account-toggle'), accountPanel = $('account-panel');
+  function closeAccount() {
+    accountPanel.classList.toggle('expanded', false);
+    accountToggle.setAttribute('aria-expanded', 'false');
+  }
+  accountToggle.addEventListener('click', () => {
+    const expanded = accountToggle.getAttribute('aria-expanded') !== 'true';
+    accountPanel.classList.toggle('expanded', expanded);
+    accountToggle.setAttribute('aria-expanded', String(expanded));
+    closeSettings();
+  });
   $('settings-toggle').addEventListener('click', () => {
+    closeAccount();
     settingsExpanded = !settingsExpanded;
     $('settings-panel').classList.toggle('expanded', settingsExpanded); $('settings-toggle').setAttribute('aria-expanded', String(settingsExpanded));
     $('study-tools').open = false;
@@ -466,6 +478,10 @@
     pending = null;
   });
   document.addEventListener('keydown', event => {
+    if (accountToggle.getAttribute('aria-expanded') === 'true') {
+      if (event.code === 'Escape') { event.preventDefault(); closeAccount(); accountToggle.focus(); }
+      return;
+    }
     if (reading && view === 'study' && !settingsExpanded && !$('import-dialog').open && !$('reset-dialog').open && !$('study-tools').open && event.code === 'Escape' && !event.isComposing) { event.preventDefault(); hideReading(); return; }
     if (event.code === 'Escape') { settingsExpanded = false; closeSettings(); return; }
     if ($('quiz-dialog').open) return;

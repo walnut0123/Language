@@ -266,6 +266,21 @@ body[data-view="study"][data-quiz="kanji"] .quiz-card .japanese { font-size: 36p
   .dialog-actions button { flex:1 1 110px; min-height:44px; }
 }
 
+.account-toggle { display:none; }
+/* Account details open independently of the compact mobile learning frame. */
+@media (max-width:760px) {
+  header { position:relative; z-index:30; gap:4px; }
+  header .brand { font-size:16px; }
+  header nav button { padding:8px 5px; font-size:10px; }
+  header .account-toggle { display:block; flex-shrink:0; padding:8px; min-height:36px; font-size:10px; }
+  header #account-panel { display:none; }
+  header #account-panel.expanded { display:flex; position:absolute; top:100%; left:0; right:0; z-index:30; flex-wrap:wrap; justify-content:flex-start; gap:8px; max-height:calc(100dvh - 80px); overflow:auto; overscroll-behavior:contain; padding:16px; background:#f5f6f0; border:1px solid var(--border); border-radius:12px; box-shadow:0 12px 32px #18332b30; }
+  header #account-panel #cloud-status { flex:1 1 100%; min-width:0; font-size:12px; line-height:1.7; white-space:normal; overflow-wrap:anywhere; }
+  header #account-panel button { min-width:0; max-width:100%; min-height:44px; padding:8px 12px; font-size:12px; white-space:normal; overflow-wrap:anywhere; text-align:left; }
+  body[data-view="study"] #card > .unit-tag,
+  body[data-view="study"] #card > .exercise-category,
+  body[data-view="study"] #card > .previous-appearance { display:none; }
+}
 /* Keep the mobile study frame stable when answers and explanations are revealed. */
 @media (max-width:760px) {
   body[data-view="study"] .app { height:100dvh; min-height:0; }

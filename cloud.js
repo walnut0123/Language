@@ -4,7 +4,7 @@ const app = window.VocabularyApp;
 const status = text => {
   $('cloud-status').textContent = text;
   const compact = document.getElementById('mobile-sync');
-  if (compact) compact.textContent = text.includes('저장 완료') ? '✓ 클라우드 저장 완료' : text.includes('미완료') || text.includes('실패') || text.includes('못했') ? '저장 상태 확인 · 설정을 열어주세요' : text.includes('대기') || text.includes('동기화 중') ? '클라우드 전송 중…' : text.includes('불러오는') ? '계정 기록 불러오는 중…' : '계정 · 저장 상태는 설정에서 확인';
+  if (compact) compact.textContent = text.includes('저장 완료') ? '✓ 클라우드 저장 완료' : text.includes('미완료') || text.includes('실패') || text.includes('못했') ? '저장 상태 확인 · 로그인 · 계정을 열어주세요' : text.includes('대기') || text.includes('동기화 중') ? '클라우드 전송 중…' : text.includes('불러오는') ? '계정 기록 불러오는 중…' : '계정 · 저장 상태는 로그인 · 계정에서 확인';
 };
 const config = window.FIREBASE_CONFIG;
 if (!config?.apiKey || !config?.projectId || !config?.authDomain || !config?.appId) {

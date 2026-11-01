@@ -242,6 +242,21 @@ function ui(storage = {}, failSave = false, vocabulary = fixture(), layout = {})
   };
 }
 
+test('account panel blocks study shortcuts and closes with Escape or learning settings', () => {
+  const app = ui();
+  const before = app.snapshot();
+  app.click('account-toggle');
+  assert.equal(app.nodes['account-toggle'].getAttribute('aria-expanded'), 'true');
+  app.key('Space');
+  assert.deepEqual(app.snapshot(), before);
+  app.key('Escape');
+  assert.equal(app.nodes['account-toggle'].getAttribute('aria-expanded'), 'false');
+  app.click('account-toggle');
+  app.click('settings-toggle');
+  assert.equal(app.nodes['account-toggle'].getAttribute('aria-expanded'), 'false');
+  assert.equal(app.nodes['settings-toggle'].getAttribute('aria-expanded'), 'true');
+});
+
 test('background sync preserves list DAY, book and search even when remote records change', () => {
   const app=ui(); app.click('tab-list');
   app.nodes.unit.value='day-02'; app.nodes.unit.fire('change');
